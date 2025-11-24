@@ -1,0 +1,58 @@
+---
+title: "Capstone Inception Report"
+subtitle: OECD National Evaluation Portal
+format: 
+  pdf:
+    include-in-header:
+      text: |
+        \setlength{\parskip}{10pt} 
+execute:
+  echo: true
+  warning: true
+  message: true
+  cache: false
+---
+
+## Mid-Term Meeting Date:
+
+***October 31, 2025***
+
+## 09/10/2025 Meeting Summary
+
+### Overview of the 2022 OECD Recommendation
+
+-   Purpose: to ensure policy evaluations are accessible, transparent, thorough and widely disseminated
+
+-   14 countries currently have a central platform for evaluations, but each could benefit from further development
+
+-   Key example: **Finland** trialled an AI chatbot to allow users to query details within evaluation reports
+
+### Clarification on 'policy evaluation'
+
+-   Focus on evaluations which are produced for **learning and improvement** purposes, rather than audits or compliance
+
+-   Evaluations produced by a **non-executive/external body** were considered beyond the scope of this study
+
+-   Also consider the **nature of the product** (the type of report), not just the institution it comes from
+
+### Potential case study countries
+
+-   **United Kingdom**: Recently launched a new central portal for policy evaluations
+
+-   **Netherlands**: Hosts a comprehensive and well-structured set of evaluations across sectors
+
+-   **Finland**: Does not currently have a central government portal, only one for the development sector, but it is still worth investigating
+
+Note: case study analyses may include policies at the local level, but only evaluations conducted at the national level will be included in the data table and map.
+
+\newpage
+
+### Roadmap
+
+### Update 2023 Survey Result Table
+
+-   web portal status for countries
+
+-   additional assessment criteria (see Appendix 1)
+
+### Interactive Map

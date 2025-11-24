@@ -1,0 +1,17 @@
+{
+  "hash": "d0969b8e99e947070e34278f01ef53c4",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Data Update Report\"\nformat: \n  html:\n    toc: true\nexecute:\n  echo: false\n  warning: true\n  message: false\n  cache: false\n---\n\n## Script Info\n\n**Project:** OECD National Evaluation Portal\\\n**Date:** 2025-10-22 **Author:** Yichu Li\\\n**Purpose:** To prepare data for the interactive map.\n\n\n\n## Input Data Sets\n\n\n::: {.cell}\n::: {.cell-output .cell-output-stderr}\n\n```\nOECD.GOV.GIP,DSD_QDD_GOV_PE@DF_GOV_PE,+all.csv\n```\n\n\n:::\n\n::: {.cell-output .cell-output-stderr}\n\n```\nportal_assessment.csv\n```\n\n\n:::\n:::\n\n\n\n\n## Data Exploration\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n\nTable: Unique Values per Column\n\n|Column                   |Unique_Values                                      | Count|\n|:------------------------|:--------------------------------------------------|-----:|\n|STRUCTURE                |DATAFLOW                                           |     1|\n|STRUCTURE_ID             |OECD.GOV.GIP:DSD_QDD_GOV_PE@DF_GOV_PE(1.0)         |     1|\n|STRUCTURE_NAME           |Public policy evaluation - 2023                    |     1|\n|ACTION                   |I                                                  |     1|\n|REF_AREA                 |LUX, DNK, BEL, SWE, GRC, ISL, CZE, LVA, POL, IR... |    31|\n|Reference area           |Luxembourg, Denmark, Belgium, Sweden, Greece, I... |    31|\n|FREQ                     |A                                                  |     1|\n|Frequency of observation |Annual                                             |     1|\n|MEASURE                  |Q_MC_INTROOBJ-IMPAC, Q_MC_RESPOMOF, Q_MC_RESPOP... |   412|\n|Measure                  |Improve accountability and transparency of deci... |   312|\n|TIME_PERIOD              |2023                                               |     1|\n|Time period              |                                                   |     1|\n|OBS_VALUE                |1, No, Yes, for some laws (<50%), Budget Proces... |   731|\n|Observation value        |                                                   |     1|\n|OBS_STATUS               |A                                                  |     1|\n|Observation status       |Normal value                                       |     1|\n|UNIT_MULT                |0                                                  |     1|\n|Unit multiplier          |Units                                              |     1|\n\n\n:::\n:::\n\n\n### Re-format Data\n\nOnly keep relevant columns\n\n\n::: {.cell}\n::: {.cell-output-display}\n\n\nTable: Unique Values per Column\n\n|Column          |Unique_Values                                      | Count|\n|:---------------|:--------------------------------------------------|-----:|\n|country         |Luxembourg, Denmark, Belgium, Sweden, Greece, I... |    31|\n|survey_question |Improve accountability and transparency of deci... |   312|\n|survey_answer   |1, No, Yes, for some laws (<50%), Budget Proces... |   731|\n\n\n:::\n:::\n\n\n### Countries answered `yes` for 34. Is there a central web portal where government evaluations are published?\n",
+    "supporting": [
+      "map_data_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

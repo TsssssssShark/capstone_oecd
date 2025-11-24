@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>survey_data_exploration</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="survey_data_exploration_files/libs/clipboard/clipboard.min.js"></script>
+<script src="survey_data_exploration_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="survey_data_exploration_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="survey_data_exploration_files/libs/quarto-html/popper.min.js"></script>
+<script src="survey_data_exploration_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="survey_data_exploration_files/libs/quarto-html/anchor.min.js"></script>
+<link href="survey_data_exploration_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="survey_data_exploration_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="survey_data_exploration_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="survey_data_exploration_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="survey_data_exploration_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="survey_data_exploration_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="survey_data_exploration_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">survey_data_exploration</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="script-info" class="level2">
+<h2 class="anchored" data-anchor-id="script-info">Script info</h2>
+<p><strong>Project:</strong> Capstone OECD<br>
+<strong>Date:</strong> 2025-10-05 <strong>Author:</strong> Yichu Li<br>
+<strong>Purpose:</strong> Explore the survey data</p>
+</section>
+<section id="oecd-survey-on-public-policy-evaluation-results" class="level2">
+<h2 class="anchored" data-anchor-id="oecd-survey-on-public-policy-evaluation-results">2023 OECD Survey on Public Policy Evaluation Results</h2>
+</section>
+<section id="main-questions" class="level2">
+<h2 class="anchored" data-anchor-id="main-questions">Main Questions:</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Main Survey Questions</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">ID</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Question</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1.</td>
+<td style="text-align: left;">Does the government have formal definition(s) of policy evaluation ?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2.</td>
+<td style="text-align: left;">What are the main objectives when conducting policy evaluations?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3.</td>
+<td style="text-align: left;">What are the main challenges related to policy evaluations?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4.</td>
+<td style="text-align: left;">Which of the following institutions within the executive branch of government have a formal mandate to centrally coordinate public policy evaluations across government?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5.</td>
+<td style="text-align: left;">Are there dedicated units responsible for public policy evaluation within line ministries?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6.</td>
+<td style="text-align: left;">Which of the following institutions beyond the executive have the mandate to conduct policy evaluations?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7.</td>
+<td style="text-align: left;">How are&nbsp;knowledge brokers involved in strengthening the relationship between evaluations and decision-making in your country?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8.</td>
+<td style="text-align: left;">Does the Supreme Audit Institution (SAIs) conduct any of the following activities?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">9.</td>
+<td style="text-align: left;">Does the Parliament/ Congress have any of the following responsibilities related to policy evaluation?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10.</td>
+<td style="text-align: left;">Is there a non-government Voluntary Organisation for Professional Evaluation ( Evaluation Society ) in your country?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11.</td>
+<td style="text-align: left;">Are there central requirements to evaluate policies?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12.</td>
+<td style="text-align: left;">How do line ministries plan which policies to evaluate?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13.</td>
+<td style="text-align: left;">Are there Evaluation clauses in laws?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14.</td>
+<td style="text-align: left;">Are there requirements in place to ensure that some evaluations are conducted by independent parties external to government?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15.</td>
+<td style="text-align: left;">Are there mechanisms in place to ensure external stakeholder consultation and engagement in the evaluation process?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16.</td>
+<td style="text-align: left;">Are there central guidelines to support the evaluation process?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17.</td>
+<td style="text-align: left;">Are there any professional standards or accreditations required to work in policy evaluation roles in government?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18.</td>
+<td style="text-align: left;">Are there ethical standards that apply to government evaluators?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19.</td>
+<td style="text-align: left;">How does the government ensure the autonomy of evaluations?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20.</td>
+<td style="text-align: left;">Are evaluations reviewed by external parties through a peer review system?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21.</td>
+<td style="text-align: left;">Are there pre-defined quality criteria to assess the quality of the evaluation across governments?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22.</td>
+<td style="text-align: left;">Has your Supreme Audit Institution audited the executive's policy evaluation system in the past ten years?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">23.</td>
+<td style="text-align: left;">What measures are in place to acquire and retain adequate employee skills for policy evaluation?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25.</td>
+<td style="text-align: left;">Is there a national government strategy to promote the availability and accessibility of data for evaluation and evidence-informed policymaking?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">26.</td>
+<td style="text-align: left;">Are there government-wide provisions regulating data access and use for research, analytical or evaluation purposes?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">27.</td>
+<td style="text-align: left;">Does your government regularly evaluate the differentiated impact of policies on the following groups or sections of society?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">28.</td>
+<td style="text-align: left;">Is there a high level guidance framing policy evaluation across the government?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">29.</td>
+<td style="text-align: left;">At what level is policy evaluation across government legally embedded?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">30.</td>
+<td style="text-align: left;">How are public policy evaluation results used?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">31.</td>
+<td style="text-align: left;">Are there follow-up mechanisms in place to ensure a response to evaluation findings by management at the level of line minstries?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32.</td>
+<td style="text-align: left;">Are evaluation results formally discussed at the Council of Ministers or other high-level executive bodies?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">33.</td>
+<td style="text-align: left;">The results of evaluations are...</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">34.</td>
+<td style="text-align: left;">Is there a central web portal where government evaluations are published?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">35.</td>
+<td style="text-align: left;">Are evaluation results published in tailored and accessible formats (e.g. policy briefs, executive summaries, etc.) to promote access and use?</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">36.</td>
+<td style="text-align: left;">Do(es) evaluation champion(s)&nbsp;make use of evidence synthesis methodologies to aggregate evaluation findings and assess them in a systematic manner?</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="which-ones-are-important-for-our-purposes" class="level3">
+<h3 class="anchored" data-anchor-id="which-ones-are-important-for-our-purposes">Which ones are important for our purposes?</h3>
+<ol type="1">
+<li>Does the government have formal definition(s) of policy evaluation ?</li>
+</ol>
+<!-- -->
+<ol start="25" type="1">
+<li>Is there a national government strategy to promote the availability and accessibility of data for evaluation and evidence-informed policymaking?</li>
+</ol>
+<!-- -->
+<ol start="30" type="1">
+<li>How are public policy evaluation results used?</li>
+</ol>
+<!-- -->
+<ol start="32" type="1">
+<li>Are evaluation results formally discussed at the Council of Ministers or other high-level executive bodies?</li>
+</ol>
+<p>*34. Is there a central web portal where government evaluations are published?</p>
+<ol start="35" type="1">
+<li>Are evaluation results published in tailored and accessible formats (e.g.&nbsp;policy briefs, executive summaries, etc.) to promote access and use?</li>
+<li>Do(es) evaluation champion(s)&nbsp;make use of evidence synthesis methodologies to aggregate evaluation findings and assess them in a systematic manner?</li>
+</ol>
+</section>
+</section>
+<section id="what-have-countries-listed-as-formal-definition" class="level2">
+<h2 class="anchored" data-anchor-id="what-have-countries-listed-as-formal-definition">1. What have countries listed as formal definition?</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Question 1.1 Responses from Countries that answered 'Yes' to Question 1</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Country</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Response</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: left; width: 30em;">The Australian Government uses the following definition in its Evaluation Toolkit - 'Evaluation is the systematic and objective assessment of the design, implementation or results of a government program or activity for the purposes of continuous improvement, accountability and decision-making. It provides a structured and disciplined analysis of the value of policies, programs and activities at all stages of the policy cycle.' Individual line ministries in the Australian Government use different variations on this definition to suit the individual circumstances of the ministry.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Austria</td>
+<td style="text-align: left; width: 30em;">Federal Organic Budget Act 2013; Sec 18 https://www.ris.bka.gv.at/Dokument.wxe?Abfrage=Erv&amp;Dokumentnummer=ERV_2009_1_139 Secondary Legislation: Para 11: https://www.ris.bka.gv.at/GeltendeFassung.wxe?Abfrage=Bundesnormen&amp;Gesetzesnummer=20008150</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: left; width: 30em;">Evaluation is the systematic and neutral collection and analysis of evidence to judge merit, worth or value. Evaluations: • inform decision making, improvements, innovation and accountability; • focus on programs, policies and priorities, but, depending on user needs, can also examine other units, themes and issues, including alternatives to existing interventions; • examine questions related to relevance, effectiveness and efficiency; and • employ social science research methods</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: left; width: 30em;">The regulatory framework provided by the Decree 2.068 of 2022 includes the definition of the different ex post evaluation types: 1) Evaluation of Public Programs (EPG); 2) Impact Evaluation (EI); 3) Focused Scope Evaluation (EFA); Sectorial Evaluation (ES). These evaluations must meet principles of thecnical reliability, relevance and opportunity. Besides, the Decree 5 of 2022 defines ex ante evaluation and monitoring (evaluación de seguimiento)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left; width: 30em;">Evaluation is a systematic and objective assessment of an ongoing or completed project, program or policy, its design, implementation and results; to determine the relevance the achievement of objectives, efficiency, effectiveness, impact and sustainability. The evaluations obtained information credible and useful, to incorporate the lessons into the decision-making process.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Costa Rica</td>
+<td style="text-align: left; width: 30em;">Mideplan defines evaluation as a systematic evaluation of the design, development, and results of policies, plans, programs, and projects based on a set of established value criteria. This assessment generates evidence-based recommendations to support decision-making and improve public management.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: left; width: 30em;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: left; width: 30em;">Il existe plusieurs définitions car le terme “évaluation” recouvre plusieurs conceptions différentes au sein des administrations publiques et en dehors. Voici quelques-unes des définitions : DREES (actes du séminaire sur les méthodes d’évaluation des politiques publiques, 2011) : « L’évaluation de l’action publique (politique, programme, dispositif) a pour objet d’en apprécier la valeur au regard de certains critères, comme la pertinence, l’efficacité, l’efficience…, notamment dans le but d’apporter des connaissances pour aider à la décision et éclairer le débat public ». (Annie Fouquet, SFE). C’est sur la base de cette définition de la Société française d’évaluation (SFE) que les évaluations de politique publique dans le cadre de la MAP (Modernisation de l’action publique, 2012-2017) ont été conduites (memo sur l’évaluation des politiques publiques de la MAP, 2015) : “Les questions évaluatives visent à interroger l’ensemble de la chaîne de valeur d’une action publique à partir des critères évaluatifs standards (efficacité, efficience, cohérence, utilité, pertinence) et des orientations structurantes de la modernisation (simplification, innovation, numérique, ouverture des données, soutenabilité...) ». Décret du 18 novembre 1998 (no 98-1048) : « L’évaluation d’une politique publique, au sens du présent décret, a pour objet d’apprécier, dans un cadre interministériel, l’efficacité de cette politique en comparant ses résultats aux objectifs assignés et aux moyens mis en œuvre ». Décret du 22 janvier 1990 (no 90-82) : « L’évaluation d’une politique publique au sens du présent décret a pour objet de rechercher si les moyens juridiques, administratifs ou financiers mis en œuvre permettent de produire les effets attendus de cette politique et d’atteindre les objectifs qui lui sont assignés ».</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: left; width: 30em;">Evaluation - The process of systematically assessing an intervention (ex ante or ex post) to determine efficiency and - effectiveness in achieving a stated objective Definition contained in the Public Spending Code. The Public Spending Code is the comprehensive set of expenditure appraisal, Value for Money requirements and related guidance covering all public expenditure gov.ie - The Public Spending Code - https://www.gov.ie/en/publication/public-spending-code/</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: left; width: 30em;">Government Policy Evaluations Act Article3 (1) An Administrative Organ must study and acquire information on the Effects of Policy (meaning the effect which a set of activities it carried out or intends to carry out has or is expected to have on the lives of people and/or society and the economy) under its jurisdiction at the appropriate time, and on the basis of such study, evaluate own Policy from the standpoints of necessity, efficiency, effectiveness, or other standpoints as special characteristics that the Policy may require.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: left; width: 30em;">Evaluation is a set of methods and procedures that the developer of a policy planning document carries out in order to assess the socio-economic impact of the implemented policy.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: left; width: 30em;">Evaluation is a systematic and objective determination of the suitability, effectiveness, efficiency, usefulness and long-term impact of the planned, executed or completed programs.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: left; width: 30em;">According to the second paragraph of the Annual Program for the Evaluation of Budgetary Programs and Public Policies of the Federal Public Administration for fiscal year 2023, evaluation is the systematic and objective analysis of budgetary programs and public policies, as well as of the Federal Contribution Funds to determine the relevance and achievement of their objectives and goals, as well as their efficiency, effectiveness, quality, results and impact, depending on the type of evaluation carried out. Definition from: www.coneval.org.mx/Evaluacion/NME/Documents/PAE_2023.pdf</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: left; width: 30em;">https://zoek.officielebekendmakingen.nl/stcrt-2022-19587.html</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Norway</td>
+<td style="text-align: left; width: 30em;">Evaluation is the systematic collecting of data, analysis and assessment of a planned, ongoing or completed activity, organisation, a policy instrument or a sector. Evaluations can be undertaken prior to (ex ante), during implementation (ex durante), or after the the activity has been completed (ex post). The evaluation can be conducted internally or by external academic professionals. (Guiding document on evaluation published by the Ministry of Finance in 2005)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left; width: 30em;">The definition is contained in Article 8 of Law 27/2022, of December 20, on the institutionalization of public policy evaluation in the General State Administration: '1. The evaluation of a public policy, for the purposes of this law, is the systematic and reasoned process of generating knowledge, based on the collection, analysis and interpretation of information, aimed at the overall understanding of a public policy, in order to reach an evaluative judgment, based on evidence, regarding its design, implementation and effects.'</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: left; width: 30em;">Les évaluations sont des analyses ciblées et limitées dans le temps, qui visent à cerner le concept, la mise en œuvre et les effets des mesures étatiques, à quantifier, si possible, ces trois aspects et à évaluer jusqu’à quel point ces mesures contribuent à atteindre le but visé et à améliorer le bien-être de la collectivité</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: left; width: 30em;">Evaluation is a systematic assessment of the design, implementation and outcomes of an intervention. It involves understanding how an intervention is being, or has been, implemented and what effects it has, for whom and why. It identifies what can be improved and estimates its overall impacts and cost-effectiveness. Magenta book - https://www.gov.uk/government/publications/the-magenta-book</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: left; width: 30em;">The term `evaluation' means an assessment using systematic data collection and analysis of one or more programs, policies, and organizations intended to assess their effectiveness and efficiency.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<section id="following-is-what-claude-summarises" class="level3">
+<h3 class="anchored" data-anchor-id="following-is-what-claude-summarises">Following is what Claude summarises:</h3>
+<p>Based on the commonalities across these 19 countries, policy evaluation is: The systematic and objective assessment of government policies, programs, or activities—examining their design, implementation, and results—to determine their effectiveness, efficiency, and impact in achieving intended objectives, with the purpose of informing decision-making, ensuring accountability, and improving public management.</p>
+<p>Core elements present across definitions:</p>
+<ul>
+<li><p><strong>Systematic and objective</strong> methodology</p></li>
+<li><p>Assessment of <strong>effectiveness</strong> (achieving objectives) and efficiency (resource use)</p></li>
+<li><p>Focus on <strong>results/outcomes/impacts</strong></p></li>
+<li><p>Purpose of <strong>decision-making</strong> and <strong>improvement</strong></p></li>
+<li><p>Evidence-based approach for <strong>accountability</strong></p></li>
+</ul>
+</section>
+</section>
+<section id="which-countries-have-web-portals" class="level2">
+<h2 class="anchored" data-anchor-id="which-countries-have-web-portals">34. Which countries have web portals</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Question 34: Countries by Response Category</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Country</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Belgium</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Czechia</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Denmark</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Greece</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Iceland</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Luxembourg</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United States</td>
+<td style="text-align: left;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hungary</td>
+<td style="text-align: left;">Under Development</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Lithuania</td>
+<td style="text-align: left;">Under Development</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: left;">Under Development</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: left;">Under Development</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Austria</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Chile</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Costa Rica</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Estonia</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Japan</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Latvia</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mexico</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Netherlands</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Norway</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Poland</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Portugal</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

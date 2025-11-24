@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Policy Evaluation Portals Information</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+    <!-- Packages -->
+        <!-- Leaflet -->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+            <!-- easyPrint plug-in-->
+            <script src="https://unpkg.com/leaflet-easyprint@2.1.9/dist/bundle.js"></script>
+
+        <!-- D3 -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+        <!-- PapaParse -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+        
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <!-- Chroma.js -->
+        <script src="https://unpkg.com/chroma-js@2.0.3"></script>
+
+</head>
+
+<body class="min-h-screen bg-white">
+    
+    <div class="relative flex min-h-screen flex-col bg-white">
+        <nav class="top-0 border-b border-gray-200 bg-gray-100 sm:sticky z-50 sm:z-50 sm:shadow-lg print:!hidden">
+            <div class="mx-auto max-w-1xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <a class="flex shrink-0 items-center mr-4 ml-0"
+                                href="https://www.oecd.org/en.html">
+                                <img src="img/logo.svg" class="h-6 sm:h-8 w-auto" />
+                        </a>
+                        <div class="font-bold text-xl sm:text-2xl text-gray-700 sm:flex hidden"
+                            style="padding: 20px;">
+                            National Policy Evaluation Portals Information
+                        </div>
+                        <div id="view-page-title" class="rounded-md font-bold text-xl text-white px-3 py-1">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+        
+        <div class="grow">
+            <div id="map-macrocontainer" class="relative flex h-[calc(100vh-4rem-1px)] flex-col sm:flex-row z-20 sm:z-20">
+                <div id="map-topic" class="z-20 flex w-full min-h-full shrink-0 flex-col gap-12 overflow-auto border-gray-200 bg-white py-5 px-4 sm:z-20 sm:flex sm:w-[380px] sm:border-r sm:px-6 xl:w-[460px]">
+                    <div class="flex flex-col gap-4 break-words print:!w-full sm:w h-full">
+                        <div id="indicators-list" class="flex flex-1 flex-col gap-4">
+                        </div>
+                        <div class="flex flex-col gap-8">
+                            <div><br></div>
+                        </div> 
+                    </div>
+                </div>  
+
+                <div class="grow relative">
+                    <div id="map-container" class="h-full w-full transition">
+                        <div id="map" class="h-full w-full bg-gray-700"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load external javascript files -->
+    <script type="text/javascript" src="./js/portalMapData.js?v=202505"></script>
+    <script type="text/javascript" src="./js/colorScales.js?v=202505"></script>
+    <script type="text/javascript" src="./js/map.js?v=202505"></script>
+
+</body>
+</html>
