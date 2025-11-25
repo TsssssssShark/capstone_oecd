@@ -254,7 +254,16 @@ ft_q34 <- comparison %>%
   border_outer(border = fp_border(color = "black"))
 
 # Save as image
-save_as_image(ft_q34, path = glue("{fig_output_dir}/portal_status_comparison.png"), res = 300)
+if (dir.exists (fig_output_dir)){
+  invisible(
+    save_as_image(
+      ft_q34, path = glue("{fig_output_dir}/portal_status_comparison.png"), res = 300
+      )
+    )
+} else {
+  stop(glue('Directory not found: {fig_output_dir}'))
+}
+
 ```
 
 \newpage
@@ -291,153 +300,211 @@ central_portal_status <- new_data_q34 %>%
     )
   ) %>%
   select(country, portal_status)
-
-# Split data into two columns
-n_rows <- nrow(central_portal_status)
-split_point <- ceiling(n_rows / 2)
-
-# Create left and right columns
-left_col <- central_portal_status[1:split_point, ]
-right_col <- central_portal_status[(split_point + 1):n_rows, ]
-
-# Pad right column with empty rows if needed
-if (nrow(right_col) < nrow(left_col)) {
-  right_col <- bind_rows(
-    right_col,
-    data.frame(
-      country = rep("", nrow(left_col) - nrow(right_col)),
-      portal_status = rep("", nrow(left_col) - nrow(right_col))
-    )
-  )
-}
-
-# Apply colors before combining using cell_spec
-left_col_formatted <- left_col %>%
-  mutate(
-    portal_status = cell_spec(
-      portal_status,
-      format = "latex",
-      background = case_when(
-        portal_status == "yes" ~ "blue!20",
-        portal_status == "no" ~ "red!20",
-        TRUE ~ "white"
-      )
-    )
-  )
-
-right_col_formatted <- right_col %>%
-  mutate(
-    portal_status = cell_spec(
-      portal_status,
-      format = "latex",
-      background = case_when(
-        portal_status == "yes" ~ "blue!20",
-        portal_status == "no" ~ "red!20",
-        TRUE ~ "white"
-      )
-    )
-  )
-
-# Combine into single table
-two_col_table <- bind_cols(
-  left_col_formatted,
-  right_col_formatted %>% setNames(c("country2", "portal_status2"))
-)
-
-# Create table
-two_col_table %>%
-  kable(
-    format = "latex",
-    booktabs = TRUE,
-    caption = "Portal Status Distribution",
-    col.names = c("Country", "Status", "Country", "Status"),
-    escape = FALSE  # Important for cell_spec to work
-  ) %>%
-  kable_styling(
-    latex_options = c("hold_position"),
-    full_width = FALSE,
-    position = "center"
-  ) %>%
-  column_spec(2, border_right = TRUE) %>%
-  column_spec(1, width = "4cm") %>%
-  column_spec(2, width = "2.5cm") %>%
-  column_spec(3, width = "4cm") %>%
-  column_spec(4, width = "2.5cm")
 ```
 
 ```{r}
-#| label: export-portal-png
+#| label: function-split-table
 
-# Create two-column layout WITHOUT LaTeX formatting
-two_col_display <- bind_cols(
-  left_col,  # Use original data, not formatted
-  right_col %>% setNames(c("country2", "portal_status2"))
+create_split_table <- function(data,
+                              value_col = "status",
+                              group_col = "country", 
+                              color_map = NULL,
+                              caption = "Two Column Table",
+                              col_names = c("Country", "Status", "Country", "Status"),
+                              col_widths = c("4cm", "2.5cm", "4cm", "2.5cm"),
+                              export_png = FALSE,  
+                              png_path = NULL,     
+                              png_colors = NULL,   
+                              png_res = 300) {     
+  
+  
+  # Split data into two columns
+  n_rows <- nrow(data)
+  split_point <- ceiling(n_rows / 2)
+  
+  # Create left and right columns
+  left_col <- data[1:split_point, ]
+  
+  # Handle right column
+  if(split_point < n_rows) {
+    right_col <- data[(split_point + 1):n_rows, ]
+  } else {
+    right_col <- data.frame(
+      matrix("", nrow = 0, ncol = ncol(data))
+    )
+    names(right_col) <- names(data)
+  }
+  
+  # Pad right column with empty rows if needed
+  if (nrow(right_col) < nrow(left_col)) {
+    padding_rows <- nrow(left_col) - nrow(right_col)
+    padding <- data.frame(
+      matrix("", nrow = padding_rows, ncol = ncol(data))
+    )
+    names(padding) <- names(data)
+    right_col <- bind_rows(right_col, padding)
+  }
+  
+  # Export PNG if requested (before LaTeX formatting)
+  if (export_png && !is.null(png_path)) {
+    require(flextable)
+    require(officer)
+    
+    # Create two-column display for PNG
+    two_col_display <- bind_cols(
+      left_col,
+      right_col %>% setNames(paste0(names(right_col), "2"))
+    )
+    
+    header_labels <- setNames(
+      col_names,
+      c(group_col, value_col, paste0(group_col, "2"), paste0(value_col, "2"))
+    )
+    
+    # Create flextable
+    ft <- two_col_display %>% flextable()
+    
+    ft <- do.call(set_header_labels, c(list(ft), header_labels))
+    
+    ft <- ft %>%
+      bold(part = "header") %>%
+      align(align = "center", j = c(2, 4), part = "all") %>%
+      align(align = "left", j = c(1, 3), part = "all") %>%
+      border_inner_v(border = fp_border(color = "gray", width = 1)) %>%
+      border_outer(border = fp_border(color = "black", width = 2)) %>%
+      width(j = c(1, 3), width = 2.5) %>%
+      width(j = c(2, 4), width = 1.2) %>%
+      fontsize(size = 11, part = "all") %>%
+      font(fontname = "Arial", part = "all")
+    
+    # Apply PNG colors if provided
+    if (!is.null(png_colors)) {
+      for (status in names(png_colors)) {
+        # Left column colors
+        rows_left <- which(left_col[[value_col]] == status)
+        if (length(rows_left) > 0) {
+          ft <- ft %>% bg(i = rows_left, j = 2, bg = png_colors[status])
+        }
+        
+        # Right column colors
+        rows_right <- which(right_col[[value_col]] == status)
+        if (length(rows_right) > 0) {
+          ft <- ft %>% bg(i = rows_right, j = 4, bg = png_colors[status])
+        }
+      }
+      
+      # White text for dark colors (customize based on your colors)
+      dark_statuses <- c("yes", "no")
+      ft <- ft %>%
+        color(i = which(left_col[[value_col]] %in% dark_statuses), 
+              j = 2, color = "white") %>%
+        color(i = which(right_col[[value_col]] %in% dark_statuses), 
+              j = 4, color = "white")
+    }
+    
+    # Save PNG
+    save_as_image(ft, path = png_path, res = png_res)
+  }
+  
+  # Continue with LaTeX table formatting
+  if (!is.null(color_map)) {
+    # Apply LaTeX color formatting to left column
+    left_col_formatted <- left_col %>%
+      mutate(
+        !!value_col := ifelse(
+          .data[[value_col]] == "",
+          "",
+          cell_spec(
+            .data[[value_col]],
+            format = "latex",
+            background = ifelse(
+              .data[[value_col]] %in% names(color_map),
+              color_map[.data[[value_col]]],
+              "white"
+            )
+          )
+        )
+      )
+    
+    # Apply LaTeX color formatting to right column
+    right_col_formatted <- right_col %>%
+      mutate(
+        !!value_col := ifelse(
+          .data[[value_col]] == "",
+          "",
+          cell_spec(
+            .data[[value_col]],
+            format = "latex",
+            background = ifelse(
+              .data[[value_col]] %in% names(color_map),
+              color_map[.data[[value_col]]],
+              "white"
+            )
+          )
+        )
+      )
+  } else {
+    left_col_formatted <- left_col
+    right_col_formatted <- right_col
+  }
+  
+  # Combine into single table
+  two_col_table <- bind_cols(
+    left_col_formatted,
+    right_col_formatted %>% 
+      setNames(paste0(names(right_col_formatted), "2"))
+  )
+  
+  # Create kable table
+  result <- two_col_table %>%
+    kable(
+      format = "latex",
+      booktabs = TRUE,
+      caption = caption,
+      col.names = col_names,
+      escape = FALSE
+    ) %>%
+    kable_styling(
+      latex_options = c("hold_position"),
+      full_width = FALSE,
+      position = "center"
+    ) %>%
+    column_spec(2, border_right = TRUE)
+  
+  # Apply column widths
+  for(i in 1:length(col_widths)) {
+    result <- result %>% column_spec(i, width = col_widths[i])
+  }
+  
+  return(result)
+}
+```
+
+```{r}
+#| label: central-portal-table
+
+portal_table <- create_split_table(
+  data = central_portal_status,
+  value_col = "portal_status",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20",
+    "developing" = "gray!20"
+  ),
+  caption = "Updated Portal Status",
+  # PNG export options
+  export_png = TRUE,
+  png_path = file.path(fig_output_dir, "portal_status_table.png"),
+  png_colors = c(
+    "yes" = "#4682C8",
+    "no" = "#FF8C00",
+    "developing" = "grey"
+  ),
+  png_res = 300
 )
 
-# Define colors - using the blue from LaTeX header and complementary orange
-blue_color <- "#4682C8"   
-orange_color <- "#FF8C00"   
-grey_color <- "grey"   
-
-# Create flextable with proper formatting
-ft <- two_col_display %>%
-  flextable() %>%
-  # Set column headers
-  set_header_labels(
-    country = "Country",
-    portal_status = "Status",
-    country2 = "Country",
-    portal_status2 = "Status"
-  ) %>%
-  # Apply background colors to left column status cells
-  bg(i = which(left_col$portal_status == "yes"), 
-     j = 2,  # Status column (left)
-     bg = blue_color) %>%  
-  bg(i = which(left_col$portal_status == "no"), 
-     j = 2, 
-     bg = orange_color) %>%  
-  bg(i = which(left_col$portal_status == "developing"), 
-     j = 2, 
-     bg = grey_color) %>%  
-  # Apply background colors to right column status cells
-  bg(i = which(right_col$portal_status == "yes"), 
-     j = 4,  # Status column (right)
-     bg = blue_color) %>%
-  bg(i = which(right_col$portal_status == "no"), 
-     j = 4, 
-     bg = orange_color) %>%
-  bg(i = which(right_col$portal_status == "developing"), 
-     j = 4, 
-     bg = grey_color) %>%
-  # Remove empty rows from coloring (if any)
-  bg(i = which(right_col$portal_status == ""), 
-     j = 4, 
-     bg = "white") %>%
-  # Text color - white for better contrast on dark backgrounds
-  color(i = which(left_col$portal_status %in% c("yes", "no")), 
-        j = 2, 
-        color = "white") %>%
-  color(i = which(right_col$portal_status %in% c("yes", "no")), 
-        j = 4, 
-        color = "white") %>%
-  # Style the table
-  bold(part = "header") %>%
-  align(align = "center", j = c(2, 4), part = "all") %>%  # Center status columns
-  align(align = "left", j = c(1, 3), part = "all") %>%    # Left align country names
-  border_inner_v(border = fp_border(color = "gray", width = 1)) %>%
-  border_outer(border = fp_border(color = "black", width = 2)) %>%
-  # Set column widths
-  width(j = c(1, 3), width = 2.5) %>%  # Country columns
-  width(j = c(2, 4), width = 1.2) %>%   # Status columns
-  fontsize(size = 11, part = "all") %>%
-  font(fontname = "Arial", part = "all")
-
-# Save as image
-save_as_image(ft, 
-              path = file.path(fig_output_dir, "portal_status_table.png"), 
-              res = 300)
-
-message("Table saved to: ", file.path(fig_output_dir, "portal_status_table.png"))
+portal_table
 ```
 
 ```{r}
@@ -488,4 +555,34 @@ message('Javascript exported to map/js/portalMapData.js')
   message('Error in JavaScript export: ', e$message)
   print(e)
 })
+```
+
+\newpage
+
+### COFOG Categories (10) Coverage
+
+```{r}
+#| label: cofog-table
+
+cofog <- new_data_long %>%
+  filter(survey_question == '2.1 Number of policy areas covered (out of 10 COFOG categories)') %>%
+  arrange(country) %>%
+  select(country, coverage = survey_answer) %>%
+  mutate(
+    coverage = parse_number(coverage)
+  )
+
+cofog_table <- create_split_table(
+  data = cofog,
+  value_col = "coverage",
+  group_col = "country",
+  caption = "Number of COFOG categories covered",
+  
+  # PNG export options
+  export_png = TRUE,
+  png_path = file.path(fig_output_dir, "cofog_table.png"),
+  png_res = 300
+)
+
+cofog_table
 ```
