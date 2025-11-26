@@ -31,7 +31,8 @@ required_packages <- c(
   'glue',
   'officer',
   'flextable',
-  'gt'
+  'gt',
+  'ggplot2'
 )
 
 missing_packages <- required_packages[
@@ -270,7 +271,7 @@ if (dir.exists (fig_output_dir)){
 
 #### Re-format update data on [central portal]{.underline}
 
-Correct the status for Hungary and Lithuania to 'developing'
+Correct the status for Hungary to 'developing'
 
 ```{r}
 #| label: central-portal-status
@@ -280,7 +281,6 @@ new_data_q34 <- new_data_q34 %>%
   mutate(
     update_answer = case_when(
       country == 'Hungary' ~ 'under development',
-      country == 'Lithuania' ~ 'under development',
       TRUE ~ update_answer
     )
   )
@@ -547,9 +547,11 @@ js_content <- paste0(
   "}"
 )
 
-writeLines(js_content, file.path(js_output_dir, "portalMapData.js"))
-
-message('Javascript exported to map/js/portalMapData.js')
+if (dir.exists(js_output_dir)) {
+  writeLines(js_content, file.path(js_output_dir, "portalMapData.js"))
+} else {
+  stop(glue('JavaScript output directory not found: {js_output_dir}'))
+}
 
 }, error = function(e) {
   message('Error in JavaScript export: ', e$message)
@@ -559,10 +561,54 @@ message('Javascript exported to map/js/portalMapData.js')
 
 \newpage
 
+### Independent website or a sub-tab of another website?
+
+```{r}
+#| label: independent-website-table
+
+# Create df
+independent_website_data <- new_data_long %>%
+  filter(survey_question == '3.14 Independent website rather than subtab of another website?') %>%
+  mutate(
+    independent_website = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, independent_website) %>%
+  arrange(country)
+
+# Creat table
+independent_website_table <- create_split_table(
+  data = independent_website_data,
+  value_col = "independent_website",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Indendent Website?",
+  # PNG export options
+  export_png = TRUE,
+  png_path = file.path(fig_output_dir, "independent_website_table.png"),
+  png_colors = c(
+    "yes" = "#4682C8",
+    "no" = "#FF8C00",
+    "developing" = "grey"
+  ),
+  png_res = 300
+)
+
+independent_website_table
+```
+
+\newpage
+
 ### COFOG Categories (10) Coverage
 
 ```{r}
-#| label: cofog-table
+#| label: cofog-data
 
 cofog <- new_data_long %>%
   filter(survey_question == '2.1 Number of policy areas covered (out of 10 COFOG categories)') %>%
@@ -571,6 +617,11 @@ cofog <- new_data_long %>%
   mutate(
     coverage = parse_number(coverage)
   )
+```
+
+```{r}
+#| label: cofog-table
+#| eval: false
 
 cofog_table <- create_split_table(
   data = cofog,
@@ -585,4 +636,147 @@ cofog_table <- create_split_table(
 )
 
 cofog_table
+```
+
+```{r}
+#| label: cofog-bar
+#| fig-cap: 'COFOG COverage by Country'
+#| fig-width: 15
+#| fig-height: 16
+
+# Prepare data to treat NA
+cofog_bar_data <- cofog %>%
+  mutate(
+    coverage_raw = coverage,
+    coverage = replace_na(coverage_raw, 0),
+    label_text = ifelse(is.na(coverage_raw), 'NA', as.character(coverage))
+  ) %>%
+  arrange(desc(coverage), country)
+
+# Horizontal pie chart
+cofog_bar_chart <- ggplot(cofog_bar_data, aes(x = coverage, y = reorder(country, coverage))) +
+  geom_bar(stat = "identity", fill = "#4682C8", width = 0.6, linewidth = 0.2) +
+  geom_text(
+    aes(label = label_text),
+    hjust = -0.2,
+    size = 8,
+    fontface = ifelse(cofog_bar_data$label_text == "NA", "italic", "plain") 
+  ) +  
+  scale_x_continuous(
+    limits = c(0, 11),
+    breaks = seq(0, 10, 2),
+    expand = c(0, 0)
+  ) +
+  labs(
+    x = "Number of COFOG Categories Covered (out of 10)",
+    y = ""
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    axis.text.y = element_text(size = 20, face = 'bold'),
+    axis.text.x = element_text(size = 20, face = 'bold'),
+    axis.title.x = element_text(size = 20, face = 'bold')
+  )
+
+cofog_bar_chart
+
+# Save chart
+ggsave(
+  filename = file.path(fig_output_dir, "cofog_bar.png"),
+  plot = cofog_bar_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
+)
+```
+
+\newpage
+
+### Policy Area Categorisation?
+
+```{r}
+#| label: policy-categorisation-table
+
+# Create df
+policy_categorisation_data <- new_data_long %>%
+  filter(survey_question == '3.2 Policy area categorisation') %>%
+  mutate(
+    policy_categorisation = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, policy_categorisation) %>%
+  arrange(country)
+
+# Creat table
+policy_categorisation_table <- create_split_table(
+  data = policy_categorisation_data,
+  value_col = "policy_categorisation",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Policy Area Categorisation",
+  
+  # PNG export options
+  export_png = TRUE,
+  png_path = file.path(fig_output_dir, "policy_categorisation_table.png"),
+  png_colors = c(
+    "yes" = "#4682C8",
+    "no" = "#FF8C00"
+  ),
+  png_res = 300
+)
+
+policy_categorisation_table
+```
+
+\newpage
+
+### Summary Available on the Portal?
+
+```{r}
+#| label: summary-available-table
+
+
+# Create df
+summary_available_data <- new_data_long %>%
+  filter(survey_question == '3.11 Summaries available on the portal (not as a part of the main documents)') %>%
+  mutate(
+    summary_available = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, summary_available) %>%
+  arrange(country)
+
+# Creat table
+summary_available_table <- create_split_table(
+  data = summary_available_data,
+  value_col = "summary_available",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Summary Available on the Portal",
+  
+  # PNG export options
+  export_png = TRUE,
+  png_path = file.path(fig_output_dir, "summary_available_table.png"),
+  png_colors = c(
+    "yes" = "#4682C8",
+    "no" = "#FF8C00"
+  ),
+  png_res = 300
+)
+
+summary_available_table
 ```

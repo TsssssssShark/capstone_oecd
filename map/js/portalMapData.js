@@ -1,5 +1,5 @@
 // Portal status with map styling
-// Generated: 2025-11-25
+// Generated: 2025-11-26
 
 const PORTAL_MAP_DATA = [
   {
@@ -130,9 +130,9 @@ const PORTAL_MAP_DATA = [
   },
   {
     "country": "Lithuania",
-    "portal_status": "developing",
-    "color": "#ffc107",
-    "label": "Under Development"
+    "portal_status": "yes",
+    "color": "#5cb85c",
+    "label": "Has Portal"
   },
   {
     "country": "Luxembourg",
