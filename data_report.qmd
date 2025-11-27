@@ -196,17 +196,30 @@ new_data_q34 <- new_data_long %>%
 # Comparative Display
 comparison <- full_join(df_q34, new_data_q34, by = 'country') %>%
   mutate(
-    # Ignore capital but treat NA as value
-    changed = case_when(
-      is.na(original_answer) & is.na(update_answer) ~ FALSE,
-      is.na(original_answer) | is.na(update_answer) ~ TRUE, 
-      TRUE ~ tolower(original_answer) != tolower(update_answer)
+    # Replace NA
+    original_str = replace_na(original_answer, "NA"),
+    update_str = replace_na(update_answer, "NA"),
+   
+    # Comparison 
+    status = case_when(
+      original_str == "NA" ~ 'new_countries',
+      
+      grepl('development', tolower(original_str)) &
+        !grepl('yes', tolower(update_str)) ~ 'development',
+      
+      grepl('no|development', tolower(original_str)) &
+        grepl('yes', tolower(update_str)) ~ 'developed',
+      
+      grepl('yes', tolower(original_str)) &
+        grepl('no', tolower(update_str)) ~ 'removed',
+      
+      TRUE ~ 'unchanged'
     )
   )
 
 # Different color
 comparison %>%
-  select(-changed) %>%
+  select(-status, -original_str, -update_str) %>%
   kable(
     format = "latex",
     booktabs = TRUE,
@@ -217,8 +230,20 @@ comparison %>%
     latex_options = c("scale_down", "hold_position")
   ) %>%
   row_spec(
-    which(comparison$changed),
-    background = "red!20" 
+    which(comparison$status == 'developed'),
+    background = "#4682C8" 
+  ) %>%
+  row_spec(
+    which(comparison$status == 'removed'),
+    background = 'red'
+  ) %>% 
+  row_spec(
+    which(comparison$status == 'development'),
+    background = 'orange'
+  ) %>%
+  row_spec(
+    which(comparison$status == 'new_countries'),
+    background = 'purple!20'
   )
 ```
 
@@ -239,8 +264,14 @@ ft_q34 <- comparison %>%
   ) %>%
   
   # Highlight changed rows
-  bg(i = which(comparison$changed), 
+  bg(i = which(comparison$status == 'developed'), 
      bg = "#4682C8") %>% 
+  bg(i = which(comparison$status == 'development'), 
+     bg = "orange") %>%
+  bg(i = which(comparison$status == 'removed'), 
+     bg = "red") %>%
+  bg(i = which(comparison$status == 'new_countries'), 
+     bg = "#B19CD9") %>%
   
    # Increase font size for all cells
   fontsize(size = 12, part = "all") %>%

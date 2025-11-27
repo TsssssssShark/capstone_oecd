@@ -1,5 +1,5 @@
 // Portal status with map styling
-// Generated: 2025-11-26
+// Generated: 2025-11-27
 
 const PORTAL_MAP_DATA = [
   {
