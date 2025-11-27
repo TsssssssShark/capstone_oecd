@@ -1,0 +1,33 @@
+\begin{table}[!h]
+\centering
+\caption{\label{tab:portal_table}Updated Portal Status}
+\centering
+\begin{tabular}[t]{>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}p{4cm}>{\raggedright\arraybackslash}p{2.5cm}}
+\toprule
+Country & Status & Country & Status\\
+\midrule
+Australia & \cellcolor{blue!20}{yes} & Japan & \cellcolor{blue!20}{yes}\\
+Austria & \cellcolor{red!20}{no} & Latvia & \cellcolor{blue!20}{yes}\\
+Belgium & \cellcolor{red!20}{no} & Lithuania & \cellcolor{blue!20}{yes}\\
+Canada & \cellcolor{red!20}{no} & Luxembourg & \cellcolor{red!20}{no}\\
+Chile & \cellcolor{blue!20}{yes} & Mexico & \cellcolor{blue!20}{yes}\\
+\addlinespace
+Colombia & \cellcolor{blue!20}{yes} & Netherlands & \cellcolor{blue!20}{yes}\\
+Costa Rica & \cellcolor{blue!20}{yes} & New Zealand & \cellcolor{blue!20}{yes}\\
+Czechia & \cellcolor{red!20}{no} & Norway & \cellcolor{blue!20}{yes}\\
+Denmark & \cellcolor{red!20}{no} & Poland & \cellcolor{blue!20}{yes}\\
+Estonia & \cellcolor{blue!20}{yes} & Portugal & \cellcolor{blue!20}{yes}\\
+\addlinespace
+Finland & \cellcolor{red!20}{no} & Slovak Republic & \cellcolor{red!20}{no}\\
+France & \cellcolor{blue!20}{yes} & Slovenia & \cellcolor{red!20}{no}\\
+Germany & \cellcolor{red!20}{no} & South Korea & \cellcolor{blue!20}{yes}\\
+Greece & \cellcolor{blue!20}{yes} & Spain & \cellcolor{blue!20}{yes}\\
+Hungary & \cellcolor{gray!20}{developing} & Sweden & \cellcolor{blue!20}{yes}\\
+\addlinespace
+Iceland & \cellcolor{blue!20}{yes} & Switzerland & \cellcolor{blue!20}{yes}\\
+Ireland & \cellcolor{blue!20}{yes} & Turkey & \cellcolor{red!20}{no}\\
+Israel & \cellcolor{red!20}{no} & United Kingdom & \cellcolor{blue!20}{yes}\\
+Italy & \cellcolor{blue!20}{yes} & United States & \cellcolor{red!20}{no}\\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -65,6 +65,7 @@ portal_assessment = here::here('portal_assessment.csv')
 # Output
 js_output_dir = here::here('map', 'js')
 fig_output_dir = here::here('fig')
+table_output_dir = here::here('table')
 
 message(basename(original_data))
 message(basename(portal_assessment))
@@ -218,12 +219,13 @@ comparison <- full_join(df_q34, new_data_q34, by = 'country') %>%
   )
 
 # Different color
-comparison %>%
+comparison_table <- comparison %>%
   select(-status, -original_str, -update_str) %>%
   kable(
     format = "latex",
     booktabs = TRUE,
-    caption = "Central Portal Exists?",
+    caption = "Central Portal Status Comparison",
+    label = 'portal_comparison_table',
     col.names = c("Country", "2023 survey", "Update")
   ) %>%
   kable_styling(
@@ -231,71 +233,31 @@ comparison %>%
   ) %>%
   row_spec(
     which(comparison$status == 'developed'),
-    background = "#4682C8" 
+    background = "blue!20" 
   ) %>%
   row_spec(
     which(comparison$status == 'removed'),
-    background = 'red'
+    background = 'red!20'
   ) %>% 
   row_spec(
     which(comparison$status == 'development'),
-    background = 'orange'
+    background = 'orange!20'
   ) %>%
   row_spec(
     which(comparison$status == 'new_countries'),
-    background = 'purple!20'
+    background = 'green!20'
   )
-```
 
-```{r}
-#| label: export-q34-comparison-png
-#| eval: true
+# Show and export table
+comparison_table
 
-# Export to .png
-ft_q34 <- comparison %>%
-  select(country, original_answer, update_answer) %>%
-  flextable() %>%
+if (dir.exists(table_output_dir)) {
+  writeLines(as.character(comparison_table), 
+   file.path(table_output_dir, "portal_comparison_table.tex"))
   
-  # Set column headers
-  set_header_labels(
-    country = "Country",
-    original_answer = "2023 Survey",
-    update_answer = "Update"
-  ) %>%
-  
-  # Highlight changed rows
-  bg(i = which(comparison$status == 'developed'), 
-     bg = "#4682C8") %>% 
-  bg(i = which(comparison$status == 'development'), 
-     bg = "orange") %>%
-  bg(i = which(comparison$status == 'removed'), 
-     bg = "red") %>%
-  bg(i = which(comparison$status == 'new_countries'), 
-     bg = "#B19CD9") %>%
-  
-   # Increase font size for all cells
-  fontsize(size = 12, part = "all") %>%
-  
-  # Make header bold and larger
-  bold(part = "header") %>%
-  
-  # Auto-adjust column widths
-  autofit() %>%
-  
-  # Add outer border
-  border_outer(border = fp_border(color = "black"))
-
-# Save as image
-if (dir.exists (fig_output_dir)){
-  invisible(
-    save_as_image(
-      ft_q34, path = glue("{fig_output_dir}/portal_status_comparison.png"), res = 300
-      )
-    )
 } else {
-  stop(glue('Directory not found: {fig_output_dir}'))
+  stop(glue('Directory not found: {table_output_dir}'))
 }
-
 ```
 
 \newpage
@@ -343,11 +305,9 @@ create_split_table <- function(data,
                               caption = "Two Column Table",
                               col_names = c("Country", "Status", "Country", "Status"),
                               col_widths = c("4cm", "2.5cm", "4cm", "2.5cm"),
-                              export_png = FALSE,  
-                              png_path = NULL,     
-                              png_colors = NULL,   
-                              png_res = 300) {     
-  
+                              export_tex = FALSE,
+                              tex_filename = NULL,
+                              tex_label = NULL) {
   
   # Split data into two columns
   n_rows <- nrow(data)
@@ -376,68 +336,7 @@ create_split_table <- function(data,
     right_col <- bind_rows(right_col, padding)
   }
   
-  # Export PNG if requested (before LaTeX formatting)
-  if (export_png && !is.null(png_path)) {
-    require(flextable)
-    require(officer)
-    
-    # Create two-column display for PNG
-    two_col_display <- bind_cols(
-      left_col,
-      right_col %>% setNames(paste0(names(right_col), "2"))
-    )
-    
-    header_labels <- setNames(
-      col_names,
-      c(group_col, value_col, paste0(group_col, "2"), paste0(value_col, "2"))
-    )
-    
-    # Create flextable
-    ft <- two_col_display %>% flextable()
-    
-    ft <- do.call(set_header_labels, c(list(ft), header_labels))
-    
-    ft <- ft %>%
-      bold(part = "header") %>%
-      align(align = "center", j = c(2, 4), part = "all") %>%
-      align(align = "left", j = c(1, 3), part = "all") %>%
-      border_inner_v(border = fp_border(color = "gray", width = 1)) %>%
-      border_outer(border = fp_border(color = "black", width = 2)) %>%
-      width(j = c(1, 3), width = 2.5) %>%
-      width(j = c(2, 4), width = 1.2) %>%
-      fontsize(size = 11, part = "all") %>%
-      font(fontname = "Arial", part = "all")
-    
-    # Apply PNG colors if provided
-    if (!is.null(png_colors)) {
-      for (status in names(png_colors)) {
-        # Left column colors
-        rows_left <- which(left_col[[value_col]] == status)
-        if (length(rows_left) > 0) {
-          ft <- ft %>% bg(i = rows_left, j = 2, bg = png_colors[status])
-        }
-        
-        # Right column colors
-        rows_right <- which(right_col[[value_col]] == status)
-        if (length(rows_right) > 0) {
-          ft <- ft %>% bg(i = rows_right, j = 4, bg = png_colors[status])
-        }
-      }
-      
-      # White text for dark colors (customize based on your colors)
-      dark_statuses <- c("yes", "no")
-      ft <- ft %>%
-        color(i = which(left_col[[value_col]] %in% dark_statuses), 
-              j = 2, color = "white") %>%
-        color(i = which(right_col[[value_col]] %in% dark_statuses), 
-              j = 4, color = "white")
-    }
-    
-    # Save PNG
-    save_as_image(ft, path = png_path, res = png_res)
-  }
-  
-  # Continue with LaTeX table formatting
+  # Apply LaTeX color formatting if color_map provided
   if (!is.null(color_map)) {
     # Apply LaTeX color formatting to left column
     left_col_formatted <- left_col %>%
@@ -492,6 +391,7 @@ create_split_table <- function(data,
       format = "latex",
       booktabs = TRUE,
       caption = caption,
+      label = tex_label,
       col.names = col_names,
       escape = FALSE
     ) %>%
@@ -505,6 +405,17 @@ create_split_table <- function(data,
   # Apply column widths
   for(i in 1:length(col_widths)) {
     result <- result %>% column_spec(i, width = col_widths[i])
+  }
+  
+  # Export to .tex file
+  if (export_tex && !is.null(tex_filename)) {
+    if (!exists("table_output_dir")) {
+      stop("table_output_dir undefined!")
+    }
+    
+    tex_path <- file.path(table_output_dir, tex_filename)
+    
+    writeLines(as.character(result), tex_path)
   }
   
   return(result)
@@ -524,15 +435,9 @@ portal_table <- create_split_table(
     "developing" = "gray!20"
   ),
   caption = "Updated Portal Status",
-  # PNG export options
-  export_png = TRUE,
-  png_path = file.path(fig_output_dir, "portal_status_table.png"),
-  png_colors = c(
-    "yes" = "#4682C8",
-    "no" = "#FF8C00",
-    "developing" = "grey"
-  ),
-  png_res = 300
+  export_tex = TRUE,
+  tex_filename = 'portal_table',
+  tex_label = 'portal_table'
 )
 
 portal_table
@@ -620,15 +525,9 @@ independent_website_table <- create_split_table(
     "no" = "red!20"
   ),
   caption = "Indendent Website?",
-  # PNG export options
-  export_png = TRUE,
-  png_path = file.path(fig_output_dir, "independent_website_table.png"),
-  png_colors = c(
-    "yes" = "#4682C8",
-    "no" = "#FF8C00",
-    "developing" = "grey"
-  ),
-  png_res = 300
+  export_tex = TRUE,
+  tex_filename = 'independent_website_table',
+  tex_label = 'independent_website_table'
 )
 
 independent_website_table
@@ -659,11 +558,9 @@ cofog_table <- create_split_table(
   value_col = "coverage",
   group_col = "country",
   caption = "Number of COFOG categories covered",
-  
-  # PNG export options
-  export_png = TRUE,
-  png_path = file.path(fig_output_dir, "cofog_table.png"),
-  png_res = 300
+  export_tex = TRUE,
+  tex_filename = 'cofog_table',
+  tex_label = 'cofog_table'
 )
 
 cofog_table
@@ -753,15 +650,9 @@ policy_categorisation_table <- create_split_table(
     "no" = "red!20"
   ),
   caption = "Policy Area Categorisation",
-  
-  # PNG export options
-  export_png = TRUE,
-  png_path = file.path(fig_output_dir, "policy_categorisation_table.png"),
-  png_colors = c(
-    "yes" = "#4682C8",
-    "no" = "#FF8C00"
-  ),
-  png_res = 300
+  export_tex = TRUE,
+  tex_filename = 'policy_categorisation_table',
+  tex_label = 'policy_categorisation_table'
 )
 
 policy_categorisation_table
@@ -798,15 +689,9 @@ summary_available_table <- create_split_table(
     "no" = "red!20"
   ),
   caption = "Summary Available on the Portal",
-  
-  # PNG export options
-  export_png = TRUE,
-  png_path = file.path(fig_output_dir, "summary_available_table.png"),
-  png_colors = c(
-    "yes" = "#4682C8",
-    "no" = "#FF8C00"
-  ),
-  png_res = 300
+  export_tex = TRUE,
+  tex_filename = 'summary_available_table',
+  tex_label = 'summary_available_table'
 )
 
 summary_available_table
