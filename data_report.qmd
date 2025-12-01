@@ -6,6 +6,10 @@ format:
    pdf:
     toc: true
     number-sections: true
+    text: |
+        \usepackage{colortbl}
+        \usepackage{xcolor}
+        \usepackage{booktabs}
 execute:
   echo: false
   warning: true
@@ -65,7 +69,7 @@ portal_assessment = here::here('portal_assessment.csv')
 # Output
 js_output_dir = here::here('map', 'js')
 fig_output_dir = here::here('fig')
-table_output_dir = here::here('table')
+table_output_dir = here::here('tab')
 
 message(basename(original_data))
 message(basename(portal_assessment))
@@ -127,7 +131,7 @@ df %>%
 
 \newpage
 
-## Portal Assessment Table Findings:
+## Accessibility:
 
 ### Update on Central Web Portal Status
 
@@ -182,6 +186,7 @@ data.frame(
 ```{r}
 #| label: q-34
 
+
 df_q34 <- df %>%
   filter(
     survey_question == '34. Is there a central web portal where government evaluations are published?'
@@ -199,7 +204,10 @@ comparison <- full_join(df_q34, new_data_q34, by = 'country') %>%
   mutate(
     # Replace NA
     original_str = replace_na(original_answer, "NA"),
-    update_str = replace_na(update_answer, "NA"),
+    update_str = case_when(
+      grepl('yes', tolower(update_answer)) ~ 'Yes',
+      TRUE ~ 'No'
+    ),
    
     # Comparison 
     status = case_when(
@@ -220,16 +228,13 @@ comparison <- full_join(df_q34, new_data_q34, by = 'country') %>%
 
 # Different color
 comparison_table <- comparison %>%
-  select(-status, -original_str, -update_str) %>%
+  select(country, original_str, update_str) %>%
   kable(
     format = "latex",
     booktabs = TRUE,
     caption = "Central Portal Status Comparison",
     label = 'portal_comparison_table',
     col.names = c("Country", "2023 survey", "Update")
-  ) %>%
-  kable_styling(
-    latex_options = c("scale_down", "hold_position")
   ) %>%
   row_spec(
     which(comparison$status == 'developed'),
@@ -248,7 +253,7 @@ comparison_table <- comparison %>%
     background = 'green!20'
   )
 
-# Show and export table
+# Show and Export table
 comparison_table
 
 if (dir.exists(table_output_dir)) {
@@ -436,7 +441,7 @@ portal_table <- create_split_table(
   ),
   caption = "Updated Portal Status",
   export_tex = TRUE,
-  tex_filename = 'portal_table',
+  tex_filename = 'portal_table.tex',
   tex_label = 'portal_table'
 )
 
@@ -524,7 +529,7 @@ independent_website_table <- create_split_table(
     "yes" = "blue!20", 
     "no" = "red!20"
   ),
-  caption = "Indendent Website?",
+  caption = "Independent Portal?",
   export_tex = TRUE,
   tex_filename = 'independent_website_table',
   tex_label = 'independent_website_table'
@@ -534,6 +539,275 @@ independent_website_table
 ```
 
 \newpage
+
+### Search Function
+
+```{r}
+#| label: search-function-table
+
+# Create df
+search_function_df <- new_data_long %>%
+  filter(survey_question == '3.1 Search function') %>%
+  mutate(
+    search_function = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, search_function) %>%
+  arrange(country)
+
+# Create table
+search_function_table <- create_split_table(
+  data = search_function_df,
+  value_col = "search_function",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Search Function?",
+  export_tex = TRUE,
+  tex_filename = 'search_function_table.tex',
+  tex_label = 'search_function_table'
+)
+
+search_function_table
+```
+
+\newpage
+
+### Policy Area Categorisation?
+
+```{r}
+#| label: policy-categorisation-table
+
+# Create df
+policy_categorisation_data <- new_data_long %>%
+  filter(survey_question == '3.2 Policy area categorisation') %>%
+  mutate(
+    policy_categorisation = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, policy_categorisation) %>%
+  arrange(country)
+
+# Creat table
+policy_categorisation_table <- create_split_table(
+  data = policy_categorisation_data,
+  value_col = "policy_categorisation",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Policy Area Categorisation?",
+  export_tex = TRUE,
+  tex_filename = 'policy_categorisation_table.tex',
+  tex_label = 'policy_categorisation_table'
+)
+
+policy_categorisation_table
+```
+
+\newpage
+
+### Summary Available on the Portal?
+
+```{r}
+#| label: summary-available-table
+
+
+# Create df
+summary_available_data <- new_data_long %>%
+  filter(survey_question == '3.11 Summaries available on the portal (not as a part of the main documents)') %>%
+  mutate(
+    summary_available = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, summary_available) %>%
+  arrange(country)
+
+# Creat table
+summary_available_table <- create_split_table(
+  data = summary_available_data,
+  value_col = "summary_available",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Summary Available on the Portal",
+  export_tex = TRUE,
+  tex_filename = 'summary_available_table.tex',
+  tex_label = 'summary_available_table'
+)
+
+summary_available_table
+```
+
+\newpage
+
+### Accessibility Tools
+
+```{r}
+#| label: accessibility-tools-table
+
+# Create df
+accessibility_tools_df <- new_data_long %>%
+  filter(survey_question == '3.3 Accessibility tools') %>%
+  mutate(
+    accessibility_tools = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, accessibility_tools) %>%
+  arrange(country)
+
+# Create table
+accessibility_tools_table <- create_split_table(
+  data = accessibility_tools_df,
+  value_col = "accessibility_tools",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Accessibility Tools?",
+  export_tex = TRUE,
+  tex_filename = 'accessibility_tools_table.tex',
+  tex_label = 'accessibility_tools_table'
+)
+
+accessibility_tools_table
+```
+
+\newpage
+
+### Visual Presentation
+
+```{r}
+#| label: visual-presentation-table
+
+# Create df
+visual_presentation_df <- new_data_long %>%
+  filter(survey_question == '3.8 Visual presentation (graphs/diagrams)') %>%
+  mutate(
+    visual_presentation = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, visual_presentation) %>%
+  arrange(country)
+
+# Create table
+visual_presentation_table <- create_split_table(
+  data = visual_presentation_df,
+  value_col = "visual_presentation",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Visual Presentation?",
+  export_tex = TRUE,
+  tex_filename = 'visual_presentation_table.tex',
+  tex_label = 'visual_presentation_table'
+)
+
+visual_presentation_table
+```
+
+\newpage
+
+### Comfortable Font
+
+```{r}
+#| label: comfortable-font-table
+
+# Create df
+comfortable_font_df <- new_data_long %>%
+  filter(survey_question == '3.6 Comfortable font') %>%
+  mutate(
+    comfortable_font = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, comfortable_font) %>%
+  arrange(country)
+
+# Create table
+comfortable_font_table <- create_split_table(
+  data = comfortable_font_df,
+  value_col = "comfortable_font",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Comfortable Font?",
+  export_tex = TRUE,
+  tex_filename = 'comfortable_font_table.tex',
+  tex_label = 'comfortable_font_table'
+)
+
+comfortable_font_table
+```
+
+\newpage
+
+### Interactive Tools
+
+```{r}
+#| label: interactive-tools-table
+
+# Create df
+interactive_tools_df <- new_data_long %>%
+  filter(survey_question == '3.9 Interactive tools') %>%
+  mutate(
+    interactive_tools = case_when(
+      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
+      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
+      TRUE ~ 'NA'
+    )
+  ) %>%
+  select(country, interactive_tools) %>%
+  arrange(country)
+
+# Create table
+interactive_tools_table <- create_split_table(
+  data = interactive_tools_df,
+  value_col = "interactive_tools",
+  group_col = "country",
+  color_map = c(
+    "yes" = "blue!20", 
+    "no" = "red!20"
+  ),
+  caption = "Interactive Tools?",
+  export_tex = TRUE,
+  tex_filename = 'interactive_tools_table.tex',
+  tex_label = 'interactive_tools_table'
+)
+
+interactive_tools_table
+```
+
+\newpage
+
+## Comprehensiveness:
 
 ### COFOG Categories (10) Coverage
 
@@ -559,7 +833,7 @@ cofog_table <- create_split_table(
   group_col = "country",
   caption = "Number of COFOG categories covered",
   export_tex = TRUE,
-  tex_filename = 'cofog_table',
+  tex_filename = 'cofog_table.tex',
   tex_label = 'cofog_table'
 )
 
@@ -622,77 +896,77 @@ ggsave(
 
 \newpage
 
-### Policy Area Categorisation?
+### Years Coverage
 
 ```{r}
-#| label: policy-categorisation-table
+#| label: years-coverage-data
 
-# Create df
-policy_categorisation_data <- new_data_long %>%
-  filter(survey_question == '3.2 Policy area categorisation') %>%
+oldest_year_df <- new_data_long %>%
+  filter(survey_question == '1.1 Oldest year') %>%
+  select(country, oldest_year = survey_answer)
+
+latest_year_df <- new_data_long %>%
+  filter(survey_question == '1.2 Latest year') %>%
+  select(country, latest_year = survey_answer)
+
+years_coverage_df <- oldest_year_df %>%
+  left_join(latest_year_df, by = 'country') %>%
   mutate(
-    policy_categorisation = case_when(
-      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
-      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
-      TRUE ~ 'NA'
-    )
-  ) %>%
-  select(country, policy_categorisation) %>%
-  arrange(country)
-
-# Creat table
-policy_categorisation_table <- create_split_table(
-  data = policy_categorisation_data,
-  value_col = "policy_categorisation",
-  group_col = "country",
-  color_map = c(
-    "yes" = "blue!20", 
-    "no" = "red!20"
-  ),
-  caption = "Policy Area Categorisation",
-  export_tex = TRUE,
-  tex_filename = 'policy_categorisation_table',
-  tex_label = 'policy_categorisation_table'
-)
-
-policy_categorisation_table
+    oldest_year = as.numeric(oldest_year),
+    latest_year = as.numeric(latest_year),
+    coverage = as.numeric(latest_year - oldest_year),
+    coverage_text = ifelse(is.na(coverage), 'NA', as.character(coverage))
+  )
 ```
 
-\newpage
-
-### Summary Available on the Portal?
-
 ```{r}
-#| label: summary-available-table
+#| label: years-coverage-chart
+#| fig-cap: 'Years Coverage by Country'
+#| fig-width: 15
+#| fig-height: 16
 
+years_coverage_chart <- ggplot(years_coverage_df, 
+  aes(y = reorder(country, coverage))) +
+  geom_segment(
+    data = subset(years_coverage_df, !is.na(oldest_year) & !is.na(latest_year)),
+    aes(x = oldest_year, xend = latest_year),
+    linewidth = 6,
+    color = '#4682C8'
+  ) + 
+  geom_text(
+    aes(
+       x = ifelse(is.na(oldest_year), 1960, oldest_year),
+      label = coverage_text,
+      fontface = ifelse(coverage_text == "NA", "italic", "plain")
+    ),
+    hjust = ifelse(is.na(years_coverage_df$oldest_year), -0.1, 1.2),
+    size = 8
+  ) + 
+  labs(
+    x = 'Years Covered',
+    y = ''
+  ) + 
+  scale_x_continuous(
+    limits = c(1960, 2026),
+    breaks = seq(1960, 2025, 10),
+    expand = c(0, 0)
+  ) +
+  theme_minimal() +
+  theme(
+    panel.grid.major.y = element_blank(),
+    axis.text.y = element_text(size = 20, face = 'bold'),
+    axis.text.x = element_text(size = 15, angle = 45, hjust = 1, face = 'bold'), 
+    axis.title.x = element_text(size= 20, face = 'bold')
+  )
 
-# Create df
-summary_available_data <- new_data_long %>%
-  filter(survey_question == '3.11 Summaries available on the portal (not as a part of the main documents)') %>%
-  mutate(
-    summary_available = case_when(
-      grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
-      grepl('no', tolower(trimws(survey_answer))) ~ 'no',
-      TRUE ~ 'NA'
-    )
-  ) %>%
-  select(country, summary_available) %>%
-  arrange(country)
+years_coverage_chart
 
-# Creat table
-summary_available_table <- create_split_table(
-  data = summary_available_data,
-  value_col = "summary_available",
-  group_col = "country",
-  color_map = c(
-    "yes" = "blue!20", 
-    "no" = "red!20"
-  ),
-  caption = "Summary Available on the Portal",
-  export_tex = TRUE,
-  tex_filename = 'summary_available_table',
-  tex_label = 'summary_available_table'
+# Save chart
+ggsave(
+  filename = file.path(fig_output_dir, "years_coverage.png"),
+  plot = years_coverage_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
 )
-
-summary_available_table
 ```
