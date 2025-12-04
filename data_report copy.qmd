@@ -64,7 +64,7 @@ message('All packages loaded successfully!')
 
 # Input
 original_data = here::here('OECD.GOV.GIP,DSD_QDD_GOV_PE@DF_GOV_PE,+all.csv')
-portals_information = here::here('portals_information.csv')
+portal_assessment = here::here('portal_assessment.csv')
 
 # Output
 js_output_dir = here::here('map', 'js')
@@ -72,16 +72,16 @@ fig_output_dir = here::here('fig')
 table_output_dir = here::here('tab')
 
 message(basename(original_data))
-message(basename(portals_information))
+message(basename(portal_assessment))
 ```
 
 ```{r}
 #| label: data-load
 #| include: false
 
-survey_2023 <- read_csv(original_data)
+df <- read_csv(original_data)
 
-new_data <- read_csv(portals_information)
+new_data <- read_csv(portal_assessment)
 
 
 ```
@@ -93,7 +93,7 @@ new_data <- read_csv(portals_information)
 ```{r}
 #| label: data-exploration
 
-survey_2023 %>%
+df %>%
   summarise_all(~paste(unique(na.omit(.)), collapse = ", ")) %>%
   pivot_longer(everything(), names_to = "Column", values_to = "Unique_Values") %>%
   mutate(
@@ -112,14 +112,14 @@ Only keep relevant columns for 2023 survey
 #| eval: true
 
 # Rename and keep relavant columns
-survey_2023 <- survey_2023 %>%
+df <- df %>%
   select(
     country = `Reference area`,
     survey_question = Measure,
     survey_answer = OBS_VALUE
   )
   
-survey_2023 %>%
+df %>%
   summarise_all(~paste(unique(na.omit(.)), collapse = ", ")) %>%
   pivot_longer(everything(), names_to = "Column", values_to = "Unique_Values") %>%
   mutate(
@@ -187,7 +187,7 @@ data.frame(
 #| label: q-34
 
 
-survey_2023_q34 <- survey_2023 %>%
+df_q34 <- df %>%
   filter(
     survey_question == '34. Is there a central web portal where government evaluations are published?'
     ) %>%
@@ -195,12 +195,12 @@ survey_2023_q34 <- survey_2023 %>%
       select(country, original_answer = survey_answer)
 
 new_data_q34 <- new_data_long %>%
-  filter(grepl('Central portal', survey_question)) %>%
+  filter(survey_question == '3.12 Central portal exists') %>%
   arrange(country) %>%
   select(country, update_answer = survey_answer)
 
 # Comparative Display
-comparison <- full_join(survey_2023_q34, new_data_q34, by = 'country') %>%
+comparison <- full_join(df_q34, new_data_q34, by = 'country') %>%
   mutate(
     # Replace NA
     original_str = replace_na(original_answer, "NA"),
@@ -509,7 +509,7 @@ if (dir.exists(js_output_dir)) {
 
 # Create df
 independent_website_data <- new_data_long %>%
-  filter(grepl('Independent website', survey_question)) %>%
+  filter(survey_question == '3.14 Independent website rather than subtab of another website?') %>%
   mutate(
     independent_website = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -547,7 +547,7 @@ independent_website_table
 
 # Create df
 search_function_df <- new_data_long %>%
-  filter(grepl('Search function', survey_question)) %>%
+  filter(survey_question == '3.1 Search function') %>%
   mutate(
     search_function = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -585,7 +585,7 @@ search_function_table
 
 # Create df
 policy_categorisation_data <- new_data_long %>%
-  filter(grepl('Policy area categorisation', survey_question)) %>%
+  filter(survey_question == '3.2 Policy area categorisation') %>%
   mutate(
     policy_categorisation = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -624,7 +624,7 @@ policy_categorisation_table
 
 # Create df
 summary_available_data <- new_data_long %>%
-  filter(grepl('Summary available', survey_question)) %>%
+  filter(survey_question == '3.11 Summaries available on the portal (not as a part of the main documents)') %>%
   mutate(
     summary_available = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -662,7 +662,7 @@ summary_available_table
 
 # Create df
 accessibility_tools_df <- new_data_long %>%
-  filter(grepl('Accessibility tools', survey_question)) %>%
+  filter(survey_question == '3.3 Accessibility tools') %>%
   mutate(
     accessibility_tools = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -700,7 +700,7 @@ accessibility_tools_table
 
 # Create df
 visual_presentation_df <- new_data_long %>%
-  filter(grepl('Visual presentation', survey_question)) %>%
+  filter(survey_question == '3.8 Visual presentation (graphs/diagrams)') %>%
   mutate(
     visual_presentation = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -738,7 +738,7 @@ visual_presentation_table
 
 # Create df
 comfortable_font_df <- new_data_long %>%
-  filter(grepl('Comfortable font', survey_question)) %>%
+  filter(survey_question == '3.6 Comfortable font') %>%
   mutate(
     comfortable_font = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -776,7 +776,7 @@ comfortable_font_table
 
 # Create df
 interactive_tools_df <- new_data_long %>%
-  filter(grepl('Interactive tools', survey_question)) %>%
+  filter(survey_question == '3.9 Interactive tools') %>%
   mutate(
     interactive_tools = case_when(
       grepl("yes", tolower(trimws(survey_answer))) ~ "yes",
@@ -815,7 +815,7 @@ interactive_tools_table
 #| label: cofog-data
 
 cofog <- new_data_long %>%
-  filter(survey_question == '1.5 Number of COFOG categories covered') %>%
+  filter(survey_question == '2.1 Number of policy areas covered (out of 10 COFOG categories)') %>%
   arrange(country) %>%
   select(country, coverage = survey_answer) %>%
   mutate(

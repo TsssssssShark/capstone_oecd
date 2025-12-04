@@ -1,5 +1,5 @@
 // Portal status with map styling
-// Generated: 2025-12-01
+// Generated: 2025-12-04
 
 const PORTAL_MAP_DATA = [
   {
@@ -147,12 +147,6 @@ const PORTAL_MAP_DATA = [
     "label": "Has Portal"
   },
   {
-    "country": "Netherlands",
-    "portal_status": "yes",
-    "color": "#5cb85c",
-    "label": "Has Portal"
-  },
-  {
     "country": "New Zealand",
     "portal_status": "yes",
     "color": "#5cb85c",
@@ -208,6 +202,12 @@ const PORTAL_MAP_DATA = [
   },
   {
     "country": "Switzerland",
+    "portal_status": "yes",
+    "color": "#5cb85c",
+    "label": "Has Portal"
+  },
+  {
+    "country": "The Netherlands",
     "portal_status": "yes",
     "color": "#5cb85c",
     "label": "Has Portal"
