@@ -1324,7 +1324,7 @@ accessibility_index_chart <- ggplot(accessibility_index,
   geom_bar(
     data = filter(accessibility_index, !is.na(accessibility_index)),
     stat = "identity", 
-    fill = "#4682C8", 
+    fill = "#F05F00", 
     width = 0.6, 
     linewidth = 0.2
   ) +
@@ -1491,30 +1491,55 @@ index_overall <- accessibility_index %>%
   mutate(
     country_label = ifelse(portal_status != 'yes' | is.na(portal_status), 
                            paste0(country, '*'), 
-                           country)
+                           country),
+    # Calculate contribution (each contributes half to the mean)
+    accessibility_contrib = accessibility_index / 2,
+    comprehensiveness_contrib = comprehensiveness_index / 2
   )
 
-# Horizontal bar chart
-index_overall_chart <- ggplot(index_overall, 
-                              aes(x = index_overall, 
-                                  y = reorder(country_label,
-                                    -index_overall, na.rm = TRUE))) +
+# Reshape to long format for stacked bar
+index_overall_long <- index_overall %>%
+  filter(!is.na(accessibility_contrib) & !is.na(comprehensiveness_contrib)) %>%
+  select(country_label, index_overall, accessibility_contrib, comprehensiveness_contrib) %>%
+  pivot_longer(
+    cols = c(accessibility_contrib, comprehensiveness_contrib),
+    names_to = "component",
+    values_to = "contribution"
+  ) %>%
+  mutate(
+    component = case_when(
+      component == "accessibility_contrib" ~ "Accessibility",
+      component == "comprehensiveness_contrib" ~ "Comprehensiveness"
+    )
+  )
+
+# Stacked bar chart
+index_overall_chart <- ggplot(index_overall_long, 
+                              aes(x = contribution, 
+                                  y = reorder(country_label, -index_overall, na.rm = TRUE),
+                                  fill = component)) +
   
   geom_bar(
-    data = filter(index_overall, !is.na(index_overall)),
-    stat = "identity", 
-    fill = "#4682C8", 
-    width = 0.6, 
-    linewidth = 0.2
+    stat = "identity",
+    width = 0.6
   ) +
+  
+  # Add total label at the end of bar
   geom_text(
+    data = index_overall,
     aes(x = ifelse(is.na(index_overall), 0.02, index_overall + 0.02),
-        label = ifelse(is.na(index_overall), 
-                       "NA", round(index_overall, 2)),
+        y = reorder(country_label, -index_overall, na.rm = TRUE),
+        label = ifelse(is.na(index_overall), "NA", round(index_overall, 2)),
         fontface = ifelse(is.na(index_overall), "italic", "plain")),
     hjust = 0,
-    size = 8
-  ) +  
+    size = 8,
+    inherit.aes = FALSE
+  ) +
+  
+  scale_fill_manual(
+    values = c("Accessibility" = "#F05F00", "Comprehensiveness" = "#4682C8"),
+    name = "Component"
+  ) +
   scale_x_continuous(
     limits = c(0, 1),  
     breaks = seq(0, 1, 0.2),
@@ -1532,7 +1557,10 @@ index_overall_chart <- ggplot(index_overall,
     axis.text.y = element_text(size = 20),
     axis.text.x = element_text(size = 20),
     axis.title.x = element_text(size = 20, hjust = 0.5),
-    plot.caption = element_text(size = 14, hjust = 0, face = "italic")
+    plot.caption = element_text(size = 14, hjust = 0, face = "italic"),
+    legend.position = "bottom",
+    legend.text = element_text(size = 20),
+    legend.title = element_text(size = 20)
   )
 
 index_overall_chart
@@ -1579,7 +1607,7 @@ features_independent_plot <-ggplot(features_independent_nona,
   scale_fill_manual(values = c("yes" = "#4682C8", "no" = "#F05F00")) +
   scale_x_continuous(breaks = 1, labels = "") +
   labs(y = "Accessibility Index",
-       x = "",
+       x = "Density",
        fill = "Status") +
   theme_minimal()
 
@@ -1657,7 +1685,7 @@ index_portal_plot <- ggplot(index_portal_df,
   scale_fill_manual(values = c("Yes" = "#4682C8", "No" = "#F05F00")) +
   scale_x_continuous(breaks = 1, labels = "") +
   labs(y = "Overall Index (excl. Central Portal)",
-       x = "",
+       x = "Density",
        fill = "Central Portal") +
   theme_minimal()
 
