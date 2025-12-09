@@ -1,5 +1,5 @@
 // POLICY CATEGORISATION
-// Generated: 2025-12-05
+// Generated: 2025-12-09
 
 const POLICY_CATEGORISATION_DATA = [
   {
@@ -76,10 +76,10 @@ const POLICY_CATEGORISATION_DATA = [
   },
   {
     "country": "Estonia",
-    "policy_categorisation": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "policy_categorisation": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "policy_categorisation"
   },
   {
@@ -124,10 +124,10 @@ const POLICY_CATEGORISATION_DATA = [
   },
   {
     "country": "Iceland",
-    "policy_categorisation": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "policy_categorisation": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "policy_categorisation"
   },
   {
@@ -164,10 +164,10 @@ const POLICY_CATEGORISATION_DATA = [
   },
   {
     "country": "Latvia",
-    "policy_categorisation": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "policy_categorisation": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "policy_categorisation"
   },
   {
@@ -236,10 +236,10 @@ const POLICY_CATEGORISATION_DATA = [
   },
   {
     "country": "Slovenia",
-    "policy_categorisation": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "policy_categorisation": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "policy_categorisation"
   },
   {

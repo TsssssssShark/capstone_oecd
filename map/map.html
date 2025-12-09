@@ -75,9 +75,25 @@
     </div>
 
     <!-- Load external javascript files -->
-    <script type="text/javascript" src="./js/data/portalData.js?v=202505"></script>
-    <script type="text/javascript" src="./js/colorScales.js?v=202505"></script>
-    <script type="text/javascript" src="./js/map.js?v=202505"></script>
+    <script type="text/javascript" src="./js/data/portalData.js"></script>
+    <script type="text/javascript" src="./js/data/centralPoralData.js"></script>
+    <script type="text/javascript" src="./js/data/independentWebsiteData.js"></script>
+    <script type="text/javascript" src="./js/data/policyCategorisationData.js"></script>
+    <script type="text/javascript" src="./js/data/summaryAvailableData.js"></script>
+    <script type="text/javascript" src="./js/data/searchFunctionData.js"></script>
+    <script type="text/javascript" src="./js/dataSelector.js"></script>
+    <script type="text/javascript" src="./js/colorScales.js"></script>
+    <script type="text/javascript" src="./js/map.js"></script>
+
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(() => {
+        DataManager.init();
+
+        window.dataIntialized = true;
+      }, 200);
+    });
+    </script>
 
 </body>
 </html>

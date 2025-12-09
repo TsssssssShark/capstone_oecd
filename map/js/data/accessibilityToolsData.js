@@ -1,5 +1,5 @@
 // ACCESSIBILITY TOOLS
-// Generated: 2025-12-05
+// Generated: 2025-12-09
 
 const ACCESSIBILITY_TOOLS_DATA = [
   {
@@ -164,10 +164,10 @@ const ACCESSIBILITY_TOOLS_DATA = [
   },
   {
     "country": "Latvia",
-    "accessibility_tools": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "accessibility_tools": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "accessibility_tools"
   },
   {

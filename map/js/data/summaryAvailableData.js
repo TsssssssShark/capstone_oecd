@@ -1,5 +1,5 @@
 // SUMMARY AVAILABLE
-// Generated: 2025-12-05
+// Generated: 2025-12-09
 
 const SUMMARY_AVAILABLE_DATA = [
   {
@@ -116,10 +116,10 @@ const SUMMARY_AVAILABLE_DATA = [
   },
   {
     "country": "Hungary",
-    "summary_available": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "summary_available": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "summary_available"
   },
   {
@@ -164,10 +164,10 @@ const SUMMARY_AVAILABLE_DATA = [
   },
   {
     "country": "Latvia",
-    "summary_available": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "summary_available": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "summary_available"
   },
   {
@@ -236,10 +236,10 @@ const SUMMARY_AVAILABLE_DATA = [
   },
   {
     "country": "Slovenia",
-    "summary_available": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "summary_available": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "summary_available"
   },
   {

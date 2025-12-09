@@ -1,5 +1,5 @@
 // INDEPENDENT WEBSITE
-// Generated: 2025-12-05
+// Generated: 2025-12-09
 
 const INDEPENDENT_WEBSITE_DATA = [
   {
@@ -124,10 +124,10 @@ const INDEPENDENT_WEBSITE_DATA = [
   },
   {
     "country": "Iceland",
-    "independent_website": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "independent_website": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {
@@ -164,10 +164,10 @@ const INDEPENDENT_WEBSITE_DATA = [
   },
   {
     "country": "Latvia",
-    "independent_website": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "independent_website": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {

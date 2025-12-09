@@ -1,5 +1,5 @@
 // INDEPENDENT WEBSITE
-// Generated: 2025-12-05
+// Generated: 2025-12-09
 
 const SEARCH_FUNCTION_DATA = [
   {
@@ -76,10 +76,10 @@ const SEARCH_FUNCTION_DATA = [
   },
   {
     "country": "Estonia",
-    "search_function": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "search_function": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {
@@ -116,18 +116,18 @@ const SEARCH_FUNCTION_DATA = [
   },
   {
     "country": "Hungary",
-    "search_function": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "search_function": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {
     "country": "Iceland",
-    "search_function": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "search_function": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {
@@ -164,10 +164,10 @@ const SEARCH_FUNCTION_DATA = [
   },
   {
     "country": "Latvia",
-    "search_function": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "search_function": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {
@@ -236,10 +236,10 @@ const SEARCH_FUNCTION_DATA = [
   },
   {
     "country": "Slovenia",
-    "search_function": "yes",
-    "value": "yes",
-    "color": "#5cb85c",
-    "label": "Yes",
+    "search_function": "no",
+    "value": "no",
+    "color": "#dc3545",
+    "label": "No",
     "data_type": "independent_website"
   },
   {
