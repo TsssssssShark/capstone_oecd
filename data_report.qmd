@@ -1024,6 +1024,83 @@ writeLines(
 )
 ```
 
+```{r}
+#| label: accessibility-table-png
+
+accessibility_table_df <- reduce(
+  list(
+    central_portal_status, 
+    search_function_df, 
+    policy_categorisation_df,
+    summary_available_df,
+    accessibility_tools_df
+  ),
+  full_join, by = 'country'
+) %>%
+  mutate(
+    across(
+      -country,
+      ~ ifelse(. == 'yes', "X", "·")
+    )
+  ) %>%
+  arrange(country)
+
+# Split into two halves
+n_rows <- nrow(accessibility_table_df)
+split_point <- ceiling(n_rows / 2)
+
+df_part1 <- accessibility_table_df[1:split_point, ]
+df_part2 <- accessibility_table_df[(split_point + 1):n_rows, ]
+
+# Function to create gt table
+create_accessibility_gt <- function(data, title_suffix = "") {
+  data %>%
+    gt() %>%
+    tab_header(
+      title = paste("Accessibility Features", title_suffix)
+    ) %>%
+    cols_label(
+      country = "Country",
+      portal_status = "Central Portal",
+      search_function = "Search Function",
+      policy_categorisation = "Policy Categorisation",
+      summary_available = "Summary Available",
+      accessibility_tools = "Accessibility Tools"
+    ) %>%
+    tab_style(
+      style = cell_text(align = "center"),
+      locations = cells_body(columns = -country)
+    ) %>%
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    )
+}
+
+# Create two tables
+accessibility_gt_1 <- create_accessibility_gt(df_part1, "(A-I)" )
+accessibility_gt_2 <- create_accessibility_gt(df_part2, "(J-U)")
+
+# Display
+accessibility_gt_1
+accessibility_gt_2
+
+# Save as PNG
+gtsave(
+  accessibility_gt_1,
+  filename = file.path(fig_output_dir, "accessibility_table_1.png"),
+  vwidth = 800,
+  vheight = 800
+)
+
+gtsave(
+  accessibility_gt_2,
+  filename = file.path(fig_output_dir, "accessibility_table_2.png"),
+  vwidth = 800,
+  vheight = 800
+)
+```
+
 \newpage
 
 ## Comprehensiveness:
@@ -1212,15 +1289,24 @@ ggsave(
 #| fig-width: 15
 #| fig-height: 16
 
+# Get countries with uncertain volume
+uncertain_countries <- new_data_long %>%
+  filter(survey_question == '1.4.1 Uncertain number') %>%
+  filter(!is.na(survey_answer)) %>%
+  pull(country)
+
 volume <- new_data_long %>%
   filter(grepl('Volume of evaluations', survey_question, ignore.case = FALSE)) %>%
-  left_join(central_portal_status, by = 'country') %>%  # 加入 portal 状态
+  left_join(central_portal_status, by = 'country') %>%
   mutate(
     volume = as.numeric(survey_answer),
-    # Flag *
-    country_label = ifelse(portal_status != 'yes' | is.na(portal_status), 
-                           paste0(country, '*'), 
-                           country)
+    # Flag * for no portal, + for uncertain
+    country_label = case_when(
+      country %in% uncertain_countries & (portal_status != 'yes' | is.na(portal_status)) ~ paste0(country, '*+'),
+      country %in% uncertain_countries ~ paste0(country, '+'),
+      portal_status != 'yes' | is.na(portal_status) ~ paste0(country, '*'),
+      TRUE ~ country
+    )
   )
 
 # Horizontal bar chart
@@ -1249,7 +1335,7 @@ volume_chart <- ggplot(volume, aes(x = volume,
   labs(
     x = "Volume",
     y = "",
-    caption = '* No central evaluation portal'
+    caption = '* No central evaluation portal\n+ Uncertain number'
   ) +
   theme_minimal() +
   theme(
