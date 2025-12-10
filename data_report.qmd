@@ -11,6 +11,10 @@ format:
         \usepackage{xcolor}
         \usepackage{booktabs}
         \usepackage{makecell}
+        \usepackage{url}
+        \usepackage[hypthens]{xurl}
+        \def\UrlBreaks{\do\/\do-\do_\do.\do=\do?\do&}
+        \def\UrlNoBreaks{\do:\do/\do/}
 execute:
   echo: false
   warning: true
@@ -74,6 +78,7 @@ gov_expenditure = here::here('oecd_gov_expenditure.csv')
 js_output_dir = here::here('map', 'js', 'data')
 fig_output_dir = here::here('fig')
 table_output_dir = here::here('tab')
+fig_png_output_dir = here::here('fig_png')
 
 message(basename(original_data))
 message(basename(portals_information))
@@ -1088,14 +1093,14 @@ accessibility_gt_2
 # Save as PNG
 gtsave(
   accessibility_gt_1,
-  filename = file.path(fig_output_dir, "accessibility_table_1.png"),
+  filename = file.path(fig_png_output_dir, "accessibility_table_1.png"),
   vwidth = 800,
   vheight = 800
 )
 
 gtsave(
   accessibility_gt_2,
-  filename = file.path(fig_output_dir, "accessibility_table_2.png"),
+  filename = file.path(fig_png_output_dir, "accessibility_table_2.png"),
   vwidth = 800,
   vheight = 800
 )
@@ -1195,6 +1200,14 @@ ggsave(
   width = 10,
   height = 12
 )
+
+ggsave(
+  filename = file.path(fig_png_output_dir, "cofog_bar.png"),
+  plot = cofog_bar_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
+)
 ```
 
 \newpage
@@ -1279,6 +1292,13 @@ ggsave(
   height = 12
 )
 
+ggsave(
+  filename = file.path(fig_png_output_dir, "years_coverage.png"),
+  plot = years_coverage_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
+)
 ```
 
 ### Volume
@@ -1335,7 +1355,7 @@ volume_chart <- ggplot(volume, aes(x = volume,
   labs(
     x = "Volume",
     y = "",
-    caption = '* No central evaluation portal\n+ Uncertain number'
+    caption = '* No central evaluation portal\n+ Estimated'
   ) +
   theme_minimal() +
   theme(
@@ -1355,6 +1375,14 @@ ggsave(
   plot = volume_chart,
   width = 20,
   height = 22
+)
+
+ggsave(
+  filename = file.path(fig_png_output_dir, "volume.png"),
+  plot = volume_chart,
+  width = 20,
+  height = 22,
+  dpi = 300
 )
 ```
 
@@ -1451,6 +1479,14 @@ ggsave(
   width = 10,
   height = 12
 )
+
+ggsave(
+  filename = file.path(fig_png_output_dir, "accessibility_index_chart.png"),
+  plot = accessibility_index_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
+)
 ```
 
 ### Comprehensiveness
@@ -1493,12 +1529,15 @@ comprehensiveness_index <- reduce(
   mutate(comprehensiveness_index = mean(c_across(-country))) %>% 
   ungroup() %>%
   
-  # Flag *
+  # Flag * and +
   left_join(central_portal_status, by = 'country') %>%
   mutate(
-    country_label = ifelse(portal_status != 'yes' | is.na(portal_status), 
-                           paste0(country, '*'), 
-                           country)
+    country_label = case_when(
+      country %in% uncertain_countries & (portal_status != 'yes' | is.na(portal_status)) ~ paste0(country, '*+'),
+      country %in% uncertain_countries ~ paste0(country, '+'),
+      portal_status != 'yes' | is.na(portal_status) ~ paste0(country, '*'),
+      TRUE ~ country
+    )
   )
   
 # Horizontal bar chart
@@ -1530,7 +1569,7 @@ comprehensiveness_index_chart <- ggplot(comprehensiveness_index,
   labs(
     x = "Comprehensiveness Index",
     y = "",
-    caption = '* No central evaluation portal'
+    caption = '* No central evaluation portal\n+ Estimated volume number'
   ) +
   theme_minimal() +
   theme(
@@ -1550,6 +1589,14 @@ ggsave(
   plot = comprehensiveness_index_chart,
   width = 10,
   height = 12
+)
+
+ggsave(
+  filename = file.path(fig_png_output_dir, "comprehensiveness_index_chart.png"),
+  plot = comprehensiveness_index_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
 )
 ```
 
@@ -1572,20 +1619,25 @@ index_overall <- accessibility_index %>%
   mutate(index_overall = mean(c_across(-country))) %>% 
   ungroup() %>%
   
-  # Flag *
+  # Flag * and +
   left_join(central_portal_status, by = 'country') %>%
   mutate(
-    country_label = ifelse(portal_status != 'yes' | is.na(portal_status), 
-                           paste0(country, '*'), 
-                           country),
+    country_label = case_when(
+      country %in% uncertain_countries & (portal_status != 'yes' | is.na(portal_status)) ~ paste0(country, '*+'),
+      country %in% uncertain_countries ~ paste0(country, '+'),
+      portal_status != 'yes' | is.na(portal_status) ~ paste0(country, '*'),
+      TRUE ~ country
+    ),
     # Calculate contribution (each contributes half to the mean)
     accessibility_contrib = accessibility_index / 2,
-    comprehensiveness_contrib = comprehensiveness_index / 2
+    comprehensiveness_contrib = comprehensiveness_index / 2,
+    # Flag if either component is NA
+    has_complete_data = !is.na(accessibility_contrib) & !is.na(comprehensiveness_contrib)
   )
 
 # Reshape to long format for stacked bar
 index_overall_long <- index_overall %>%
-  filter(!is.na(accessibility_contrib) & !is.na(comprehensiveness_contrib)) %>%
+  filter(has_complete_data) %>%
   select(country_label, index_overall, accessibility_contrib, comprehensiveness_contrib) %>%
   pivot_longer(
     cols = c(accessibility_contrib, comprehensiveness_contrib),
@@ -1607,10 +1659,11 @@ index_overall_chart <- ggplot(index_overall_long,
   
   geom_bar(
     stat = "identity",
-    width = 0.6
+    width = 0.6,
+    position = position_stack(reverse = TRUE)
   ) +
   
-  # Add total label at the end of bar
+  # Add total label at the end of bar 
   geom_text(
     data = index_overall,
     aes(x = ifelse(is.na(index_overall), 0.02, index_overall + 0.02),
@@ -1634,7 +1687,7 @@ index_overall_chart <- ggplot(index_overall_long,
   labs(
     x = "Overall Index",
     y = "",
-    caption = '* No central evaluation portal'
+    caption = '* No central evaluation portal\n+ Estimated volume number'
   ) +
   theme_minimal() +
   theme(
@@ -1658,6 +1711,14 @@ ggsave(
   width = 10,
   height = 12
 )
+
+ggsave(
+  filename = file.path(fig_png_output_dir, "index_overall_chart.png"),
+  plot = index_overall_chart,
+  width = 10,
+  height = 12,
+  dpi = 300
+)
 ```
 
 ### Accessibility & Independent Portal
@@ -1672,7 +1733,6 @@ features_independent_df <- independent_website_df %>%
     accessibility_index %>% select(country, accessibility_index),
     by = 'country'
   ) %>%
-  # Convert to uppercase Yes/No
   mutate(
     independent_website_label = case_when(
       independent_website == "yes" ~ "Yes",
@@ -1685,16 +1745,46 @@ features_independent_df <- independent_website_df %>%
 features_independent_nona <- features_independent_df %>%
   filter(!is.na(independent_website) & !is.na(accessibility_index))
 
+# Calculate means for each group
+means_df <- features_independent_nona %>%
+  group_by(independent_website) %>%
+  summarise(
+    mean_value = mean(accessibility_index, na.rm = TRUE),
+    .groups = 'drop'
+  )
+
 # Violin Plot
-features_independent_plot <-ggplot(features_independent_nona, 
-                                   aes(x = 1, y = accessibility_index, 
-                                       fill = independent_website)) +
+features_independent_plot <- ggplot(features_independent_nona, 
+                                    aes(x = 1, y = accessibility_index, 
+                                        fill = independent_website)) +
   geom_split_violin(trim = TRUE, alpha = 0.8) +
-  scale_fill_manual(values = c("yes" = "#4682C8", "no" = "#F05F00")) +
-  scale_x_continuous(breaks = 1, labels = "") +
+  
+  # Add mean labels only using annotate
+  annotate(
+    "text",
+    x = 0.75,
+    y = means_df$mean_value[means_df$independent_website == "no"],
+    label = paste0("Mean: ", round(means_df$mean_value[means_df$independent_website == "no"], 2)),
+    size = 4,
+    hjust = 1
+  ) +
+  annotate(
+    "text",
+    x = 1.40,
+    y = means_df$mean_value[means_df$independent_website == "yes"],
+    label = paste0("Mean: ", round(means_df$mean_value[means_df$independent_website == "yes"], 2)),
+    size = 4,
+    hjust = 0
+  ) +
+  
+  scale_fill_manual(
+    values = c("yes" = "#4682C8", "no" = "#F05F00"),
+    labels = c("yes" = "Yes", "no" = "No")
+  ) +
+  scale_x_continuous(breaks = 1, labels = "", limits = c(0.5, 1.5)) +
   labs(y = "Accessibility Index",
-       x = "Density",
-       fill = "Status") +
+       x = "",
+       fill = "Independent Website") +
   theme_minimal()
 
 features_independent_plot
@@ -1703,6 +1793,9 @@ ggsave("fig/features_independent_plot.pdf",
        plot = features_independent_plot,
        width = 6.5, height = 6)
 
+ggsave("fig_png/features_independent_plot.png", 
+       plot = features_independent_plot,
+       width = 6.5, height = 6, dpi = 300)
 ```
 
 \newpage
@@ -1780,6 +1873,10 @@ index_portal_plot
 ggsave("fig/index_portal_plot.pdf", 
        plot = index_portal_plot,
        width = 6.5, height = 6)
+
+ggsave("fig_png/index_portal_plot.png", 
+       plot = index_portal_plot,
+       width = 6.5, height = 6, dpi = 300)
 ```
 
 \newpage
@@ -1863,6 +1960,13 @@ ggsave(
   height = 5
 )
 
+ggsave(
+  filename = file.path(fig_png_output_dir, "index_expenditure_PPP_chart.png"),
+  plot = index_expenditure_PPP_chart,
+  height = 5,
+  dpi = 300
+)
+
 # Log gov expenditure
 index_expenditure_PPP_chart_log <- ggplot(index_expenditure_PPP_df, 
                                       aes(x = log(mean_PPP), y = index_overall)) +
@@ -1883,6 +1987,13 @@ ggsave(
   filename = file.path(fig_output_dir, "index_expenditure_PPP_chart_log.pdf"),
   plot = index_expenditure_PPP_chart_log,
   height = 5
+)
+
+ggsave(
+  filename = file.path(fig_png_output_dir, "index_expenditure_PPP_chart_log.png"),
+  plot = index_expenditure_PPP_chart_log,
+  height = 5,
+  dpi = 300
 )
 
 # Expenditure pGDP
@@ -1908,4 +2019,76 @@ ggsave(
   height = 5
 )
 
+ggsave(
+  filename = file.path(fig_png_output_dir, "index_expenditure_pGDP_chart.png"),
+  plot = index_expenditure_pGDP_chart,
+  height = 5,
+  dpi = 300
+)
+
+```
+
+## Country-hyperlink table
+
+```{r}
+#| label: hyperlink-table
+
+hyperlink_df <- new_data_long %>%
+  filter(survey_question == 'Hyperlink') %>%
+  select(country, hyperlink = survey_answer) %>%
+  arrange(country) %>%
+  # Handle multiple URLs separated by ; or ;
+  mutate(
+  hyperlink = sapply(hyperlink, function(x) {
+    if (is.na(x) || x == "") return(x)
+    urls <- trimws(unlist(strsplit(x, "\\s*[;；]\\s*")))
+    urls_wrapped <- paste0("\\url{", urls, "}")
+    paste(urls_wrapped, collapse = " \\newline ")
+  })
+)
+
+# Split into two halves
+n_rows <- nrow(hyperlink_df)
+split_point <- ceiling(n_rows / 2)
+
+left_col <- hyperlink_df[1:split_point, ]
+right_col <- hyperlink_df[(split_point + 1):n_rows, ]
+
+# Pad right column if needed
+if (nrow(right_col) < nrow(left_col)) {
+  padding <- data.frame(country = "", hyperlink = "")
+  right_col <- bind_rows(right_col, padding)
+}
+
+# Combine
+two_col_table <- bind_cols(
+  left_col,
+  right_col %>% setNames(c("country2", "hyperlink2"))
+)
+
+# Create table with text wrapping
+hyperlink_table <- two_col_table %>%
+  kable(
+    format = "latex",
+    booktabs = TRUE,
+    caption = "Portal Hyperlinks",
+    label = "hyperlink_table",
+    col.names = c("Country", "Hyperlink", "Country", "Hyperlink"),
+    escape = FALSE
+  ) %>%
+  kable_styling(
+    latex_options = c("hold_position"),
+    full_width = FALSE,
+    font_size = 8
+  ) %>%
+  column_spec(1, width = "2cm") %>%
+  column_spec(2, width = "6cm") %>%
+  column_spec(3, width = "2cm", border_left = TRUE) %>%
+  column_spec(4, width = "6cm")
+
+hyperlink_table
+
+# Export
+writeLines(as.character(hyperlink_table), 
+           file.path(table_output_dir, "hyperlink_table.tex"))
 ```

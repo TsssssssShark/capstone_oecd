@@ -260,10 +260,10 @@ const ACCESSIBILITY_TOOLS_DATA = [
   },
   {
     "country": "Sweden",
-    "accessibility_tools": "NA",
-    "value": "NA",
-    "color": "#6c757d",
-    "label": "No Data",
+    "accessibility_tools": "yes",
+    "value": "yes",
+    "color": "#5cb85c",
+    "label": "Yes",
     "data_type": "accessibility_tools"
   },
   {
