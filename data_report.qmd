@@ -469,8 +469,9 @@ tryCatch({
   js_portal <- paste0(
     "// Global portal data - dynamically populated by DataManager\n",
     "// Generated: ", Sys.Date(), "\n\n",
-    "let PORTAL_DATA = [];\n"
+    "var PORTAL_DATA = [];\n"
   )
+
   
   if (dir.exists(js_output_dir)) {
     writeLines(js_portal, file.path(js_output_dir, "portalData.js"))
