@@ -14,7 +14,7 @@ To download the entire repository:
 Download the entire `map/` folder and run `map.html`.
 
 ## .tex files:
-`main.tex` is the main report and `summary.tex ` is the summary.
+`main.tex` is the main report and `summary.tex ` is the summary. Both should be rendered with XeTeX.
 
 ## `portals_information.csv`
 Contains all data we collected
