@@ -1,5 +1,5 @@
 // ============================================================================
-// OECD National Policy Evaluation Portals 
+// OECD Members List 
 // ============================================================================
 
 // Country code mapping (ISO 3166-1 alpha-2)
@@ -55,14 +55,19 @@ let currentSelectedCountry = null;
 // ============================================================================
 
 function initMap(containerId = 'map') {
-  // Prevent duplicate initialization
   if (map) {
     return map;
   }
   
-  map = L.map(containerId).setView([50, 10], 4);
+  map = L.map(containerId, {
+    minZoom: 2,
+    maxBounds: [
+      [-85, -180],
+      [85, 180]
+    ],
+    maxBoundsViscosity: 1.0
+  }).setView([30, 0], 2);
 
-  // Set attribution without Ukrainian flag for political neutrality
   map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank">Leaflet</a>');
   
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -72,7 +77,6 @@ function initMap(containerId = 'map') {
   
   L.control.scale().addTo(map);
   
-  // Add print control
   new L.easyPrint({
     title: 'Print map',
     position: 'topleft',
@@ -88,7 +92,6 @@ function initMap(containerId = 'map') {
 
 async function fetchAndProcessGeoData() {
   try {
-    // Fetch world countries GeoJSON from external source
     const geoResponse = await fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson');
     const geoData = await geoResponse.json();
     
@@ -96,13 +99,11 @@ async function fetchAndProcessGeoData() {
     console.log('Current PORTAL_DATA has', PORTAL_DATA.length, 'items');
     console.log('First PORTAL_DATA item:', PORTAL_DATA[0]);
     
-    // Create lookup map for portal data 
     const portalMap = {};
     PORTAL_DATA.forEach(item => {
       const normalizedName = item.country.toLowerCase();
       portalMap[normalizedName] = item;
       
-      // Handle special naming cases for country matching
       if (normalizedName === 'the netherlands') {
         portalMap['netherlands'] = item;
       }
@@ -115,7 +116,6 @@ async function fetchAndProcessGeoData() {
       }
     });
     
-    // Merge portal data with geo features
     let matched = 0;
     geoData.features.forEach(feature => {
       const geoCountryName = feature.properties.ADMIN || feature.properties.name || '';
@@ -124,13 +124,11 @@ async function fetchAndProcessGeoData() {
       let portalItem = portalMap[normalizedName];
       
       if (portalItem) {
-        // Copy portal data to feature properties for map rendering
         feature.properties.portal_value = portalItem.value;
         feature.properties.portal_color = portalItem.color;
         feature.properties.portal_label = portalItem.label;
         matched++;
       } else {
-        // Default values for countries without data
         feature.properties.portal_value = 'no data';
         feature.properties.portal_color = '#e9ecef';
         feature.properties.portal_label = 'No Data';
@@ -151,7 +149,6 @@ async function fetchAndProcessGeoData() {
 // ============================================================================
 
 function getCountryStyle(feature) {
-  // Use color directly from data 
   const fillColor = feature.properties.portal_color || '#e9ecef';
   
   return {
@@ -168,12 +165,10 @@ function getCountryStyle(feature) {
 // ============================================================================
 
 function addCountryLayer(geoData) {
-  // Remove existing layer before adding new one
   if (geoJsonLayer) {
     map.removeLayer(geoJsonLayer);
   }
   
-  // Add new GeoJSON layer with styling and interactions
   geoJsonLayer = L.geoJSON(geoData, {
     style: getCountryStyle,
     onEachFeature: onEachFeature
@@ -181,7 +176,6 @@ function addCountryLayer(geoData) {
 }
 
 function onEachFeature(feature, layer) {
-  // Extract country name from various possible property names
   const countryName = feature.properties.ADMIN || 
                       feature.properties.NAME || 
                       feature.properties.name || 
@@ -189,23 +183,20 @@ function onEachFeature(feature, layer) {
 
   const label = feature.properties.portal_label || 'No Data';
   
-  // Create popup content
   const popupContent = `
     <div class="p-3 text-sm">
       <h4 class="font-bold text-base mb-2">${countryName}</h4>
-      <p><span class="font-semibold">Status:</span> ${label}</p>
+      <p>${label}</p>
     </div>
   `;
   
   layer.bindPopup(popupContent);
   
-  // Click event - select country
   layer.on('click', function(e) {
     selectCountry(countryName, feature);
     L.DomEvent.stop(e);
   });
   
-  // Hover effect - highlight on mouseover
   layer.on('mouseover', function(e) {
     const lyr = e.target;
     lyr.setStyle({
@@ -216,7 +207,6 @@ function onEachFeature(feature, layer) {
     lyr.bringToFront();
   });
   
-  // Reset style on mouseout (unless selected)
   layer.on('mouseout', function(e) {
     if (currentSelectedCountry !== countryName) {
       e.target.setStyle(getCountryStyle(feature));
@@ -232,10 +222,18 @@ function renderIndicatorsList() {
   const indicatorsList = document.getElementById('indicators-list');
   if (!indicatorsList) return;
   
-  // Clear existing content
   indicatorsList.innerHTML = '';
   
-  // Group countries by their label 
+  const datasetType = DataManager?.getCurrentType() || 'discrete';
+  
+  if (datasetType === 'continuous') {
+    renderContinuousIndicatorsList(indicatorsList);
+  } else {
+    renderDiscreteIndicatorsList(indicatorsList);
+  }
+}
+
+function renderDiscreteIndicatorsList(indicatorsList) {
   const byLabel = {};
   const labelOrder = []; 
   
@@ -251,7 +249,6 @@ function renderIndicatorsList() {
     byLabel[label].countries.push(item);
   });
   
-  // Render each group in order
   labelOrder.forEach(label => {
     const groupData = byLabel[label];
     if (groupData.countries.length > 0) {
@@ -261,12 +258,57 @@ function renderIndicatorsList() {
   });
 }
 
-function createStatusSection(label, countries, groupColor) {
-  // Create section container
+function renderContinuousIndicatorsList(indicatorsList) {
+  const sorted = [...PORTAL_DATA].sort((a, b) => {
+    if (a.value === null || a.value === undefined) return 1;
+    if (b.value === null || b.value === undefined) return -1;
+    return b.value - a.value;
+  });
+  
   const section = document.createElement('div');
   section.className = 'border rounded-lg p-3 bg-gray-50';
   
-  // Create header with color indicator and count
+  const header = document.createElement('div');
+  header.className = 'font-semibold text-sm mb-3';
+  header.textContent = `Countries (${sorted.length})`;
+  section.appendChild(header);
+  
+  const list = document.createElement('div');
+  list.className = 'flex flex-col gap-1';
+  
+  sorted.forEach(country => {
+    const item = document.createElement('button');
+    item.className = 'text-left px-2 py-1 rounded text-xs hover:bg-gray-200 transition cursor-pointer flex items-center gap-2';
+    
+    const colorDot = document.createElement('span');
+    colorDot.className = 'w-3 h-3 rounded-sm flex-shrink-0';
+    colorDot.style.backgroundColor = country.color;
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'flex-grow';
+    nameSpan.textContent = country.country;
+    
+    const valueSpan = document.createElement('span');
+    valueSpan.className = 'font-mono text-gray-500';
+    valueSpan.textContent = country.value !== null && country.value !== undefined 
+      ? country.value.toFixed(2) 
+      : 'N/A';
+    
+    item.appendChild(colorDot);
+    item.appendChild(nameSpan);
+    item.appendChild(valueSpan);
+    item.onclick = () => selectCountryByName(country.country);
+    list.appendChild(item);
+  });
+  
+  section.appendChild(list);
+  indicatorsList.appendChild(section);
+}
+
+function createStatusSection(label, countries, groupColor) {
+  const section = document.createElement('div');
+  section.className = 'border rounded-lg p-3 bg-gray-50';
+  
   const header = document.createElement('div');
   header.className = 'flex items-center gap-2 mb-3 font-semibold text-sm';
   header.innerHTML = `
@@ -275,7 +317,6 @@ function createStatusSection(label, countries, groupColor) {
   `;
   section.appendChild(header);
   
-  // Create country list
   const list = document.createElement('div');
   list.className = 'flex flex-col gap-1';
   
@@ -296,7 +337,6 @@ function createStatusSection(label, countries, groupColor) {
 // ============================================================================
 
 function selectCountryByName(countryName) {
-  // Find and select country by name (called from sidebar)
   if (geoJsonLayer) {
     geoJsonLayer.eachLayer(layer => {
       const layerCountryName = layer.feature.properties.ADMIN || 
@@ -311,105 +351,177 @@ function selectCountryByName(countryName) {
 }
 
 function createCountryPanel(countryName, feature) {
-    // Find matching portal data entry
-    const portalItem = PORTAL_DATA.find(item => item.country === countryName);
-    if (!portalItem) return;
-    
-    // Get country code for flag display
-    const countryCode = COUNTRY_CODE_MAP[countryName] || 'UN';
-    
-    // Create or update country detail panel
-    let panel = document.getElementById('country-detail-panel');
-    if (!panel) {
-        panel = document.createElement('div');
-        panel.id = 'country-detail-panel';
-        panel.className = 'mt-4 p-4 bg-white border rounded-lg shadow-sm';
-        document.getElementById('indicators-list').after(panel);
-    }
-    
-    // Get current dataset name for display
-    const currentDatasetName = DataManager?.datasets[DataManager?.currentDataset]?.name || 'Status';
-    
-    panel.innerHTML = `
-        <div class="flex items-start gap-3">
-            <!-- Country Flag -->
-            <div class="flex-shrink-0">
-                <img 
-                    src="https://flagcdn.com/w80/${countryCode.toLowerCase()}.png" 
-                    alt="${countryName} flag"
-                    class="w-12 h-8 object-cover rounded shadow-sm"
-                    onerror="this.src='https://via.placeholder.com/48x32/e5e7eb/6b7280?text=Flag'"
-                >
+  const datasetType = DataManager?.getCurrentType() || 'discrete';
+  
+  if (datasetType === 'continuous') {
+    createContinuousPanel(countryName);
+  } else {
+    createDiscretePanel(countryName, feature);
+  }
+}
+
+function createDiscretePanel(countryName, feature) {
+  const portalItem = PORTAL_DATA.find(item => item.country === countryName);
+  if (!portalItem) return;
+  
+  const countryCode = COUNTRY_CODE_MAP[countryName] || 'UN';
+  
+  let panel = document.getElementById('country-detail-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'country-detail-panel';
+    panel.className = 'mt-4 p-4 bg-white border rounded-lg shadow-sm';
+    document.getElementById('indicators-list').after(panel);
+  }
+  
+  const currentDatasetName = DataManager?.datasets[DataManager?.currentDataset]?.name || 'Status';
+  
+  panel.innerHTML = `
+    <div class="flex items-start gap-3">
+      <div class="flex-shrink-0">
+        <img 
+          src="https://flagcdn.com/w80/${countryCode.toLowerCase()}.png" 
+          alt="${countryName} flag"
+          class="w-12 h-8 object-cover rounded shadow-sm"
+          onerror="this.src='https://via.placeholder.com/48x32/e5e7eb/6b7280?text=Flag'"
+        >
+      </div>
+      
+      <div class="flex-1">
+        <h3 class="font-bold text-lg text-gray-800">${countryName}</h3>
+        
+        <div class="mt-2 space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="text-sm text-gray-600">${currentDatasetName}:</span>
+            <span class="px-2 py-1 rounded-md text-xs font-semibold text-white"
+                  style="background-color: ${portalItem.color}">
+              ${portalItem.label}
+            </span>
+          </div>
+          
+          ${portalItem.value ? `
+            <div class="text-sm text-gray-600">
+              Value: <span class="font-medium">${portalItem.value}</span>
             </div>
-            
-            <!-- Country Info -->
-            <div class="flex-1">
-                <h3 class="font-bold text-lg text-gray-800">${countryName}</h3>
-                
-                <div class="mt-2 space-y-1">
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-600">${currentDatasetName}:</span>
-                        <span class="px-2 py-1 rounded-md text-xs font-semibold text-white"
-                              style="background-color: ${portalItem.color}">
-                            ${portalItem.label}
-                        </span>
-                    </div>
-                    
-                    ${portalItem.value ? `
-                        <div class="text-sm text-gray-600">
-                            Value: <span class="font-medium">${portalItem.value}</span>
-                        </div>
-                    ` : ''}
-                    
-                    ${portalItem.data_type ? `
-                        <div class="text-sm text-gray-500">
-                            Type: ${portalItem.data_type.replace(/_/g, ' ')}
-                        </div>
-                    ` : ''}
-                </div>
+          ` : ''}
+          
+          ${portalItem.data_type ? `
+            <div class="text-sm text-gray-500">
+              Type: ${portalItem.data_type.replace(/_/g, ' ')}
             </div>
+          ` : ''}
         </div>
+      </div>
+    </div>
+  `;
+}
+
+function createContinuousPanel(countryName) {
+  const indices = typeof ALL_INDICES_DATA !== 'undefined' ? ALL_INDICES_DATA[countryName] : null;
+  if (!indices) {
+    console.log('No index data for', countryName);
+    createDiscretePanel(countryName, null);
+    return;
+  }
+  
+  const countryCode = COUNTRY_CODE_MAP[countryName] || 'UN';
+  
+  let panel = document.getElementById('country-detail-panel');
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'country-detail-panel';
+    panel.className = 'mt-4 p-4 bg-white border rounded-lg shadow-sm';
+    document.getElementById('indicators-list').after(panel);
+  }
+  
+  const formatValue = (val) => val !== null && val !== undefined ? val.toFixed(2) : 'N/A';
+  
+  const getColor = (val, scale) => {
+    if (val === null || val === undefined) return '#e9ecef';
+    if (typeof ColorScales !== 'undefined' && ColorScales[scale]) {
+      return ColorScales[scale](val);
+    }
+    return '#e9ecef';
+  };
+  
+  const createRow = (label, value, colorScale, indent = 0) => {
+    const color = getColor(value, colorScale);
+    const displayVal = formatValue(value);
+    const barWidth = value !== null && value !== undefined ? value * 100 : 0;
+    const paddingLeft = indent * 12;
+    
+    return `
+      <div class="flex items-center gap-2 py-1" style="padding-left: ${paddingLeft}px;">
+        <span class="w-3 h-3 rounded-sm flex-shrink-0" style="background-color: ${color}"></span>
+        <span class="text-xs flex-grow">${label}</span>
+        <span class="text-xs font-mono w-8 text-right">${displayVal}</span>
+        <div class="w-12 h-2 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+          <div class="h-full rounded" style="width: ${barWidth}%; background-color: ${color}"></div>
+        </div>
+      </div>
     `;
+  };
+  
+  panel.innerHTML = `
+    <div class="flex items-start gap-3 mb-3">
+      <div class="flex-shrink-0">
+        <img 
+          src="https://flagcdn.com/w80/${countryCode.toLowerCase()}.png" 
+          alt="${countryName} flag"
+          class="w-12 h-8 object-cover rounded shadow-sm"
+          onerror="this.src='https://via.placeholder.com/48x32/e5e7eb/6b7280?text=Flag'"
+        >
+      </div>
+      <h3 class="font-bold text-lg text-gray-800">${countryName}</h3>
+    </div>
+    
+    <div class="border-t pt-3">
+      ${createRow('Overall Index', indices.overall_index, 'purple', 0)}
+      
+      <div class="mt-2 mb-1 text-xs text-gray-500 font-semibold">Comprehensiveness</div>
+      ${createRow('Comprehensiveness Index', indices.comprehensiveness_index, 'blue', 1)}
+      ${createRow('Years Coverage', indices.years_index, 'blue', 2)}
+      ${createRow('Volume', indices.volume_index, 'blue', 2)}
+      ${createRow('COFOG Coverage', indices.cofog_index, 'blue', 2)}
+      
+      <div class="mt-2 mb-1 text-xs text-gray-500 font-semibold">Accessibility</div>
+      ${createRow('Accessibility Index', indices.accessibility_index, 'orange', 1)}
+    </div>
+  `;
 }
 
 function selectCountry(countryName, feature) {
-    // Update global selection state
-    currentSelectedCountry = countryName;
-    
-    // Highlight selected country in sidebar
-    const items = document.querySelectorAll('#indicators-list button');
-    items.forEach(item => {
-        if (item.textContent === countryName) {
-            item.classList.add('bg-blue-200', 'font-semibold');
-        } else {
-            item.classList.remove('bg-blue-200', 'font-semibold');
-        }
-    });
-    
-    // Highlight selected country on map
-    if (geoJsonLayer) {
-        geoJsonLayer.eachLayer(layer => {
-            const layerCountryName = layer.feature.properties.ADMIN || 
-                                     layer.feature.properties.NAME || 
-                                     layer.feature.properties.name;
-            
-            if (layerCountryName === countryName) {
-                // Selected style
-                layer.setStyle({
-                    weight: 3,
-                    color: '#0066cc',
-                    fillOpacity: 0.85
-                });
-                layer.bringToFront();
-            } else {
-                // Reset to default style
-                layer.setStyle(getCountryStyle(layer.feature));
-            }
-        });
+  currentSelectedCountry = countryName;
+  
+  const items = document.querySelectorAll('#indicators-list button');
+  items.forEach(item => {
+    if (item.textContent === countryName || item.textContent.includes(countryName)) {
+      item.classList.add('bg-blue-200', 'font-semibold');
+    } else {
+      item.classList.remove('bg-blue-200', 'font-semibold');
     }
-    
-    // Create/update country detail panel
-    createCountryPanel(countryName, feature);
+  });
+  
+  if (geoJsonLayer) {
+    geoJsonLayer.eachLayer(layer => {
+      const layerCountryName = layer.feature.properties.ADMIN || 
+                               layer.feature.properties.NAME || 
+                               layer.feature.properties.name;
+      
+      if (layerCountryName === countryName) {
+        layer.setStyle({
+          weight: 3,
+          color: '#0066cc',
+          fillOpacity: 0.85
+        });
+        layer.bringToFront();
+      } else {
+        layer.setStyle(getCountryStyle(layer.feature));
+      }
+    });
+  }
+  
+  createCountryPanel(countryName, feature);
 }
 
 // ============================================================================
@@ -422,36 +534,47 @@ function addLegend() {
   legend.onAdd = function(map) {
     const div = L.DomUtil.create('div', 'info legend bg-white p-3 rounded shadow-lg');
     
-    // Get unique labels and colors dynamically from current data
-    const uniqueLabels = {};
-    PORTAL_DATA.forEach(item => {
-      if (!uniqueLabels[item.label]) {
-        uniqueLabels[item.label] = item.color;
-      }
-    });
+    const datasetType = DataManager?.getCurrentType() || 'discrete';
+    const colorScale = DataManager?.getCurrentColorScale() || null;
     
-    // Create legend title
     div.innerHTML = '<h4 class="font-bold text-sm mb-2">Legend</h4>';
     
-    // Add each unique label to legend
-    Object.entries(uniqueLabels).forEach(([label, color]) => {
-      const row = document.createElement('div');
-      row.className = 'flex items-center gap-2 text-xs mb-1';
-      row.innerHTML = `
-        <span class="w-3 h-3 rounded-sm" style="background-color: ${color}"></span>
-        <span>${label}</span>
+    if (datasetType === 'continuous' && colorScale && typeof ColorScales !== 'undefined') {
+      const scaleFn = ColorScales[colorScale];
+      const colors = [0, 0.25, 0.5, 0.75, 1].map(v => scaleFn(v));
+      
+      div.innerHTML += `
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="text-xs">0</span>
+          <div style="
+            width: 120px; 
+            height: 12px; 
+            background: linear-gradient(to right, ${colors.join(', ')});
+            border-radius: 2px;
+          "></div>
+          <span class="text-xs">1</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs mt-2">
+          <span class="w-3 h-3 rounded-sm" style="background-color: #e9ecef"></span>
+          <span>No Data</span>
+        </div>
       `;
-      div.appendChild(row);
-    });
-    
-    // Add "No Data" entry
-    const noDataRow = document.createElement('div');
-    noDataRow.className = 'flex items-center gap-2 text-xs mb-1';
-    noDataRow.innerHTML = `
-      <span class="w-3 h-3 rounded-sm" style="background-color: #e9ecef"></span>
-      <span>No Data</span>
-    `;
-    div.appendChild(noDataRow);
+    } else {
+      div.innerHTML += `
+        <div class="flex items-center gap-2 text-xs mb-1">
+          <span class="w-3 h-3 rounded-sm" style="background-color: #5cb85c"></span>
+          <span>Yes</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs mb-1">
+          <span class="w-3 h-3 rounded-sm" style="background-color: #dc3545"></span>
+          <span>No</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs mb-1">
+          <span class="w-3 h-3 rounded-sm" style="background-color: #e9ecef"></span>
+          <span>No Data</span>
+        </div>
+      `;
+    }
     
     return div;
   };
@@ -461,21 +584,17 @@ function addLegend() {
 
 // ============================================================================
 // INITIALIZATION
-// Note: Map is initialized here, but data loading is controlled by DataManager
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', async function() {
-  // Check if map is already initialized to prevent duplicates
   if (window.mapInitialized) return;
   window.mapInitialized = true;
   
-  // Initialize map only - DataManager will handle data loading
   initMap('map');
 });
 
 // ============================================================================
 // EXPOSE FUNCTIONS FOR DATAMANAGER
-// These functions are called by DataManager.refreshMap()
 // ============================================================================
 window.renderIndicatorsList = renderIndicatorsList;
 window.fetchAndProcessGeoData = fetchAndProcessGeoData;

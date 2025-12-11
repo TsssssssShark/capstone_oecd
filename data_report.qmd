@@ -13,8 +13,6 @@ format:
         \usepackage{makecell}
         \usepackage{url}
         \usepackage[hypthens]{xurl}
-        \def\UrlBreaks{\do\/\do-\do_\do.\do=\do?\do&}
-        \def\UrlNoBreaks{\do:\do/\do/}
 execute:
   echo: false
   warning: true
@@ -467,48 +465,48 @@ portal_table
 #| eval: true
 
 tryCatch({
-map_data <- central_portal_status %>%
-  mutate(
-    color = case_when(
-      portal_status == "yes" ~ "#5cb85c",     
-      portal_status == "no" ~ "#dc3545",      
-      portal_status == "developing" ~ "#ffc107",
-      TRUE ~ "#6c757d"                    
-    ),
-    label = case_when(
-      portal_status == "yes" ~ "Yes",
-      portal_status == "no" ~ "No",
-      portal_status == "developing" ~ "Under Development",
-      TRUE ~ "No Data"
-    )
+  # portalData.js - empty global variable
+  js_portal <- paste0(
+    "// Global portal data - dynamically populated by DataManager\n",
+    "// Generated: ", Sys.Date(), "\n\n",
+    "let PORTAL_DATA = [];\n"
   )
-
-# Generate JS with additional properties
-js_content <- paste0(
-  "// Portal status with map styling\n",
-  "// Generated: ", Sys.Date(), "\n\n",
-  "const PORTAL_DATA = ",
-  jsonlite::toJSON(map_data, pretty = TRUE, auto_unbox = TRUE),
-  ";\n\n",
-  "// Color mapping for legend\n",
-  "const STATUS_COLORS = {\n",
-  "  'yes': '#28a745',\n",
-  "  'no': '#dc3545',\n",
-  "  'developing': '#ffc107',\n",
-  "  'other': '#6c757d'\n",
-  "};\n\n",
-  "// Export\n",
-  "if (typeof module !== 'undefined' && module.exports) {\n",
-  "  module.exports = { PORTAL_MAP_DATA, STATUS_COLORS };\n",
-  "}"
-)
-
-if (dir.exists(js_output_dir)) {
-  writeLines(js_content, file.path(js_output_dir, "portalData.js"))
-} else {
-  stop(glue('JavaScript output directory not found: {js_output_dir}'))
-}
-
+  
+  if (dir.exists(js_output_dir)) {
+    writeLines(js_portal, file.path(js_output_dir, "portalData.js"))
+  } else {
+    stop(glue('JavaScript output directory not found: {js_output_dir}'))
+  }
+  
+  # centralPortalData.js - actual data
+  central_portal_map <- central_portal_status %>%
+    mutate(
+      value = portal_status,
+      color = case_when(
+        portal_status == "yes" ~ "#5cb85c",
+        portal_status == "no" ~ "#dc3545",
+        portal_status == "developing" ~ "#ffc107",
+        TRUE ~ "#6c757d"
+      ),
+      label = case_when(
+        portal_status == "yes" ~ "Yes",
+        portal_status == "no" ~ "No",
+        portal_status == "developing" ~ "Under Development",
+        TRUE ~ "No Data"
+      ),
+      data_type = "central_portal"
+    )
+  
+  js_central <- paste0(
+    "// Central Portal Status Data\n",
+    "// Generated: ", Sys.Date(), "\n\n",
+    "const CENTRAL_PORTAL_DATA = ",
+    jsonlite::toJSON(central_portal_map, pretty = TRUE, auto_unbox = TRUE),
+    ";\n"
+  )
+  
+  writeLines(js_central, file.path(js_output_dir, "centralPortalData.js"))
+  
 }, error = function(e) {
   message('Error in JavaScript export: ', e$message)
   print(e)
@@ -1759,22 +1757,25 @@ features_independent_plot <- ggplot(features_independent_nona,
                                         fill = independent_website)) +
   geom_split_violin(trim = TRUE, alpha = 0.8) +
   
-  # Add mean labels only using annotate
+  # Mean label for "no" group - y position at mean value
   annotate(
     "text",
-    x = 0.75,
+    x = 0.65,
     y = means_df$mean_value[means_df$independent_website == "no"],
     label = paste0("Mean: ", round(means_df$mean_value[means_df$independent_website == "no"], 2)),
     size = 4,
     hjust = 1
   ) +
+  
+  # Mean label for "yes" group - y position at mean value
   annotate(
     "text",
-    x = 1.40,
+    x = 1.35,
     y = means_df$mean_value[means_df$independent_website == "yes"],
-    label = paste0("Mean: ", round(means_df$mean_value[means_df$independent_website == "yes"], 2)),
+    label = paste0("Mean: ", 
+                   round(means_df$mean_value[means_df$independent_website == "yes"], 2)),
     size = 4,
-    hjust = 0
+    hjust = -0.2
   ) +
   
   scale_fill_manual(
@@ -1856,15 +1857,44 @@ index_central_df <- index_overall_no_portal %>%
 index_portal_df <- index_central_df %>%
   filter(!is.na(has_portal) & !is.na(index_overall_no_portal))
 
+# Calculate means for each group
+means_portal_df <- index_portal_df %>%
+  group_by(has_portal) %>%
+  summarise(
+    mean_value = mean(index_overall_no_portal, na.rm = TRUE),
+    .groups = 'drop'
+  )
+
 # Violin Plot: compare overall index by portal status
 index_portal_plot <- ggplot(index_portal_df, 
                             aes(x = 1, y = index_overall_no_portal, 
                                 fill = has_portal)) +
   geom_split_violin(trim = TRUE, alpha = 0.8) +
+  
+  # Mean label for "No" group - y position at mean value
+  annotate(
+    "text",
+    x = 0.65,
+    y = means_portal_df$mean_value[means_portal_df$has_portal == "No"],
+    label = paste0("Mean: ", round(means_portal_df$mean_value[means_portal_df$has_portal == "No"], 2)),
+    size = 4,
+    hjust = 1
+  ) +
+  
+  # Mean label for "Yes" group - y position at mean value
+  annotate(
+    "text",
+    x = 1.35,
+    y = means_portal_df$mean_value[means_portal_df$has_portal == "Yes"],
+    label = paste0("Mean: ", round(means_portal_df$mean_value[means_portal_df$has_portal == "Yes"], 2)),
+    size = 4,
+    hjust = -0.8
+  ) +
+  
   scale_fill_manual(values = c("Yes" = "#4682C8", "No" = "#F05F00")) +
-  scale_x_continuous(breaks = 1, labels = "") +
+  scale_x_continuous(breaks = 1, labels = "", limits = c(0.5, 1.5)) +
   labs(y = "Overall Index (excl. Central Portal)",
-       x = "Density",
+       x = "",
        fill = "Central Portal") +
   theme_minimal()
 
@@ -2091,4 +2121,105 @@ hyperlink_table
 # Export
 writeLines(as.character(hyperlink_table), 
            file.path(table_output_dir, "hyperlink_table.tex"))
+```
+
+```{r}
+#| label: export-continuous-indices-js
+
+# Accessibility Index
+accessibility_index_js <- accessibility_index %>%
+  select(country, value = accessibility_index) %>%
+  filter(!is.na(value))
+
+js_content <- paste0(
+  "const ACCESSIBILITY_INDEX_DATA = ",
+  jsonlite::toJSON(accessibility_index_js, pretty = TRUE, auto_unbox = TRUE),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "accessibilityIndexData.js"))
+
+# Comprehensiveness Index
+comprehensiveness_index_js <- comprehensiveness_index %>%
+  select(country, value = comprehensiveness_index) %>%
+  filter(!is.na(value))
+
+js_content <- paste0(
+  "const COMPREHENSIVENESS_INDEX_DATA = ",
+  jsonlite::toJSON(comprehensiveness_index_js, pretty = TRUE, auto_unbox = TRUE),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "comprehensivenessIndexData.js"))
+
+# Overall Index
+overall_index_js <- index_overall %>%
+  select(country, value = index_overall) %>%
+  filter(!is.na(value))
+
+js_content <- paste0(
+  "const OVERALL_INDEX_DATA = ",
+  jsonlite::toJSON(overall_index_js, pretty = TRUE, auto_unbox = TRUE),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "overallIndexData.js"))
+
+# Years Index
+years_index_js <- years_coverage_df %>%
+  select(country, value = years_index) %>%
+  filter(!is.na(value))
+
+js_content <- paste0(
+  "const YEARS_INDEX_DATA = ",
+  jsonlite::toJSON(years_index_js, pretty = TRUE, auto_unbox = TRUE),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "yearsIndexData.js"))
+
+# Volume Index
+volume_index_js <- volume %>%
+  select(country, value = volume_index) %>%
+  filter(!is.na(value))
+
+js_content <- paste0(
+  "const VOLUME_INDEX_DATA = ",
+  jsonlite::toJSON(volume_index_js, pretty = TRUE, auto_unbox = TRUE),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "volumeIndexData.js"))
+
+# COFOG Index
+cofog_index_js <- cofog %>%
+  select(country, value = cofog_index) %>%
+  filter(!is.na(value))
+
+js_content <- paste0(
+  "const COFOG_INDEX_DATA = ",
+  jsonlite::toJSON(cofog_index_js, pretty = TRUE, auto_unbox = TRUE),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "cofogIndexData.js"))
+```
+
+```{r}
+#| label: export-all-indices-js
+
+all_indices <- index_overall %>%
+  select(country) %>%
+  left_join(years_coverage_df %>% select(country, years_index), by = "country") %>%
+  left_join(volume %>% select(country, volume_index), by = "country") %>%
+  left_join(cofog %>% select(country, cofog_index), by = "country") %>%
+  left_join(comprehensiveness_index %>% select(country, comprehensiveness_index), by = "country") %>%
+  left_join(accessibility_index %>% select(country, accessibility_index), by = "country") %>%
+  left_join(index_overall %>% select(country, overall_index = index_overall), by = "country")
+
+all_indices_list <- split(all_indices[-1], all_indices$country)
+all_indices_list <- lapply(all_indices_list, function(x) {
+  as.list(x[1, ])
+})
+
+js_content <- paste0(
+  "const ALL_INDICES_DATA = ",
+  jsonlite::toJSON(all_indices_list, pretty = TRUE, auto_unbox = TRUE, na = "null"),
+  ";\n"
+)
+writeLines(js_content, file.path(js_output_dir, "allIndicesData.js"))
 ```

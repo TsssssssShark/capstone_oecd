@@ -1,11 +1,7 @@
-// ============================================================================
 // Central Portal Status Data
-// ============================================================================
-// Original portal status data - renamed from PORTAL_DATA to avoid conflicts
-// Generated: 2025-12-08
-// ============================================================================
+// Generated: 2025-12-11
 
-var CENTRAL_PORTAL_DATA = [
+const CENTRAL_PORTAL_DATA = [
   {
     "country": "Australia",
     "portal_status": "yes",
@@ -311,3 +307,4 @@ var CENTRAL_PORTAL_DATA = [
     "data_type": "central_portal"
   }
 ];
+

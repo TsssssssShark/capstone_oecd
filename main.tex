@@ -1,0 +1,919 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Heros}
+\usepackage{amsmath,amsfonts,amssymb}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{longtable}
+\usepackage{graphicx}
+\usepackage{breakurl}
+\usepackage{appendix}
+\usepackage{url}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{makecell}
+\usepackage{fancyhdr}
+\usepackage{soul}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{pdfpages}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{dirtree}
+\usepackage{parskip}
+\usepackage[
+  style=authoryear,
+  sorting=nyt,
+  maxbibnames=99,
+  giveninits=true,
+  uniquename=false
+]{biblatex}
+\addbibresource{references.bib}
+
+\hypersetup{
+colorlinks=true,
+linkcolor=black,
+urlcolor=blue!60!black, 
+citecolor=black
+}
+
+\titlespacing*{\section}{0pt}{1.5em}{0.8em}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.5em}
+\setstretch{1.5}
+\setlist{topsep=0.5em, itemsep=0.3em}
+
+\definecolor{sectionblue}{RGB}{70, 130, 200}
+
+\titleformat{\section}
+{\normalfont\Large\bfseries\color{sectionblue}}
+{\thesection.}{0.5em}{}
+
+\titleformat{\subsection}
+{\normalfont\large\bfseries\color{sectionblue}}
+{\thesubsection}{1em}{}
+
+\title{
+    \Large \textbf{Policy Evaluation Portal Report}\\
+    \vspace{0.5cm}
+    \large Assessment on Online Dissemination of Policy Evaluations\\
+    \vspace{1cm}
+}
+
+\author{
+    \textbf{GV343}\\
+    \textbf{Candidate Number:}\\
+    62673\\
+    74027\\
+    63741\\
+    62106\\
+    \vspace{0.2cm}\\
+    \underline{\textit{The London School of Economics and Political Science}}
+    \vspace{1cm}
+}
+
+\date{
+December 2025\\
+\vspace{1cm}
+\textbf{Word Count:} 8293
+}
+
+\hyphenpenalty=5000
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\newpage
+\tableofcontents
+
+\newpage
+\section{Executive Summary\protect\footnotemark}
+\footnotetext{Longer because the client asked for an extended summary.}
+\subsection{Introduction}
+Policy evaluation refers to the structured and evidence-based assessment of the design, implementation or results of a planned, ongoing or completed public policy. The 2022 \textit{OECD Recommendation on Public Policy Evaluation} called on countries to develop a more systematic and institutionalised approach to policy evaluation to strengthen uptake. For evaluations to have a tangible impact on future policy, they must be clearly communicated. In 2023, the OECD conducted a survey in which only 13 Members reported having a centralised portal for evaluations. Even among these countries, there remains great heterogeneity in online dissemination practices.
+\bigskip\\
+This report explores how evaluations are \textbf{presented} and \textbf{used} by key stakeholders across OECD countries. It provides three key contributions:
+
+\begin{enumerate}
+    \item Update and expansion on evaluation portal information provided by the 2023 survey.
+
+\begin{enumerate}
+    \item Identifying a set of key features for the accessibility and comprehensiveness of portals
+    \item Formulating experimental indices on accessibility and comprehensiveness
+    \item Developing an interactive map to visualise findings
+\end{enumerate}
+
+    \item Three qualitative case studies, based on evaluation dissemination practices in the UK, the Netherlands, and Iceland.
+    \item Recommendations to improve the access, visibility, and stakeholder uptake of evaluation results across OECD countries. 4 of these recommendations apply to all portals, while the remaining 4 focus on  government internal dissemination and public dissemination respectively.
+\end{enumerate}
+
+\subsection{Accessibility}
+A portal’s accessibility is measured based on criteria that display its navigability and legibility. An accessible portal will mitigate barriers for users to locate and consume information.
+
+\subsubsection*{Structural features}
+\begin{itemize}
+    \item Centralised Portal: \\
+    This is whether a catalogue of evaluations exists in a single location. They can facilitate easier access. The prevalence of centralised portals has increased since the 2023 survey, though coverage still varies across member states.
+    \item Independent Website: \\
+    This indicates whether the portal exists independently or as a subtab of another government website. Association is found between independence and more accessibility features.
+    \item Policy Area Categorisation: \\
+    This is when evaluations are sorted by policy areas, facilitating navigation. 
+    \item Search Function: \\
+    This refers to a simple text-entry search bar to explore entries by keywords. It is critically important to facilitate navigation.
+\end{itemize}
+
+\subsubsection*{Presentation features}
+    \begin{itemize}
+        \item Summaries: \\
+        These are on-site summaries available for evaluations. They enable users to quickly understand the report before reading it in full. 
+        \item Accessibility Tools: \\
+       These are assistant tools for disabled individuals. Examples are voiceover or contrasted page colours.
+        \item Visual Features
+        \begin{itemize}
+            \item Visual presentation: graphs, images, infographics.
+            \item Interactive tools: educational tools, interactive timeline.
+            \item Layout: clear and comfortable layout and font.
+        \end{itemize}
+    \end{itemize}
+
+\subsection{Comprehensiveness}
+The comprehensiveness of a portal is measured under 3 criteria:
+
+\subsubsection*{Years covered by published evaluations}
+
+\begin{itemize}
+    \item This reflects the years between the oldest and newest evaluations available on each country’s portal
+    \item Recent evaluation coverage is strong, but weaker historically
+    \item 19 countries’ portals include evaluations from 2010 onwards, but most do not cover from before 2000 and only two cover before 1990
+\end{itemize}
+
+\subsubsection*{The volume of evaluations available}
+
+\begin{itemize}
+    \item For countries where the exact volume of evaluations could not be determined, an approximation has been made (approximate figures are indicated by +)
+    \item There is heterogeneity across countries, but of the portals where this has been identified or approximated, 76\% contain between 0-500 evaluations
+    \item With 6924 evaluations, Norway has by far the greatest volume on its portal
+\end{itemize}
+
+\subsubsection*{The breadth of policy areas measured by \textit{COFOG} categories}
+
+\begin{itemize}
+    \item The \textit{COFOG} coverage of each portal in this report refers to the number of first-level COFOG divisions covered across evaluations published on all portals by a country. A higher COFOG coverage signals a higher degree of comprehensiveness
+    \item Most countries do not achieve full COFOG coverage: 16 countries (42\%) cover all 10 COFOG categories, with the remaining countries ranging between 0-9 categories
+\end{itemize}
+
+\subsection{Experimental Index}
+The information collected on accessibility and comprehensiveness is used to create an experimental index for each portal. It is experimental because we acknowledge potential inaccuracies in our data collection. Nonetheless, indexing this information provides a more holistic overview of the portals of OECD Members
+
+\subsubsection*{Accessibility Index}
+The five most objective accessibility features are normalised into an index between 0 and 1: central portal exists, policy area categorisation, search function, summaries exist on portal, and accessibility tools. Where these features exist, a score of 1 is given. Where they are absent, a score of 0 is given. The five scores are averaged to calculate the accessibility index score. 
+\bigskip\\
+Using this index, we find:
+\begin{itemize}
+    \item On average, independent portals have higher scores in the accessibility index at the 1\% significance level. 
+    \item This might suggest that developing an independent portal for evaluations could enable more accessibility features, or that governments dedicated to promoting accessibility in dissemination practices might be more likely to develop an independent evaluation portal.
+\end{itemize}
+
+\subsubsection*{Comprehensiveness Index}
+The three measures for comprehensiveness are normalised into an index between 0-1. The index score is calculated by taking a simple average between the indices of these measures. The overall index is bounded between 0 and 1, where 0.5 represents moderate performance.
+
+\subsubsection*{Overall Index}
+The overall index is calculated by averaging the accessibility and comprehensiveness indices. The overall index is bounded between 0 and 1, where 0.5 represents moderate performance.
+\begin{itemize}
+    \item We find that centralised portals tend to have higher overall index scores.
+    \item We find no significant correlation between government expenditure and overall index score.
+\end{itemize}
+
+\subsubsection*{Caveat}
+When no central portal could be identified, data were gathered from decentralised ministry websites. In these cases, each country's \textit{COFOG} categories include policy areas covered by all existing portals, while the rest is collected from the most representative decentralised portal. The most representative portal is likely the one that contains the highest volume and year coverage. This approach aims to review each country's web portal holistically, while acknowledging that it might induce systematic bias for countries without central portals in the indices. However, these cases are flagged on all figures provided.
+
+\subsection{Interactive Map}
+To present our findings, we have also developed an interactive map which colour-scaless OECD countries based on each data point. Green indicates the presence of the selected accessibility feature, while red indicates its absence. For the comprehensiveness measures, the normalised 0-1 indices and general index are used to map the colour scale from light to dark blue. The accessibility index is colour-scaled from light to dark orange. The overall index is colour-scaled from light to dark purple.
+\begin{figure} [htbp]
+    \centering
+    \caption{Screenshot of the Interactive Map}
+    \label{fig:interactive-map}
+    \includegraphics[width=\linewidth]{fig/interactive_map.png}
+\end{figure}
+
+\subsection{Case Studies}
+\subsubsection*{United Kingdom}
+Among the newest portals surveyed, the UK’s Evaluation Registry is the highest on our overall index due to its high degree of comprehensiveness and accessibility. The Registry centralises evaluations  by each government department and presents clear findings. A range of accessibility features assists this process, with a notable inclusion of AI-generated summaries. This is a cost-effective approach to level the standard of a large number of backfilled reports with the latest reports. The Registry primarily focuses on internal accessibility and dissemination. These factors indicate that the portal is a highly specialised tool for internal knowledge sharing in the pursuit of evidence-based policy design. Potential improvements on public engagement include expanding AI features and engaging more closely with government project tracking databases.
+
+\subsubsection*{The Netherlands}
+The evaluation portal for the Netherlands is a strong example of how countries can combine both a decentralised and centralised approach.  Evaluations are carried out by line ministries but regulatory oversight is centralised, with evaluations being monitored and published by the Ministry of Finance. The portal ranked second highest on our experimental index of comprehensiveness, achieving a score of 0.87. Completed evaluations span 53 years, from 1972 to 2025, and planned evaluations are announced up to 2032. All 10 \textit{COFOG} categories are covered, although the exact volume of evaluations on the portal is estimated. The portal is adequately accessible, receiving an accessibility index score of 0.8. Features include a search function, filters for department and evaluation type, accessibility options, and visual and interactive tools.
+\bigskip\\
+There appear to be three main factors which influence the dissemination and impact of evaluations in the Netherlands: the political salience of the evaluation topic, coverage in parliament, and whether infographic features are present. Although IBOs (spending reviews) are distinct from evaluations, they are still useful in explaining variation in the uptake and impact of evaluations. Thus, we provide evidence of two IBOs which appear to have influenced policies, the media, and the broader political environment to demonstrate the importance of these factors. A potential approach to promote public access is to link policy evaluations more closely with IBOs.
+
+\subsubsection*{Iceland}
+Government policy evaluations in Iceland are predominantly conducted on an ad-hoc basis when requested by ministers. Only the Ministry of Foreign Affairs publishes evaluation reports on a regular basis. Its web portal lists reports in the order of date published, with the most recent published in 2025 and the oldest published in 2017. The portal has an overall score of 0.22 in the bottom quartile of the index. This reflects a lack of accessibility features including a search function, filters, and interactive tools.
+\bigskip\\
+Due to the small size of its government and budget, we learn that Iceland might face challenges in creating an evaluation system that is able to effectively disseminate reports. Relatively limited resources as well as the lack of legal instruments in Iceland motivates the government to focus more on delivering general services and tracking legislation implementation through regulatory impact assessments rather than ex-post policy evaluation. The lack of association between the overall portal index and government expenditure suggests that limited investment in portals may reflect uncertainty about returns rather than budget constraints alone. Further robust cost-benefit research on policy evaluation practices might be necessary to justify investment in institutionalising policy evaluations.
+
+\subsection{Recommendations}
+The development and maintenance effort of policy evaluation portals is contingent on countries' existing technical capacity, evaluation resources, and targeted audience. In line with the \textit{2022 Recommendation} we provide 8 key recommendations:
+
+\subsubsection*{General recommendations}
+\begin{enumerate}
+    \item Leverage existing evaluation infrastructure like databases or publication libraries to reduce the cost of developing the framework from scratch.
+    \item Develop portal features in phases. Starting with organisational features, and develop more advanced digital tools in later stages. Organisational features ensure easy navigation for users. AI is a cost-effective advanced feature to explore, as it can also facilitate the organisation of materials.
+    \item Prioritise evaluation capacity. If evaluations were not performed at scale, motivations to develop a centralised portal would be limited and the content within the portal will be narrow. 
+    \item Review good practices on dissemination. For example, the European Food Safety Authority (EFSA) provides guidelines on a systematic phased approach to dissemination. This involves identifying the objectives, audience, and key channels of distribution to incorporate into the dissemination design. 
+\end{enumerate}
+
+\subsubsection*{Internal dissemination}
+\begin{enumerate}
+\setcounter {enumi}{4}
+    \item Reduce barriers for evaluators to upload reports onto the portals. This facilitates the process of centralising all reports.
+    \item Integrate evaluation cycles by closely linking ex-post and ex-ante appraisals and assessments. This enables the efficient pass-through of ex-post appraisal findings in future ex-ante assessments. 
+\end{enumerate}
+
+\subsubsection*{External dissemination}
+\begin{enumerate}
+\setcounter {enumi}{6}
+    \item Closely link evaluations with budgetary assessments. The latter tend to attract more media coverage and public attention. Linking them together can draw public attention closer to policy evaluations.
+    \item Focus on infographics and interactive features. A promising direction is AI features like chatbot trained on evaluation data.
+\end{enumerate}
+When implementing these recommendations, countries might be deterred by long-term commitment in resources. Due to relatively little public demand, priority will tend to lie in developing a functional internal tool with some degree of transparency for external interested parties. Future research into the importance of public engagement in policy evaluations might provide better insights on how to balance dissemination efforts targeted towards internal audiences and the general public.
+
+\newpage
+\section{Introduction}
+\subsection{Background}
+Policy evaluation refers to the structured and evidence-based assessment of the design, implementation, or results of a planned, ongoing, or completed public policy. Evaluations are similar to, but distinct from, audit reports and spending reviews. Unlike audits, evaluations are carried out within government departments to inform future policy designs. This feature also distinguishes policy evaluations from spending reviews, which focus narrowly on the budgetary aspect of government policies. 
+\bigskip\\
+In 2022, the \textit{OECD Council} adopted a \textit{ Recommendation on Public Policy Evaluation} to address `complex policy challenges, declining levels of trust and resource constraint'.  The \textit{Recommendation} highlighted the need for countries to develop a more systematic and institutionalised approach to policy evaluation. In particular, it encouraged countries to `provide easy access to evaluations and present the findings deliberately in order to improve the uptake of evaluation results'. For evaluations to have a tangible impact on future policy, they must be clearly communicated. However, data and research on the dissemination of evaluations have been very limited. In 2023, the OECD conducted a survey to investigate the state of evaluation dissemination across OECD Members. Only 13 countries responded `Yes’ to Question 34 of the survey, which asked whether countries have a single centralised portal for evaluations. Even among these countries, portal features vary significantly. Some portals provide users with easy access to reports across all policy areas, while others are difficult to navigate or cover only a limited range of policy areas and volume of evaluations. For countries without centralised portals,  government ministries often publish evaluations internally. In general, there is great heterogeneity in online dissemination practices among OECD countries.
+
+\subsection{Report Overview}
+This report aims to address the gap in current research on policy evaluation dissemination by exploring how evaluations are presented and used by key stakeholders across OECD countries. First, it updates and expands on the portal information provided in the \textit{2023 Survey}. This involves developing a list of information to document the accessibility and comprehensiveness of evaluation portals. This information is used to formulate an experimental index of accessibility and comprehensiveness. It is also used to develop an interactive map to presenting these findings. Secondly, interviews were conducted with key stakeholders in three case studies to learn about the design and impacts of their evaluation dissemination practices.
+\bigskip\\
+Drawing on these methods, the report provides four general recommendations to improve the access, visibility and stakeholder uptake of evaluation results across OECD countries. First, countries should leverage existing evaluation infrastructure, such as databases or publication libraries, to reduce the cost of developing portals from scratch. Secondly, countries should follow a phased approach to portal development, starting with organisational features before focusing on more advanced digital tools such as AI-supported evaluation summaries or chatbots and interactive features. Third, countries should prioritise evaluation capacity before the advanced development of a portal. Fourth, countries should review good practices of information, such as the European Food Safety Authority dissemination guidelines, as a reference point for their own approach to evaluations.
+\bigskip\\
+Four additional recommendations are provided, tailored to the intended audience of the portal. When internal government use is prioritised, it is advisable to improve the systems through which evaluations are uploaded and encourage greater integration of the evaluation cycle. When external or public use is prioritised, the recommend approach involves tying evaluations to corresponding budgetary articles and greater use of infographic features to engage the media and the broader public.
+
+
+\newpage
+\section{Portals Overview}
+This report documents information about policy evaluation portals for OECD Member states using two categories: \textbf{comprehensiveness} and \textbf{accessibility}. Comprehensiveness refers to the extent of coverage of policy evaluations for each portal. Accessibility refers to the extent to which a public policy evaluation portal facilitates easy access for key stakeholders. \hyperref[annex:info-list]{Annex 2} shows the list of all information points collected, and all the data are compiled in \hyperref[annex:info-tab]{Annex 3. \texttt{portals\_information.csv}}. Most of the data were manually collected. We, therefore, acknowledge potential inaccuracies in the data, but flag any data point that is estimated rather than exact.
+
+\subsection{Accessibility}
+To assess accessibility in an objective manner, the authors create a list of accessibility features and assess whether each portal features them. This is documented in a binary `Yes/No' basis. Portal organisation varies significantly between countries, so notes are made on additional observations that are not covered by the binary entries. The initial selection of observed features was narrowed down to exclude redundant, niche, or inconsistent observations. The remaining list is a set of indicative and consistent features, detailed below in approximate order of significance. 
+\bigskip\\
+Accessibility is promoted through a variety of mechanisms. These mechanisms can be broadly categorised into organisation and presentation. Organisational features pertain to the structure of the website and navigation tools. They are important for users to navigate to the desired sections on the website. The first 4 features listed in this section below are organisational features. Presentational features promote legibility to facilitate effective communication of information. These include accessibility tools, visual presentations, website layout, and interactive tools. However, these measures are often more contingent on the specific context of each country. As such only accessibility tools are examined further due to the relative objectivity of their existence and importance in broadening accessibility to disabled individuals.
+
+\subsubsection{Does a Central Portal Exist?}
+One of the most crucial features is the centralisation of a portal. To qualify for having a central portal, all evaluations should be published on a single site, rather than spread across numerous sites. Many countries conduct evaluations within departments or ministries and publish them across multiple different websites. Having all evaluations available in a central location enables simpler navigation and enables users to locate specific information with ease. By contrast, decentralised evaluation websites often require users to know the specific name of the evaluation or department they seek. However, a decentralised portal can also have some benefits, such as enabling easier research within a specific field. For example, many decentralised portals focus exclusively on development policy, which can make it significantly easier to locate evaluations within that policy area.
+\bigskip\\
+The two organisational structures are not necessarily mutually exclusive, as many countries operate on both systems. If a central portal does not exist, more information on how the separate sites are organised is also documented.
+
+\input{tab/portal_comparison_table}
+
+The \textit{2023 Survey Dataset} provides responses from 31 countries on whether they have a central web portal for evaluations. \autoref{tab:portal_comparison_table} shows whether each country has a central evaluation portal as of November 2025, and compares it to the \textit{2023 Survey Dataset}. There are several cases to note.
+
+\paragraph{From `Yes' to `No'}
+This is the red row. Austria is the only case in \autoref{tab:portal_comparison_table} that indicates no central portal but was indicated with a central portal in the \textit{2023 Survey}. This is because the website appended to \textit{2023 Survey Question 34} only contains reports on R\&D policies, which corresponds to just 1 \textit{COFOG} (OECD, 2025) category. Under the criteria of this report, this is not considered a central portal.
+
+\paragraph{From `No'/`under development' to `Yes'}
+These are the blue rows. 11 countries shift status on central portal from `No' or `under development' to `Yes' in the \autoref{tab:portal_comparison_table}. This does not necessarily indicate that they developed their central policy evaluation portal.  It could, for example, indicate that these countries did not respond accurately in the \textit{2023 Survey}. This is plausible considering existing ambiguity around the definition of a policy evaluation.
+
+\paragraph{From `underdevelopment' to `No'}
+This is the orange row. Hungary is the only case with this shift. Data collection found that Hungary does not have a central portal for policy evaluations. However, since they indicated ongoing development in the \textit{2023 Survey}, the assumption is that it is still under development.
+
+\paragraph{Countries Not In the \textit{2023 Survey}}
+These are the green rows. 7 OECD Member states were not in the \textit{2023 Survey}. Out of the 7 countries, only South Korea has a central portal for policy evaluations.
+
+\input{tab/portal_table}
+
+\paragraph{Updated Table on Central Portal Status}
+Based on the assumption that Hungary is still developing their central web portal,  \autoref{tab:portal_table} shows an updated list of portal status by OECD Member states.
+
+\newpage
+\subsubsection{Whether the Web Portal is independent}
+Related to, but distinct from, the centralisation of the portal is whether it exists as an independent website or a subsection on a government or departmental website. In some cases, evaluation is carried out by an independent entity which has its own site. In other cases, an evaluation office may exist as part of a department, but still have an independent portal for publication. If either of these are true, the portal is marked as independent. The distinction between independent and non-independent portals is apparent through observation, but its importance is not immediately obvious. This report investigates this by testing the hypothesis that independent portals may enable countries to develop more accessibility features on their evaluation portals.
+
+\subsubsection{Search Function}
+A search function is one of the most fundamental tools for online navigation and research. For evaluation portals, a text entry field allows the user to search with key terms related to an evaluation of interest.  Many portals also offer filters to search by date, ministry, policy area, or evaluation status. For simplicity, priority has been given to the existence of a text based search bar as sufficient to classify a portal as having a search function. While additional features are useful, they are not strictly necessary and are often context-dependent.
+
+\subsubsection{Policy Area Categorisation}
+Policy area categorisation on a centralised portal normally involves labelling evaluations by policy area or department. It may be supplemented by a drop-down menu or search function filter. Organising evaluations by category is a shortcut to navigation. The table also documents whether decentralised portals publish evaluations by policy area or department.
+
+\subsubsection{Summary Availability}
+Many evaluations feature summaries and recommendations within the reports. However, presenting a summary on the portal saves time for the user and offers information beyond just the title. A portal has this feature if any form of summary is available without having to access or download the report itself. The content and detail varies between portals and some contain extra features, such as AI-generated summaries for older evaluations.
+
+\subsubsection{Accessibility Tools}
+Accessibility tools consist of optional settings designed to make websites simpler to use for individuals with disabilities. Such features include visual adjustments, text-to-speech audios, and reports available in different file formats. Websites typically contain an accessibility page with a statement about the accessibility provisions on the site. Details are given on any existing tools on each website in the notes in \hyperref[annex:info-tab]{Annex 3. \texttt{portals\_information.csv}}.
+
+\subsubsection{Overall features}
+The features above are the most objective indicators of portal accessibility, excluding portal independence. This is because the significance of portal independence is not immediately clear, and it is simpler to analyse the association between overall features and portal independence. \autoref{tab:accessibility_table} shows a summary of the findings for these indicators. 23 portals contain search functions, and 20 contain policy categorisation and summary features. However, only 9 portals contain accessibility tools.
+
+\input{tab/accessibility_table} 
+
+
+\subsection{Comprehensiveness}
+Comprehensiveness is evaluated under 3 criteria: 
+\begin{enumerate}
+    \item years covered by the evaluations
+    \item volume of evaluations available
+    \item breadth of policy areas each portal contains measured by \textit{COFOG} categories
+\end{enumerate}
+\subsubsection{Years Covered}
+This refers to the number of years between the oldest and newest evaluations available on each country's portal. Also documented are discontinuities in the years when no evaluation is available. However, in most cases, discontinuity was minimal. 
+\begin{figure}[hbtp]
+    \centering
+    \caption{Years Covered}
+    \label{fig:years_coverage}
+    \includegraphics[width=\linewidth]{fig/years_coverage.pdf}
+\end{figure}
+\autoref{fig:years_coverage} shows the years covered by evaluations published on each country's portal, ranked from highest to lowest. Note that discontinuity is not shown in this figure. 19 countries include evaluations from 2010 onwards, but most do not cover before 2000 and only two cover before 1990. Turkey is a noticeable case here. It has been conducting `\textit{Five-Year Development Plans}' since 1963 (State Planning Organisation, 1963). Except from the first \textit{Plan}, reports are commissioned by the government to evaluate the previous \textit{Plan} and give recommendations before outlining and implementing the next \textit{Plan}. 
+
+\subsubsection{Evaluation Volume}
+Evaluation volume details the number of evaluation documents that each country's portal contains. This is not an easy exercise and cases are noted where the figures used are an approximation. For countries without a centralised portal, the volume of the one ministry portal that is most comparable to a national portal, or likely to contain the highest volume, is used. In Austria, for example, there is no national portal for all policy areas. Although there are scattered webpages and ministries which publish occasional reports, the main government-run page specifically dedicated to publishing evaluations is operated by the Austrian Development Agency on behalf of the Federal Ministry for European and International Affairs. Therefore, it is the closest comparison to a national portal. \autoref{fig:volume} shows very large heterogeneity in volume, with key outliers. 76\% of portals contain between 0-500 evaluations. With 6924 evaluations, Norway has by far the greatest volume on its portal.
+\begin{figure}[hbtp]
+    \centering
+    \caption{Volume}
+    \label{fig:volume}
+    \includegraphics[width=\linewidth]{fig/volume.pdf}
+\end{figure}
+\subsubsection{COFOG Categories Coverage}
+The breadth of policy areas is assessed using the OECD Classification of the Functions of Government (\textit{COFOG}) (OECD, 2005) (See Annex C). \textit{COFOG} is a useful measure of comprehensiveness because it provides a standardised framework to compare policy areas across OECD countries. Many of the Member states organise ministries and policy functions in distinct ways. For example, the \textit{Employment and Social Development Canada} (ESDC) ministry oversees policies for employment and the labour market, public pensions, and social development. In Costa Rica, by contrast, these policy areas are divided among distinct ministries. Such differences make cross-national comparisons challenging. Using \textit{COFOG} enables classifying all policy areas into clear, shared groups which allows quantifying the policy scope within each portal. These groups are determined by the ten first-level \textit{COFOG} divisions: 
+
+\begin{enumerate}
+    \item General public services
+    \item Defence
+    \item Public order and safety
+    \item Economic affairs
+    \item Environmental protection
+    \item Housing and community amenities
+    \item Health
+    \item Recreation, culture and religion
+    \item Education
+    \item Social protection
+\end{enumerate}
+
+The \textit{COFOG} coverage of each portal in this report refers to the number of first-level divisions covered across evaluations published across all portals by the country. Higher \textit{COFOG} coverage signals higher comprehensiveness of the portal(s). While the second-level \textit{COFOG} divisions are useful in identifying which policy areas are included in each first-level division, they are not counted separately. The policy areas within each portal were reviewed and manually mapped to these \textit{COFOG} categories. In most cases, portals featured a sector or ministry filter which helped to identify the categories. Any ambiguous cases of classification were flagged in team meetings and reflected on the notes in \hyperref[annex:info-tab]{Annex 3. \texttt{portals\_information.csv}}. \autoref{fig:cofog_bar} shows the number out of 10 of \textit{COFOG} categories covered by each country's evaluation portal(s). Most countries do not achieve full COFOG coverage. 16 countries (42\%) cover all 10 COFOG categories, with the remaining countries ranging between 0-9 categories.
+
+\begin{figure} [htbp]
+    \centering
+    \caption{\textit{COFOG} Categories Coverage by Country}
+    \label{fig:cofog_bar}
+    \includegraphics[width=\linewidth]{fig/cofog_bar.pdf}
+\end{figure}
+
+\section{Experimental Index and Trends}
+This report develops an experimental index to summarise across all portal features collected. This is experimental due to potential inaccuracies that may exist in the data. Nonetheless, indexing this information provides a more holistic overview of each country's portal. Moreover, this enables further investigation into potential associations between portal features, and associations between portal features and country-specific conditions. 
+
+\subsection{Accessibility}
+The 5 features identified in \autoref{tab:accessibility_table}, are standardised for each country into an index between 0 and 1. These are features that a portal can either have or not have (treating Hungary's exception of currently developing a central portal as `no'), which can be transformed into a binary dummy of 1 for 'yes' and 0 for 'no'. Therefore, a simple average is taken across the 5 features for each country. \autoref{fig:accessibility-index} illustrates the accessibility index for each country. This enables 0 to represent portals with none of the features, and 1 to represent portals with all of the features. Higher scores in between represent portals with more features. If any feature is recorded as \textit{NA} for a country's portal(s), its index is dropped to \textit{NA}.
+\bigskip\\
+\begin{figure} [htbp]
+    \centering
+    \caption{Accessibility Index}
+    \label{fig:accessibility-index}
+    \includegraphics[width=\linewidth]{fig/accessibility_index_chart.pdf}
+\end{figure}
+\subsubsection{Association between Accessibility Features and Independent Web Portal}
+Using the accessibility index, a hypothesis test is carried out for whether countries having independent evaluation portals enables better overall accessibility features indicated by the accessibility score. \autoref{fig:features-independent} shows that independent portals, on average, have higher scores in the accessibility index at the 1\% significance level. This might suggest that developing an independent web portal for evaluations could enable more accessibility features tailored to policy evaluations, or that governments dedicated to promote the dissemination of policy evaluations might be more likely to develop an independent evaluation portal in the process. There are also likely other factors not considered, but this finding does not intend to establish any causal interpretation. 
+\bigskip\\
+
+\begin{figure} [htbp]
+    \centering
+    \caption{Accessibility Index by Web Portal Independence}
+    \label{fig:features-independent}
+    \includegraphics[width=\linewidth]{fig/features_independent_plot.pdf}
+\end{figure}
+\subsection{Comprehensiveness}
+The comprehensiveness measures for each country are analogously standardised into an index between 0-1. These measures are years covered, \textit{COFOG} categories coverage, and volume. Because they are not binary measures like the accessibility features, a simple average cannot be taken to standardise them. Instead, a simple approach is used: for each measure of a given country's portal, subtract the value to the smallest value in that measure, then divide this by the difference between the largest and smallest value in the measure. This allows 0 to represent the worst-performing observation, and 1 to represent the best-performing observation. All other values are linearly scaled between these bounds. However, the previous section demonstrates the high level of heterogeneity in volume. This means that the scale for volumes cannot be captured by a linear progression. Therefore, apply a log transformation to each country's evaluation volume on their portals before undergoing the standardisation to into 0-1. In particular, taking the $log$ of the volume value of each country +1 avoids the cases of $log(0)$. The comprehensiveness index is calculated by taking a simple average between the indices of the 3 measures listed above. \autoref{fig:comprehensiveness-index} shows the comprehensiveness index ranked from low to high. Because the country's index is dropped to \textit{NA} value if any of the 3 measures have \textit{NA} entries, many countries' portals do not obtain an index. However, this is necessary to avoid calculating the index using only 1 or 2 measures, which would induce bias. The index shows that decentralised portals tend to be less comprehensive, with the bottom 12 countries that qualify for the index having decentralised portals. Something to notice again is that Turkey's high score predominantly reflects its high year coverage.
+
+\begin{figure} [htbp]
+    \centering
+    \caption{Comprehensiveness Index}
+    \label{fig:comprehensiveness-index}
+    \includegraphics[width=\linewidth]{fig/comprehensiveness_index_chart.pdf}
+\end{figure}
+
+\subsection{Overall Index}
+From the accessibility and comprehensiveness index, a simple average between the two is taken to derive an overall portal index. \autoref{fig:overall-index} demonstrates this index ranked from low to high. Because any country's data is dropped to \textit{NA} if either accessibility or comprehensiveness index is \textit{NA}, many countries' portals have missing values. However, this is to ensure the non-biasedness of the index for the same reason as stated above.
+
+\subsection*{Caveat}
+When no central portal could be identified, data were gathered from decentralised ministry websites. In these cases, each country's \textit{COFOG} categories include policy areas covered by all existing portals, while the rest is collected from the most representative decentralised portal. The most representative portals are likely the ones that contains the highest volume and year coverage. This approach aims to review each country's web portal holistically, while acknowledging that it might induce systematic bias for countries without central portals in the indices. However, these cases are flagged on all figures provided.
+
+\begin{figure} [htbp]
+    \centering
+    \caption{Overall Portal Index}
+    \label{fig:overall-index}
+    \includegraphics[width=\linewidth]{fig/index_overall_chart.pdf}
+\end{figure}
+\subsubsection{Association between Overall Portal Index and Central Portal Status}
+Throughout the charts in the report, it is noticeable that countries with a centralised portal tend to have more accessibility features and cover evaluations more comprehensively. This tendency is also noticeable in the indices in this section. Therefore, a hypothesis test is performed for whether centralised portals are better in accessibility and comprehensiveness under the scope covered by the indices. Because the overall portal index is calculated with variables including the central portal status, a separate index is calculated excluding only central portal status to use in this analysis. Any \textit{NA} entries are also dropped. \autoref{fig:index-central} shows that centralised portals on average have almost double the scores than decentralised portals on the overall portal index, calculated excluding central portal status. This is at a less than 0.1\% significance level. A test is also run for the accessibility index and comprehensiveness indices separately, and both show significance results at less than 2\% levels. This might suggest that countries that invest in promoting policy evaluation dissemination would develop a centralised evaluation portal in the process, or that centralised evaluation portals allow for better features or more comprehensive evaluation coverage.
+
+\begin{figure} [htbp]
+    \centering
+    \caption{Overall Portal Index by Central Portal Status}
+    \label{fig:index-central}
+    \includegraphics[width=\linewidth]{fig/index_portal_plot.pdf}
+\end{figure}
+
+\subsubsection{Association between Overall Portal Index and Government Expenditure}
+Another hypothesis is tested on whether higher overall government expenditure associates with overall better portals, indicated by the overall portal index. The \hyperref[sec:uk]{UK case study} highlights that policy evaluation portals require ongoing commitment of resources, unlike projects that can be 'completed'. As elaborated in \hyperref[sec:iceland]{Iceland case study}, governments with tighter expenditures might be hesitant to commit ongoing efforts to develop,  maintain and improve policy evaluations portals. Because no data on the costs of developing and maintaining evaluation portals is readily accessible, the overall portal index is interpreted as a proxy for how much governments invest in evaluation portals. To test the hypothesis, regress each country's overall portal index on the country's average government expenditure between 2022-2024 in US dollars, adjusted to purchasing power parity. This period specifically is of interest because the OECD\textit{ Recommendation} was made in 2022 while the OECD data on government expenditure cut off in 2024.
+\bigskip\\
+\begin{figure} [htbp]
+    \centering
+    \caption{Overall Portal Index by Government Expenditure}
+    \label{fig:index-PPP}
+    \includegraphics[width=\linewidth]{fig/index_expenditure_PPP_chart.pdf}
+\end{figure}
+\autoref{fig:index-PPP} shows no significant correlation between the two variables. However, there is a cluster of \textit{OECD} countries with expenditures below \$2500 billion, but one data point on the extremely high end. To harmonise the scale, the method takes the log transformation of the government expenditure. \autoref{fig:index-PPP-log} shows that there is also no significant correlation between overall portal index and the log of government expenditure. In addition, smaller government expenditure as a percentage of GDP might be another restraint for governments to invest in evaluation portals. The \hyperref[sec:uk]{UK case study} suggest that certain countries might be concerned more about the cost-benefit aspect of investing in an evaluation portal. If a country's expenditure is a small percentage of GDP, this might reflect that the government plays a smaller role within the economy. Therefore the public might be more concerned if the government invest in intangible projects like evaluation portals. However, \autoref{fig:index-pGDP} shows no significant correlation between these two variables. Although many other factors are not considered in these regressions, they suggest that other factors are likely more significant in determining how much a country invests in policy evaluation portals.
+
+\begin{figure} [htbp]
+    \centering
+    \caption{Overall Portal Index by Log Government Expenditure}
+    \label{fig:index-PPP-log}
+    \includegraphics[width=\linewidth]{fig/index_expenditure_PPP_chart_log.pdf}
+\end{figure}
+\begin{figure} [htbp]
+    \centering
+    \caption{Overall Portal Index by Government Expenditure as GDP\%}
+    \label{fig:index-pGDP}
+    \includegraphics[width=\linewidth]{fig/index_expenditure_pGDP_chart.pdf}
+\end{figure}
+
+\newpage
+\section{Interactive Map}
+To show the findings on OECD countries' portals visually, the authors develop an interactive map to colour-scale countries based on each data point. This is developed through HTML and JavaScripts which largely mirror the framework and layout of the OECD Local Data Portal (2025). Green and red denotes whether a country's portal has the selected accessibility feature. For the comprehensiveness measures, the normalised 0-1 indices are used to map the colour scale from red to green. The accessibility and comprehensiveness indices are also colour scaled from red to green to represent the range 0-1. 
+
+\begin{figure} [htbp]
+    \centering
+    \caption{Screenshot of the Interactive Map}
+    \label{fig:interactive-map}
+    \includegraphics[width=\linewidth]{fig/interactive_map.png}
+\end{figure}
+
+\newpage
+\section{Case Studies}
+To learn further insights into the operation and impact of evaluation portals, interviews were conducted with anonymous academics and officials from the United Kingdom, the Netherlands, and Iceland. The information in this section is largely informed by these interviews.
+
+\subsection{The United Kingdom}
+\label{sec:uk}
+\subsubsection{Overview of Evaluation System in the UK}
+The UK operates a hybrid system of evaluations. Each department is responsible for their own evaluations while a small number of central bodies enforce consistent standards and provide oversight and coordination. The key central organisations for evaluation are HM Treasury (HMT), the Cabinet Office (CO), and the government’s Evaluation Task Force (ETF). The Green Book outlines out the expectations and standards these departments use to oversee general policy, programme and project evaluations. The Magenta Book also details a comprehensive guide to evaluation, from scoping and design to use and dissemination. The ETF is a joint organisation of HMT and the CO. It was set up to support departments in the design and commission of evaluations, following the 2020 Spending Review to promote evidence-based policy making.
+\bigskip\\
+Evaluation responsibilities, however, remain largely decentralised. Individual departments decide which policies to evaluate and the appropriate timeline. There is no statutory requirement for evaluation coverage unless funding criteria are met, but departments are expected to publish their findings under the Government Social Research (GSR) Publication Protocol, which pre-dates the existence of the current national portal.
+\vspace{0.005cm}\\
+Spending reviews do not constitute evaluation reports in the UK system, but cost effectiveness and affordability are explicit concerns of the evaluation policies.
+\bigskip\\
+The UK’s case is of interest because it recently launched its national portal. The Evaluation Registry (ER) is an ETF project undertaken after recommendations from the National Audit Office (NAO) and Public Accounts Committee (PAC) over the need for a centralised, transparent repository for all government evaluations. After initial scoping work, development started in 2023 and the Registry was launched in March 2025. The resultant portal topped the experimental index with a score of 0.88. Officials at both the ETF and ER were interviewed to learn the purposes of its design and understand its operation in the months since its launch.
+
+\subsubsection{Comprehensiveness}
+The ER displays a high degree of comprehensiveness with a score of 0.76. It includes ongoing and planned evaluations, as well as those completed and published. All 10 \textit{COFOG} categories are represented along with the majority of UK government departments, although coverage varies due to the difficulty of ensuring all departments upload. While departments are now required to add all planned, live and completed evaluations dating from April 1st 2024, ETF enforcement is largely limited to ongoing monitoring for uptake and usage with room for escalation in cases of negligence. Prior to this date, upload is not mandatory, but great lengths have been taken in back-filling evaluations back to the 1990s. The Registry contains 1,876 entries as of 04/12/2025 (See Annex L). This includes reports from departments that have since been closed, such as the Department for International Development.
+
+
+\subsubsection{Accessibility}
+The ER exists as one centralised portal on the UK government website that is both well presented and easily navigable. The search function and available filters reflect the priorities and guidance found in the Magenta Book. It features breakdown by evaluation types, stages and methodologies that goes beyond simple sorting by departments (See Annex M). The emphasis on affordability is reflected in the cost estimates given for each evaluation. The website features a multitude of accessibility tools for disabled individuals, and the presentation is uncluttered and digestible. A notable feature is the inclusion of AI-generated summaries used to backfill old evaluations (See Annex N). All new evaluations require evaluators to provide summaries, but AI-generations provide a cost-effective approach to extend this standard consistently to older summaries, alongside disclaimers for AI use. The existence of these fundamental features gives the portal a perfect score of 1 in the accessibility index.
+\bigskip\\
+There are little additional aesthetic designs, visual presentations, or interactive tools. This is likely due to the Registry’s focus on internal over public consumption. The main purpose of creating the ER is to facilitate internal civil service and officials to access evaluations easily across government departments.The ETF’s mission also focuses primarily on internal knowledge sharing to facilitate evidenced-based policy designs. This focus is evident in the design of the website. The frequently asked questions (FAQs) on the Registry largely focus on the uploading procedures (\href{https://www.gov.uk/government/publications/evaluation-registry-faqs}{Evaluation Registry - FAQs}). In addition, the upload process only requires essential information (title, method, category, date) for each report. This is to overcome potential barriers from a complicated uploading process.
+
+
+\subsubsection{Impact and Dissemination}
+The ER’s intended users are government evaluators, internal policy officials, academics, and external evaluators. There is limited proactive dissemination aimed at the public and the media. However, public demand for evaluations would also align with their goal of promoting evidence-based policy. Nonetheless, its current design still enables interested parties to access policy evaluations more easily.
+\bigskip\\
+The Registry has a record for internal uploads but does not monitor internal usage. They noticed periods of high external activity and media coverage around the portal’s launch in August 2025. This could indicate substantive external engagement with the portal. They have also been approached by other countries and the OECD to share information about the portal. The officials did not offer specific examples where the portal had a direct impact, but highlighted the difficulties of tracking influence through user activities.
+
+
+\subsubsection{Further Reflections and Planned Reforms}
+The ER is only recently established and will continue to develop via user feedback. Compliance monitoring is ongoing, and international collaboration offers new opportunities for development. The AI-generated summary is a highlight in its design. In general, AI provides a cost-effective approach to promote accessibility in disseminating less digestible contents like policy evaluations to the public. A potential AI feature to explore could be training an AI large language model with the evaluation database, which enables users to interact and ask questions regarding policy evaluations. This would facilitate access from the general public if implemented. 
+\bigskip\\
+The development and launch of the portal reveals some key insights. Creating an evaluation portal is not a one-off initiative, but rather a digital project requiring ongoing institutional commitment on sustained resources, technical capacity, and long-term maintenance. These features distinguish it from other government programmes that do not require indefinite investment, but leveraging existing institutional structures can reduce this constraint. For example, by collaborating closely with existing databases or harmonising with existing standards, such as the Magenta Book in the UK. 
+\bigskip\\
+Moreover, it is worth notice that there is an existing Government Major Project Portfolio database in the UK (NISTA, 2025). Linking this database to the Registry might promote higher public interest and accessibility. As will be elaborated further in the Dutch case study, reports on government expenditure often attract more public attention than policy evaluations. Therefore, this is another example of cost-effective approach that require minimal resources.
+
+
+\subsection{The Netherlands}
+\subsubsection{Overview of the Evaluation System in the Netherlands}
+The policy evaluation system in the Netherlands devolves the responsibility of producing policy evaluations to the line ministries, but regulatory oversight for the whole system is exercised by the Director General for the Budget within the Ministry of Finance. Although the evaluations themselves are relatively decentralised, the national portal is centrally operated by the Ministry of Finance. The Ministry sets the rules for how evaluations should be carried out, ensures that line ministries evaluate appropriate policies, and enforces quality standards for evaluations. Every policy area must be evaluated on a regular basis (at least every 7 years), and each ministry is required to appoint a directorate for Financial and Economic Matters (FEZ) to coordinate and supervise evaluations (OECD 2022 pp.15-16). Periodic policy reviews are the flagship evaluation reports. They synthesise a number of individual evaluations and are produced every 4-7 years for each policy area (Ministerie van Financiën 2025). The remaining individual evaluations tend to focus on narrower policy areas and reach smaller audiences.
+\bigskip\\
+Although the Dutch Ministry of Finance considers spending reviews to be an instrument of evaluation, they are not equivalent to public policy evaluations. Spending reviews, known as IBOs (Interdepartmentale Beleidsonderzoeken), are a budgetary instrument led by the Ministry of Finance. The topics and terms of reference for IBOs are negotiated between the Ministry of Finance and the line ministries. IBOs assess current policies and their corresponding budgets, as well as provide alternative policy options (Ministry of Finance of the Netherlands, 2025a, p.8). They are produced by inter-departmental working groups, comprising of civil servants from relevant line ministries and the Ministry of Finance. 
+
+
+\subsubsection{A review of the National Portal}
+\textbf{Comprehensiveness}\\
+The portal ranked second highest on the experimental index of comprehensiveness, achieving a score of 0.87. It covers a relatively wide range of years with completed evaluations spanning 53 years, from 1972 to 2025, and planned evaluations announced up to 2032. However, between 1974-1979, no evaluations are available (Ministry of Finance of the Netherlands 2025b; Ministry of Finance of the Netherlands, 1972). The Ministry of Finance provides no explanation for this discontinuity, so it must be inferred that either no evaluations were carried out in this period or that technical issues have prevented evaluations from being included in the portal. Nonetheless, the time scale covered in the portal is still significantly broader than most other countries' portals examined.
+\bigskip\\
+The portal covers all 10 \textit{COFOG} categories. The portal does not show the total number of evaluations published, but interviews revealed that around 400 evaluations are completed each year (See annex E). However, not all of these evaluations are uploaded to the portal. Flagship spending reviews and periodic policy reviews are almost always included in the portal and shared by line ministries, but individual evaluations are not always uploaded to the portal.
+\bigskip\\
+\textbf{Accessibility}\\
+The portal is adequately accessible, receiving an accessibility index score of 0.8. It features a search function, filters for department and evaluation type, accessibility options, and visual and interactive tools to explain the evaluation process (See Annex F). Full evaluations are available to download directly from the portal, but no summaries are provided. However, users might find it difficult to locate evaluations without knowing the names of the specific reports. This suggests further efforts in clearly listing and categorising all policies and their evaluations can be helpful. Nevertheless, the portal's high level of comprehensiveness and accessibility relative to other countries means that it ranks second highest on the overall index, with a score of 0.83.
+\bigskip\\
+\subsubsection{Impact and Dissemination}
+There appear to be three main factors which influence the dissemination and impact of evaluations in the Netherlands. First, the topics that evaluations focus on. There is a sharp difference in traction between spending reviews and evaluations. Since spending reviews are forward-looking and often focus on broad and politically sensitive policy areas, they tend to gain more attention. They also have a longer shelf life, often being reused and becoming relevant again years later. Coalition negotiations and agreement among political parties in the Netherlands, for example, often refer to spending reviews. By contrast, evaluations tend to gain less traction. One reason might be because they are inherently retrospective and often focus on narrower policy areas. This makes them less likely to be reused over time and reduces the incentive to locate all evaluations in one portal. The Ministry of Finance plans to carry out a full investigation in 2026 into why evaluations are less impactful on public discourse, the media, and policy development.
+\bigskip\\
+Secondly, coverage in parliament. Between 80-85\% of all evaluations are sent to parliament and prompt a cabinet response. They are published on line ministry and parliament websites, as well as on the national evaluation web portal. Therefore, the publication of evaluations on the centralised portal does not, in itself, lead to a broader dissemination because of other existing channels of distribution. The added value of the centralised portal by design purpose is not in promoting dissemination, but in centralising evaluations for research purposes. All spending reviews are discussed in parliament, but parliamentary interest in evaluations varies.  When evaluations focus on less politically salient issues, they are less likely to attract attention in parliament and therefore gain less traction.
+\bigskip\\
+Finally, evaluations which feature infographics tend to have a higher uptake. Infographics are easier to interpret and share, enabling more traction among the media, parliament and the general public. Therefore, it is likely that evaluations would be more likely broadly circulated if the portal featured more infographics.
+
+\subsubsection{2016 Case}
+Although IBOs are distinct from evaluations, they are still useful in explaining variation in the uptake and impact of evaluations. IBOs and evaluations are published on the same portal, and the factors that influence their impact are broadly similar. Since IBOs tend to attract more attention and have a visible impact, it is more feasible to trace the mechanisms through which that impact occurs and ultimately use that information to understand why the impact of evaluations varies.
+
+The 2016 IBO on Cost-Effective Measures for CO2 Reduction, for example, is a case where an IBO seems to have had a clear impact on policy, the media, and the broader political environment (Ministry of Finance of the Netherlands 2025a p.12). The IBO was initially sent to Parliament and published on the evaluation portal in April 2016. On 9th April, the cabinet publicly acknowledged and accepted the recommendations of the report (See Annex G). While this was the only instance which directly referenced the IBO, there were a number of other events which can also likely be, at least partly, attributed to the IBO.
+
+In September 2016, the Dutch Parliament voted to `close down the country’s coal industry' in a non-binding motion, urging the government to cut emissions (Neslen, 2016). The motion echoed the IBO recommendation for the complete closure of all coal-fired power plants (Ministerie van Financiën 2016 p.11).  The IBO also `played an important role in the 2017 general election' (Ministry of Finance of the Netherlands  2025 p.12). Among seven of the biggest political parties in the Netherlands (VVD, PvdA, SP, D66, ChristenUnie, GroenLinks, Vrijzinnige Partij), six of them adopted measures in their manifesto to close all coal-fired power plants by 2030 (PBL 2017 p.29). 
+\bigskip\\
+Finally, the post-election coalition agreement established in October 2017 stated that `coal-fired plants will be phased out by the end of 2030 at the latest' (Government of the Netherlands 2017 p.43). Although this does not produce causal inference, the association and timing between the policy recommendations in the IBO, and policy and manifesto changes that were made strongly suggests that the IBO did have some impact on policy, the media and the political environment. 
+
+\subsubsection{2023 Case}
+A related IBO subsequently published in 2023 had a clear impact. The 2023 IBO was motivated by a consensus that existing policies were insufficient to meet the Netherland’s target of a 55-60\% reduction in $CO_2$ emissions by 2030 (Algemeen Dagblad Editorial, 2022; Government of the Netherlands 2023 p.2). However, the Minister for Climate and Energy agreed to implement all measures in the IBO before it was even published. This increased pressure on the process of writing the IBO and generated more attention in the public sphere.  
+\bigskip\\
+The IBO attracted further attention by including several controversial recommendations, including a tax on meat and dairy (Government of the Netherlands 2023 p.7). These policies generated widespread reactions within the public sphere and civil society. In parliament, the meat and dairy tax was debated extensively, with one parliament member criticising the idea to `heavily subsidise [meat] production on the one hand and then discourage its use with a penalty tax' (House of Representatives of the State General, 2023; see annex H). National media outlets also publicised the policies, which led to broader public debate about the IBO and climate policy in general (Hans van Soest 2023, see Annex I). The government ultimately abandoned these controversial proposals, but many other recommendations made in the IBO were implemented. In response to a parliamentary question about which areas of the IBO had been adopted, the Ministry for Climate and Energy stated that `in the electricity sector, the government has adopted all measures included in the IBO.' (Minister for Climate and Energy, 2023; see annex J) In other sectors, not all recommended measures were fully implemented, but many were still partially adopted (See annex J). Given this evidence, it seems probable that the 2023 IBO on climate change did have an impact on policy, the media, and the broader political environment.
+\bigskip\\
+However, it is important to emphasise that this impact is attributable to a number of different factors. Other than for research purposes, the impact of publishing IBOs and evaluations on the national portal is negligible. What appears to be more important for uptake is the political saliency of the topic evaluated and the extent to which it receives exposure in parliament. These factors heavily influence the level of media coverage and, in turn, the level of public awareness that an evaluation receives. Therefore, if countries seek to increase public uptake, they should aim to make evaluations more relevant to publicly interested topics. One way of achieving this might be to tie evaluations to their corresponding budget articles, in order to take advantage of the higher level of interest on spending reviews (see \hyperref[sec:rec-public]{Section 7.3}).
+
+
+\subsection{Iceland}
+\label{sec:iceland}
+\subsubsection{Overview of Evaluation System in Iceland}
+The evaluation system in Iceland is largely decentralised. Policy evaluations are produced within separate ministries. However, publications on ministry websites are rare and limited to a small number of policy categories.
+\bigskip\\
+An exception to this observation is the Ministry of Foreign Affairs, which regularly commissions evaluations and publishes reports on its website. These reports mainly cover evaluations on international development, and are drafted in accordance with its evaluation strategy for 2024-2028 (Ministry of Welfare, 2023). This strategy defines 6 criteria that must be assessed for each policy intervention to ensure the improvement of international development outcomes: the relevance, coherence, effectiveness, efficiency, impact and sustainability of each policy intervention. 
+\bigskip\\
+Publications locate under the `evaluations' section of the website (Ministry of Foreign Affairs, 2025). Dating back to 2021, there is an extensive list of evaluations covering a wide range of policy interventions conducted by the MFA. The website is easy to access and navigable. Reports can be sorted by year and there are summaries to the reports. However, this website is intended primarily for internal use within the Icelandic government and academics, with uptake being low among the general public. The website has received an overall index score of 0.22. This reflects the lack of interactive tools and diagrams, as well as no categorisation of reports by policy area, which are the features identified to help promoting accessibility. One reason for the lack of designs that facilitate public access might be that these reports do not gain coverage outside of the policy sphere in the first place. Therefore, the ministry might not considered these features to be important when developing the portal. 
+
+\subsubsection{Challenges Facing Iceland's Evaluation System}
+The most significant problem facing Iceland’s evaluation system is its small administrative capacity. Iceland currently has a population of approximately 400,000, which is significantly smaller than other OECD countries or Nordic countries. Consequently, the size of the Icelandic government and its resources allocated to evaluations are considerably smaller than other high-income countries. The difference in state capacity is shown by Iceland’s nominal government expenditure for 2024 of \$15.5 billion compared to \$1.646 trillion for the UK. The disparity in the size of government and its budget means that most resources are consumed by policy design and day-to-day administration, leaving limited resources to invest in policy evaluations. This is further demonstrated by the budgets of individual ministries. Iceland’s ministry of health expenditure for 2024 was approximately \$2.48 billion compared to approximately \$25.87 billion for Finland, a similarly high-income Nordic OECD country. However, findings in \autoref{fig:index-PPP} to \autoref{fig:index-pGDP} might potentially suggest that the lack of investment in policy evaluations might be due to the lack of confidence in the potential cost-adjusted benefit, rather than purely based on budget constraint. This highlights the importance of more rigorous research into the cost-effective analysis on policy evaluation practices. The use of AI feature as adopted by the UK might also provide a cost-effective approach to organise and disseminate policy evaluations. 
+\bigskip\\
+Evaluations are also voluntary in Iceland (OECD, 2025). This means that ministries are not mandated to conduct ex-post evaluations. The focus on ex-ante assessments might also hindered the development of a centralised evaluation portal which often focuses on ex-post policy assessments. 
+
+\subsubsection{Highlight}
+One highlight of Iceland's evaluation dissemination practice is the government’s policy dashboard directory (Government of Iceland, 2025). This directory contains dashboards from ministries to inform users on the progress of the ongoing implementation of policies. The dashboards display interactive tables that outline each policy's features, aims, and the extent to which it has been implemented. Each feature of the policy is given a specific colour-coded progress level, with red meaning implementation not yet begun, orange meaning implementation commenced, yellow meaning significant progress made on implementation, and green meaning implementation completed. This dashboard is still undergoing expansion, with more powerful Power BI software tools to upgrade the interactive experience. The directory offers one alternative dissemination approach on the progress of policies in a digestible format for the public access. This is also very similar in design to the high value policy tracking database discussed in the UK case study. 
+
+\section{Recommendations}
+Under the 2022 \textit{Recommendation} framework, portals should serve to institutionalise evaluations, improve their quality, and promote their impact on decision-making through accessibility and dissemination. Although internal users in government are important stakeholders, the wider public should not be neglected. Effective policies should cater to the public who fund government expenditure. As highlighted in the Dutch case study, policy evaluations can also be politically influential. Therefore, governments should aim to engage better with both internal and external users of policy evaluation portals when designing them.
+
+\subsection{General}
+\begin{enumerate}
+    \item Countries should leverage existing evaluation infrastructure to reduce the cost of developing the framework from scratch. Examples include publication databases or digital libraries. This is highlighted in the UK case study as recommendations from the development experience of its Evaluation Registry. This approach should be generally applicable among OECD Members to address cost concerns.
+    
+    \item Governments are also recommended to follow a phased development of website features. Organisational designs highlighted in the list of accessibility features should be prioritised before
+developing more advanced digital tools. This involves centralising evaluations into a single portal, incorporating search function, policy categorisation, summaries, and accessibility tools. AI can be a cost-effective approach to explore. For example, AI can facilitate categorising evaluations from decentralised sources into policy areas. The current AI models are sufficiently competent to produce satisfactory outcomes with relative lower costs than alternatives. 
+    \bigskip\\
+    Countries with more developed portals should invest in advanced digital tools, such as interactive features and AI summaries. Currently, only 6 OECD countries contain interactive features and the UK is the only portal to include an AI summary feature. Although some countries, such as the Netherlands, have similar features under development, none have been implemented. AI-generated summaries are an efficient way to improve public accessibility. Beyond evaluation summaries, AI-supported chat functions could also significantly improve user experience. Users can ask questions on policy performance and receive answers based on a model trained with the evaluation database. This enables users to obtain digestible answers and to locate the most relevant evaluations for their research goals.
+    
+    \item Countries should prioritise evaluation capacity before portal development. The scale and capacity of a country’s existing evaluation system is inherently important to the quality of its evaluation portal. If evaluations are not performed at scale, the content within a portal will be narrower.  When existing capacity is weaker, governments should consider expanding the evaluation system before targeting portals development. Evidence suggests governments' reluctance to invest in evaluation practices may not exclusively be due to budget concerns. Future research on the cost-effectiveness of evaluation and dissemination practices should inform government on how to best perform evaluations at scale and disseminate to key stakeholders.
+    
+    \item Countries should review good practices for information dissemination and tailor these recommendations to their own contexts to improve communication and uptake. For example, the European Food and Safety Authority provides guidelines for a systematic phased approach to dissemination (EFSA, 2021). This involves first identifying the objectives, audience, and key channels of distribution, then tailoring content accordingly, as well as conducting post-publication reviews. These good practices from other fields are useful since methodological research on policy evaluation dissemination is currently limited, and they can inform countries on how to invest resources efficiently.
+\end{enumerate}
+
+\subsection{Internal Use}
+In many countries, such as the UK, evaluation portals are used primarily as internal knowledge-sharing tools within government. In such countries, two key measures are recommended.
+\begin{enumerate}
+\setcounter {enumi}{4}
+\item Reduce barriers for evaluators to upload reports onto the portals. This would improve internal accessibility by allowing civil servants to upload evaluations with ease. It could also improve the comprehensiveness of portals if it led to a larger volume of evaluations being uploaded.
+    
+\item Countries should aim for greater integration of the evaluation cycle to improve the learning process from evaluations. Most portals include both ex-ante assessments and ex-post appraisals, but these evaluations are independent produced for different policies. This means that ex-post evaluations do not always test the assumptions of ex-ante assessments, and that ex-ante assessments might not base expectations from previous evaluations. Therefore, many have not taken full advantage of this iterative learning process where evaluators can develop better policy expectations and experience. Notably, \href{https://www.soumu.go.jp/main_sosiki/hyouka/seisaku_n/000065209.html#label3}{Japan} is the only OECD Member to closely follow this framework (Ministry of Internal Affairs, 2025).
+\end{enumerate}
+
+\subsection{Public Access}
+\label{sec:rec-public}
+The case studies on the Netherlands and the UK show that dissemination and uptake among the general public is minimal. Although the portals are available to the public, they are primarily designed for internal use. The UK portal, for example, was only available to government officials for the first year prior to its public release. This report suggests two key ways to increase public engagement with portals and evaluations.
+
+\begin{enumerate}
+\setcounter {enumi}{6}
+\item More closely tying policy evaluations with their corresponding budgetary assessment reports like spending reviews. Budgetary assessments tend to attract more public attentions and engagements than evaluations. This is likely because they are forward-looking while budget is one of the topics that have the most exposure in parliament and the media. If governments impose a requirement for budgetary reviews to refer explicitly to relevant evaluations in the cost-effective analyses of policies, evaluations may gain more exposure from parliament and the media, ultimately attracting more public attention. This would also facilitate the practice of more closely considering policy evaluations in governments' budgetary decisions.
+    
+\item Expanding digital tools, infographics and interactive features. The interviews highlighted that having such features not only improves accessibility, but also increases the likelihood of media coverage which ultimately promotes public access. The \href{https://planapp.gov.pt/}{Portuguese portal} offers a good example of such features (See Annex P).
+\end{enumerate}
+
+\subsection{Practicality Acknowledgment and Further Research}
+The recommendations in this report should be interpreted alongside the practical realities of building an evaluation portal, the state of evaluation practice and the resources available. The scope and capabilities of a portal, and therefore the application of the recommendations, are influenced by evaluation capacity and resources available. If existing evaluation capacity and resources are scarce, it may be reasonable to prioritise the initial institutionalisation of evaluation before investing in the development of a portal. The pursuit of more advanced portals should largely depend on national priorities and existing evaluation capacity. Under budget constraint, decisions may also need to be made between improving the features and functionality of a portal or expanding its reach. The benefits of the latter remain relatively unexplored as public demand for evaluations generally remains lower than for other reports, such as spending reviews. Future research into the importance of public engagement in policy evaluations might provide better insights on how to balance the dissemination efforts targeted towards internal governmental audience, and towards the general public. 
+
+\newpage
+\section{References}
+\begin{list}{}{\leftmargin=0em \itemindent=-1em \parsep=0.5em}
+
+\item Algemeen Dagblad Editorial (2022). 'Klimaatdoel 2030 wordt niet gehaald, minister Jetten erkent dat er een schepje bij moet', \textit{Algemeen Dagblad}, November 2022. Available at: \url{https://www.ad.nl/binnenland/klimaatdoel-2030-wordt-niet-gehaald-minister-jetten-erkent-dat-er-een-schepje-bij-moet~a43dedbd/} (Accessed: 3 December 2025).
+
+\item European Food Safety Authority (EFSA) (2021). 'Catalogue of communication tools and dissemination guidelines: benchmarking current practice in EU and Member State bodies', \textit{EFSA Journal}, 19(4). Available at: \url{https://doi.org/10.2903/j.efsa.2021.e190402}.
+
+\item Government of the Netherlands (2017). \textit{Confidence in the Future: 2017–2021 Coalition Agreement}. The Hague: Ministry of General Affairs, pp.40-43. Available at: \url{https://www.government.nl/documents/reports/2017/10/10/coalition-agreement-confidence-in-the-future} (Accessed: 3 December 2025).
+
+\item Government of the Netherlands (2023). \textit{Scherpe doelen, scherpe keuzes: IBO aanvullend normerend en beprijzend nationaal klimaatbeleid voor 2030 en 2050}. The Hague: Ministry of Finance, pp.1-30. Available at: \url{https://www.rijksoverheid.nl/documenten/rapporten/2023/03/13/scherpe-doelen-scherpe-keuzes} (Accessed: 3 December 2025).
+
+\item House of Representatives of the States General (2023). \textit{Minutes of a consultation held on 17 April 2023 on ``Sharp goals, sharp choices: IBO supplementary normative and pricing national climate policy for 2030 and 2050''}. The Hague: House of Representatives, pp.1-19. Available at: \url{https://www.tweedekamer.nl/kamerstukken/commissieverslagen/detail?did=2023D18456&id=2023Z04300} (Accessed: 3 December 2025).
+
+\item Iceland Ministry of Health (2019). \textit{Health Policy: A policy for Iceland's health services until 2030}. Available at: \url{https://www.government.is/lisalib/getfile.aspx?itemid=f6bf2a32-c28d-11e9-9446-005056bc530c} (Accessed: 4 December 2025).
+
+\item Iceland National Audit Office (2018a). \textit{Útgefið efni}. Available at: \url{https://www.rikisend.is/skyrslur} (Accessed: 4 December 2025).
+
+\item Iceland National Audit Office (2018b). \textit{Útgefið efni > Sjúkratryggingar Íslands sem kaupandi heilbrigðisþjónustu}. Available at: \url{https://www.rikisend.is/skyrslur/nanar?id=104} (Accessed: 4 December 2025).
+
+\item Icelandic Parliament (2018). \textit{Sjúkratryggingar Íslands sem kaupandi heilbrigðisþjónustu. Skýrsla til Alþingis}. Available at: \url{https://www.althingi.is/thingnefndir/nefndastorf/onnur-mal-nefnda/?uid=1802273} (Accessed: 4 December 2025).
+
+\item Minister for Climate and Energy (2023). \textit{Answers to parliamentary questions on the Spring Climate Decision-making (2023Z07770)}. Letter to the House of Representatives, 31 May. The Hague: Ministry of Climate and Energy, pp.1-18. Available at: \url{https://open.overheid.nl/documenten/9f1dd18c-b1fe-4866-841c-a0ab5c96aa26/file}.
+
+\item Ministerie van Financiën (2016). \textit{IBO kostenefficiëntie CO2 reductiemaatregelen} [IBO Cost-effectiveness Measures for CO2 reduction]. The Hague: Ministry of Finance, pp.1-35. Available at: \url{https://www.rijksbegroting.nl/system/files/12/2016-ibo-kostenefficientie-co2-reductiemaatregelen.pdf}.
+
+\item Ministerie van Financiën (2025). \textit{Evaluatiestelsel}. Available at: \url{https://evaluaties.rijksfinancien.nl/evaluatiestelsel} (Accessed: 26 November 2025).
+
+\item Ministry of Finance of the Netherlands (1972). \textit{Quantitative principles for the trend-based budgetary policy in the coming years}. The Hague: Ministry of Finance. Available at: \url{https://evaluaties.rijksfinancien.nl/beleidsevaluatie/onderzoek/kwantitatieve-uitgangspunten-voor-het-trendmatige-begrotingsbeleid-de}.
+
+\item Ministry of Finance of the Netherlands (2025a). \textit{Spending reviews in the Netherlands: Independently generating new policy options}. The Hague: Ministry of Finance, pp.2-13. Available at: \url{https://evaluaties.rijksfinancien.nl}.
+
+\item Ministry of Finance of the Netherlands (2025b). \textit{IBO Financing Electricity Infrastructure}. The Hague: Ministry of Finance. Available at: \url{https://evaluaties.rijksfinancien.nl/beleidsevaluatie/onderzoek/ibo-bekostiging-elektriciteitsinfrastructuur}.
+
+\item Ministry of Foreign Affairs Iceland (2019). \textit{Evaluations}. Available at: \url{https://www.government.is/topics/foreign-affairs/international-development-cooperation/evaluations/} (Accessed: 7 December 2025).
+
+\item Ministry of Internal Affairs and Communications of Japan (2025). \textit{About the Policy Evaluation System}. Available at: \url{https://www.soumu.go.jp/main_sosiki/hyouka/seisaku_n/000065209.html#label3} (Accessed: 11 December 2025).
+
+\item Ministry of Welfare Iceland (2023). \textit{Evaluation Policy 2024-2028}. Available at: \url{https://www.government.is/library/01-Ministries/Ministry-for-Foreign-Affairs/Evaluations/Evaluation\%20policy\%202024-2028\%20final.pdf} (Accessed: 7 December 2025).
+
+\item National Infrastructure \& Service Transformation Authority (2025). \textit{Annual Report – Headlines}. Available at: \url{https://ar25.nista.grid.civilservice.gov.uk/headlines} (Accessed: 11 December 2025).
+
+\item Neslen, A. (2016). 'Dutch parliament votes to close down country's coal industry', \textit{The Guardian}, 23 September. Available at: \url{https://www.theguardian.com/environment/2016/sep/23/dutch-parliament-votes-to-close-down-countrys-coal-industry} (Accessed: 3 December 2025).
+
+\item OECD (2022a). \textit{OECD Journal on Budgeting: Volume 2022, Issue 2}. Paris: OECD Publishing, pp.1-16. Available at: \url{https://doi.org/10.1787/e54588a3-en}.
+
+\item OECD (2022b). \textit{Recommendation of the Council on Public Policy Evaluation}. (OECD/LEGAL/0478).
+
+\item OECD (2023). \textit{2023 OECD Survey on Public Policy Evaluation}. Available at: \url{https://webfs.oecd.org/governmentataglance/Budgeting/2023\%20OECD\%20Policy\%20Evaluation\%20Survey.pdf} (Accessed: 1 October 2025).
+
+\item OECD (2025a). \textit{Government at a Glance 2025}. Paris: OECD Publishing. Available at: \url{https://doi.org/10.1787/0efd0bcd-en}.
+
+\item OECD (2025b). \textit{Iceland: OECD Regulatory Policy Outlook 2025}. Available at: \url{https://www.oecd.org/en/publications/2025/04/oecd-regulatory-policy-outlook-2025_a754bf4c/full-report/iceland_c83cc99f.html} (Accessed: 7 December 2025).
+
+\item OECD (2025c). \textit{Public finance main indicators - Government at a Glance, 2025 edition}. Available at: \url{https://data-explorer.oecd.org/vis?lc=en&df%5Bds%5D=dsDisseminateFinalDMZ&df%5Bid%5D=DSD_GOV%40DF_GOV_PF_2025&df%5Bag%5D=OECD.GOV.GIP&dq=A.AUT.....&pd=2007%2C&to%5BTIME_PERIOD%5D=false} (Accessed: 7 December 2025).
+
+\item OECD Laboratory for Geospatial Analysis (2025). \textit{OECD Local Data Portal}. Available at: \url{https://localdataportal.oecd.org/maps.html} (Accessed: 8 December 2025).
+
+\item PBL Planbureau voor de Leefomgeving (2017). \textit{Analyse leefomgevingseffecten verkiezingsprogramma's 2017–2021}. Den Haag: PBL, pp.1-31. Available at: \url{https://www.pbl.nl/publicaties/analyse-leefomgevingseffecten-verkiezingsprogrammas-2017-2021} (Accessed: 3 December 2025).
+
+\item Soest, H. (2023). 'Een vleestaks komt er niet, kabinet zoekt door naar andere klimaatmaatregelen', \textit{Algemeen Dagblad}, April 2023. Available at: \url{https://www.ad.nl/politiek/een-vleestaks-komt-er-niet-kabinet-zoekt-door-naar-andere-klimaatmaatregelen~ad753531/} (Accessed: 3 December 2025).
+
+\item State Planning Organisation (1963). \textit{Kalkınma Plânı (Birinci Beş Yıl) 1963-1967} [Development Plan (First Five Years) 1963-1967]. Ankara: Prime Ministry State Printing House.
+
+\end{list}
+
+
+
+
+\newpage
+\section{Annex}
+\appendix
+\renewcommand{\thesubsection}{Annex \Alph{subsection}}
+
+\subsection{}
+\subsection*{Terms of Reference}
+\includepdf[pages=-]{annex/terms_of_reference.pdf}
+
+\subsection*{Portals Information List}
+\label{annex:info-tab}
+
+\begin{enumerate}
+    \item Comprehensiveness 
+    \begin{enumerate}
+        \item Oldest year
+        \item Latest year
+        \item Discontinuity
+        \item Number of policy areas covered by \href{https://www.oecd.org/en/publications/government-at-a-glance-2025_0efd0bcd-en/full-report/classification-of-the-functions-of-government-cofog_16aa2337.html\#annex-d1e29079-ce012b309b}{OECD \textit{COFOG} list}:
+        \item How often are reports published since 2022?
+        \item Additional information
+    \end{enumerate}
+
+    \item Accessibility:
+    \begin{enumerate}
+        \item Central portal exists?
+        \item Independent portal exists?
+        \item Search function
+        \item Policy area categorisation
+        \item Summaries available on the portal
+        \item Accessibility tools
+        \item Visual presentation
+        \item Comfortable font?
+        \item Interactive tools
+    \end{enumerate}
+\end{enumerate}
+
+\newpage
+\subsection{}
+\subsection*{Supplementary Documents}
+\href{https://github.com/TsssssssShark/capstone_oecd}{GitHub Link}
+
+\dirtree{%
+.1 capstone\_oecd/.
+.2 \_quarto.yml.
+.2 annex/.
+.3 cofog\_list.pdf.
+.3 consent\_form.pdf.
+.3 dutch\_2016\_ibo.jpeg.
+.3 dutch\_2023\_ibo.jpeg.
+.3 dutch\_appendix\_1.jpeg.
+.3 dutch\_appendix\_2.jpeg.
+.3 dutch\_appendix\_3.jpeg.
+.3 dutch\_cofog.jpeg.
+.3 dutch\_drop\_tax.jpeg.
+.3 dutch\_filter.png.
+.3 dutch\_interview\_questions.jpeg.
+.3 dutch\_parlimentary\_response2.jpeg.
+.3 dutch\_parllimentary\_response1.jpeg.
+.3 dutch\_tax.jpeg.
+.3 portugual\_portal.png.
+.3 terms\_of\_reference.pdf.
+.3 uk\_ai\_summary.png.
+.3 uk\_filter.png.
+.3 uk\_interview.png.
+.3 uk\_volume.png.
+.2 capstone\_oecd.Rproj.
+.2 data\_report.pdf.
+.2 data\_report.qmd.
+.2 fig/.
+.3 accessibility\_index\_chart.pdf.
+.3 cofog\_bar.pdf.
+.3 comprehensiveness\_index\_chart.pdf.
+.3 features\_independent\_plot.pdf.
+.3 index\_expenditure\_pGDP\_chart.pdf.
+.3 index\_expenditure\_PPP\_chart\_log.pdf.
+.3 index\_expenditure\_PPP\_chart.pdf.
+.3 index\_overall\_chart.pdf.
+.3 index\_portal\_plot.pdf.
+.3 interactive\_map.png.
+.3 volume.pdf.
+.3 years\_coverage.pdf.
+.2 fig\_png/.
+.3 accessibility\_index\_chart.png.
+.3 accessibility\_table\_1.png.
+.3 accessibility\_table\_2.png.
+.3 cofog\_bar.png.
+.3 comprehensiveness\_index\_chart.png.
+.3 features\_independent\_plot.png.
+.3 index\_expenditure\_pGDP\_chart.png.
+.3 index\_expenditure\_PPP\_chart\_log.png.
+.3 index\_expenditure\_PPP\_chart.png.
+.3 index\_overall\_chart.png.
+.3 index\_portal\_plot.png.
+.3 volume.png.
+.3 years\_coverage.png.
+.2 map/.
+.3 css/.
+.3 img/.
+.4 favicon.ico.
+.4 logo.svg.
+.3 js/.
+.4 colorScales.js.
+.4 data/.
+.5 accessibilityToolsData.js.
+.5 centralPoralData.js.
+.5 independentWebsiteData.js.
+.5 policyCategorisationData.js.
+.5 portalData.js.
+.5 searchFunctionData.js.
+.5 summaryAvailableData.js.
+.4 dataSelector.js.
+.4 map.js.
+.3 map.html.
+.2 map\_data\_files/.
+.3 libs/.
+.4 bootstrap/.
+.5 bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css.
+.5 bootstrap-icons.css.
+.5 bootstrap-icons.woff.
+.5 bootstrap.min.js.
+.4 clipboard/.
+.5 clipboard.min.js.
+.4 kePrint-0.0.1/.
+.5 kePrint.js.
+.4 lightable-0.0.1/.
+.5 lightable.css.
+.4 quarto-html/.
+.5 anchor.min.js.
+.5 popper.min.js.
+.5 quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css.
+.5 quarto.js.
+.5 tabsets/.
+.6 tabsets.js.
+.5 tippy.css.
+.5 tippy.umd.min.js.
+.2 map\_data.html.
+.2 oecd\_gov\_expenditure.csv.
+.2 portals\_information.csv.
+.2 README.md.
+.2 survey result.xlsx.
+.2 survey\_2023.csv.
+.2 tab/.
+.3 accessibility\_table.tex.
+.3 accessibility\_tools\_table.tex.
+.3 hyperlink\_table.tex.
+.3 independent\_website\_table.tex.
+.3 interactive\_tools\_table.tex.
+.3 policy\_categorisation\_table.tex.
+.3 portal\_comparison\_table.tex.
+.3 portal\_table.tex.
+.3 search\_function\_table.tex.
+.3 summary\_available\_table.tex.
+.3 visual\_presentation\_table.tex.
+}
+
+\newpage
+\subsection{}
+\subsection*{OECD \textit{COFOG} Classification}
+Source: \underline{Annex I} in Government at A Glance 2025 (OECD, 2025)\\
+\url{ https://www.oecd.org/content/dam/oecd/en/publications/reports/2025/06/government-at-a-glance-2025\_70e14c6c/0efd0bcd-en.pdf}
+\bigskip\\
+\textit{Note: The Annex title of the attachment refers as an annex to the original report, rather than this report.}
+\includepdf[pages=-]{annex/cofog_list.pdf}
+
+\newpage
+\subsection{}
+\subsection*{Consent Form Template}
+\includepdf[pages=-]{annex/consent_form.pdf}
+
+\newpage
+\subsection{}
+\subsection*{\textit{COFOG} Categories Covered by the Netherland's National Evaluation Portal (translated)}
+\includegraphics[height=\linewidth]{annex/dutch_cofog.jpeg}
+
+\newpage
+\subsection{}
+\subsection*{Filter Options on the Netherlands Portal}
+\includegraphics[width=\linewidth]{annex/dutch_filter.png}
+
+\newpage
+\subsection{}
+\subsection*{An extract from the Netherland’s Cabinet Response to the 2016 IBO on Cost-Effectives Measures for $CO_2$ Reduction (translated)}
+\includegraphics[width=\linewidth]{annex/dutch_2016_ibo.jpeg}
+Note: this extract has been translated to English for convenience. Please see the full original document below. 
+
+Full original document (Dutch):\href{https://archief.rijksbegroting.nl/system/files/12/2016-ibo-kostenefficientie-co2-reductiemaatregelen-kabinetsreactie.pdf}{ https://archief.rijksbegroting.nl/system/files/12/2016-ibo-kostenefficientie-co2-reductiemaatregelen-kabinetsreactie.pdf} 
+
+\newpage
+\subsection{}
+\subsection*{Transcript of Parliamentary Session Discussing the 2023 IBO, “Sharp goals, sharp choices: IBO supplementary normative and pricing national climate policy for 2030 and 2050.” (translated) }
+\includegraphics[width=\linewidth]{annex/dutch_2023_ibo.jpeg}
+(Comments made by Ms. Lijten of the Social Party (SP)) 
+
+The original transcript can be found here:\\
+\url{https://www.tweedekamer.nl/kamerstukken/commissieverslagen/detail?did=2023D18456\&id=2023Z04300}
+
+\newpage
+\subsection{}
+\subsection*{Dutch Newspapers Reporting on the Proposed Meat and Dairy Tax (translated)}
+\includegraphics[width=\linewidth]{annex/dutch_tax.jpeg}
+(Full Article here:\href{https://www.parool.nl/nederland/advies-aan-kabinet-extra-belasting-op-vlees-en-zuivel~be89afc6/}{ https://www.parool.nl/nederland/advies-aan-kabinet-extra-belasting-op-vlees-en-zuivel\~be89afc6/}) \\
+\includegraphics[width=\linewidth]{annex/dutch_drop_tax.jpeg}
+(Algemeen Dagblad Article on the Dutch Government’s decision to drop the meat and dairy tax) 
+\bigskip\\
+See full article here:\href{https://www.ad.nl/politiek/een-vleestaks-komt-er-niet-kabinet-zoekt-door-naar-andere-klimaatmaatregelen~ad753531/}{ https://www.ad.nl/politiek/een-vleestaks-komt-er-niet-kabinet-zoekt-door-naar-andere-klimaatmaatregelen\~ad753531/} 
+
+\newpage
+\subsection{}
+\subsection*{A Written Response to Parliamentary Questions by the Minister for Climate and Energy (translated) }
+See original document here:\\
+\url{ https://open.overheid.nl/documenten/9f1dd18c-b1fe-4866-841c-a0ab5c96aa26/file}\\
+\includegraphics[width=\linewidth]{annex/dutch_parllimentary_response1.jpeg}\\
+\includegraphics[width=\linewidth]{annex/dutch_parlimentary_response2.jpeg}
+
+See Appendix to the Minister's Statement:\\
+\includegraphics[width=\linewidth]{annex/dutch_appendix_1.jpeg}\\
+\includegraphics[width=\linewidth]{annex/dutch_appendix_2.jpeg}\\
+\includegraphics[width=\linewidth]{annex/dutch_appendix_3.jpeg}\\
+
+\newpage
+\subsection{}
+\subsection*{Interview Questions for Dutch Case Study}
+\includegraphics[width=\linewidth]{annex/dutch_interview_questions.jpeg}
+
+\newpage
+\subsection{}
+\subsection*{Number of entries on UK Evaluation Registry 04/12/2025}
+\includegraphics[width=\linewidth]{annex/uk_volume.png}
+
+\newpage
+\subsection{}
+\subsection*{UK Evaluation Registry Search Filters}
+\includegraphics[height=\linewidth]{annex/uk_filter.png}
+
+\newpage
+\subsection{}
+\subsection*{Example of AI-Generated Summary on UK Evaluation Registry}
+\includegraphics[width=\linewidth]{annex/uk_ai_summary.png}
+
+\newpage
+\subsection{}
+\subsection*{Interview questions for UK Case Study}
+\includegraphics[width=\linewidth]{annex/uk_interview.png}
+
+\newpage
+\subsection{}
+\subsection*{Example of an Interactive Tool from Portal’s PLANAPP Portal}
+\includegraphics[width=0.7\linewidth]{annex/portugual_portal.png}\\
+Source: \\
+\url{https://planapp.gov.pt/}
+
+\newpage
+\subsection{}
+\subsection*{Hyperlinks to Evaluaiton Portals}
+\input{tab/hyperlink_table}
+\end{document}
