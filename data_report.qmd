@@ -1793,11 +1793,11 @@ features_independent_plot
 
 ggsave("fig/features_independent_plot.pdf", 
        plot = features_independent_plot,
-       width = 6.5, height = 6)
+       width = 8, height = 6)
 
 ggsave("fig_png/features_independent_plot.png", 
        plot = features_independent_plot,
-       width = 6.5, height = 6, dpi = 300)
+       width = 8, height = 6, dpi = 300)
 ```
 
 \newpage
@@ -1903,11 +1903,11 @@ index_portal_plot
 
 ggsave("fig/index_portal_plot.pdf", 
        plot = index_portal_plot,
-       width = 6.5, height = 6)
+       width = 10, height = 7.5)
 
 ggsave("fig_png/index_portal_plot.png", 
        plot = index_portal_plot,
-       width = 6.5, height = 6, dpi = 300)
+       width = 10, height = 7.5, dpi = 300)
 ```
 
 \newpage
